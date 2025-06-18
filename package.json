@@ -1,0 +1,12 @@
+{
+  "name": "bitacora-high-stakes",
+  "version": "1.0.0",
+  "description": "Bitácora para seguimiento de cultivos",
+  "private": true,
+  "scripts": {
+    "start": "serve ."
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+} 

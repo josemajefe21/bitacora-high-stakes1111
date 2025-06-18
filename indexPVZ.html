@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#4ade80">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Bitácora">
+  <title>Bitácora High Stakes</title>
+  <!-- PWA Meta Tags -->
+  <meta name="description" content="Bitácora para seguimiento de cultivos">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <!-- Fuente divertida tipo cartoon -->
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4ade80;
+      --secondary-color: #0ea5e9;
+      --background-color: #f3f4f6;
+      --text-color: #111827;
+    }
+
+    body {
+      font-family: 'Quicksand', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--background-color) 80%, #d1fae5 100%);
+      padding: 20px;
+      color: var(--text-color);
+      min-height: 100vh;
+      position: relative;
+    }
+    h1 {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 2.1em;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      color: #388e3c;
+      text-shadow: 2px 2px 0 #fff, 0 2px 8px #a7f3d0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    h1::before {
+      content: '🌱';
+      font-size: 1.2em;
+      margin-right: 8px;
+      -webkit-filter: drop-shadow(0 2px 2px #a7f3d0);
+      filter: drop-shadow(0 2px 2px #a7f3d0);
+    }
+    h2 {
+      font-family: 'Luckiest Guy', cursive;
+      color: #388e3c;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 0 #fff, 0 1px 4px #a7f3d0;
+    }
+    label {
+      font-weight: bold;
+      color: #388e3c;
+      letter-spacing: 0.5px;
+    }
+    textarea, input[type="text"], input[type="date"] {
+      width: 100%;
+      margin: 5px 0 12px 0;
+      padding: 10px;
+      font-size: 15px;
+      border-radius: 12px;
+      border: 2.5px solid #a7f3d0;
+      background: #f0fdf4;
+      box-shadow: 0 2px 8px rgba(167, 243, 208, 0.33);
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    textarea:focus, input[type="text"]:focus, input[type="date"]:focus {
+      border: 2.5px solid #4ade80;
+      box-shadow: 0 4px 16px rgba(74, 222, 128, 0.33);
+      outline: none;
+    }
+    button {
+      margin: 5px 8px 5px 0;
+      padding: 8px 14px;
+      font-size: 15px;
+      border: none;
+      border-radius: 10px 18px 10px 18px;
+      background-color: #4ade80;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(167, 243, 208, 0.67);
+      font-family: 'Quicksand', 'Segoe UI', sans-serif;
+      transition: transform 0.1s, box-shadow 0.2s;
+    }
+    button:active {
+      transform: scale(0.97);
+      box-shadow: 0 1px 4px rgba(167, 243, 208, 0.33);
+    }
+    .stage-btn {
+      padding: 8px 10px;
+      margin: 4px;
+      font-size: 15px;
+      border: 2.5px solid transparent;
+      border-radius: 12px 20px 12px 20px;
+      background-color: #e5e7eb;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(186, 230, 253, 0.53);
+      font-family: 'Quicksand', 'Segoe UI', sans-serif;
+    }
+    .stage-selected {
+      border-color: #0ea5e9;
+      background-color: #bae6fd;
+      box-shadow: 0 4px 16px rgba(14, 165, 233, 0.33);
+    }
+    .button-small {
+      padding: 6px 10px;
+      font-size: 13px;
+      background-color: #0ea5e9;
+      border-radius: 10px 18px 10px 18px;
+      box-shadow: 0 2px 8px rgba(186, 230, 253, 0.53);
+    }
+    .mood-btn {
+      display: inline-block;
+      margin-right: 10px;
+      padding: 10px 14px;
+      border: 2.5px solid transparent;
+      border-radius: 16px 24px 16px 24px;
+      cursor: pointer;
+      font-size: 18px;
+      background: #e0f2fe;
+      box-shadow: 0 2px 8px rgba(186, 230, 253, 0.53);
+      font-family: 'Quicksand', 'Segoe UI', sans-serif;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    .mood-selected {
+      border-color: #0ea5e9;
+      background-color: #e0f2fe;
+      box-shadow: 0 4px 16px rgba(14, 165, 233, 0.33);
+    }
+    .entry {
+      background: #fff;
+      padding: 16px 14px 16px 24px;
+      margin-bottom: 16px;
+      border-radius: 24px 32px 24px 32px;
+      box-shadow: 0 4px 24px rgba(167, 243, 208, 0.67), 0 1.5px 0 #4ade80;
+      border-left: 8px solid #4ade80;
+      position: relative;
+      overflow: hidden;
+    }
+    .entry::before {
+      content: '🌿';
+      position: absolute;
+      left: 8px;
+      top: -10px;
+      font-size: 1.5em;
+      opacity: 0.25;
+      transform: rotate(-20deg);
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin-top: 12px;
+      max-width: 240px;
+      background: #e0f2fe;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px rgba(186, 230, 253, 0.53);
+      padding: 10px 5px;
+    }
+    .day {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px 16px 10px 16px;
+      text-align: center;
+      font-size: 12px;
+      line-height: 32px;
+      background-color: #e5e7eb;
+      color: #000;
+      box-shadow: 0 1px 4px rgba(167, 243, 208, 0.33);
+      border: 1.5px solid #a7f3d0;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .m1 { background-color: #f87171; }
+    .m2 { background-color: #facc15; }
+    .m3 { background-color: #4ade80; }
+    .m4 { background-color: #22c55e; }
+    /* Detalles de hojas en el fondo */
+    body::after {
+      content: '🌱🌿';
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+      font-size: 2.5em;
+      opacity: 0.13;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* --- INICIO: Estilos responsivos para móvil --- */
+    @media (max-width: 600px) {
+      body {
+        padding: 8px;
+        font-size: 15px;
+      }
+      h1 {
+        font-size: 1.3em;
+        text-align: center;
+      }
+      h2 {
+        font-size: 1.1em;
+      }
+      .calendar {
+        max-width: 100%;
+        gap: 2px;
+        padding: 6px 2px;
+      }
+      .day {
+        width: 22px;
+        height: 22px;
+        font-size: 8px;
+        line-height: 22px;
+      }
+      .entry {
+        padding: 10px 7px 10px 14px;
+        font-size: 13px;
+        border-radius: 16px 20px 16px 20px;
+      }
+      button, .stage-btn, .button-small {
+        font-size: 13px;
+        padding: 8px 8px;
+        margin: 4px 4px 4px 0;
+        border-radius: 10px 16px 10px 16px;
+      }
+      .mood-btn {
+        font-size: 15px;
+        padding: 7px 10px;
+        margin-right: 5px;
+        border-radius: 12px 18px 12px 18px;
+      }
+      textarea, input[type="text"], input[type="date"] {
+        font-size: 13px;
+        padding: 7px;
+        border-radius: 10px;
+      }
+      #calendarVisual {
+        overflow-x: auto;
+      }
+    }
+    /* --- FIN: Estilos responsivos para móvil --- */
+
+    /* Estilos para el modal de edición */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: 50px auto;
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+      font-size: 24px;
+    }
+
+    /* Estilos para el historial */
+    .history-entry {
+      position: relative;
+    }
+
+    .edit-button {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* Actualizar estilos del selector de bitácoras */
+    .bitacora-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      padding: 10px;
+      background: #f8fafc;
+      border-radius: 12px;
+    }
+
+    .bitacora-card {
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+      font-weight: bold;
+      min-width: 120px;
+      text-align: center;
+      position: relative;
+    }
+
+    .bitacora-actions {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      display: flex;
+      gap: 5px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .bitacora-card:hover .bitacora-actions {
+      opacity: 1;
+    }
+
+    .action-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.9);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      transition: transform 0.2s;
+    }
+
+    .action-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .edit-btn { color: #0ea5e9; }
+    .delete-btn { color: #f87171; }
+    .share-btn { color: #4ade80; }
+
+    /* Modal de edición de bitácora */
+    .edit-bitacora-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+
+    .edit-bitacora-content {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: 50px auto;
+      position: relative;
+    }
+
+    .visibility-selector {
+      margin: 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .visibility-selector label {
+      font-weight: bold;
+      color: #374151;
+    }
+
+    .visibility-selector select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      background-color: white;
+      color: #374151;
+      font-size: 14px;
+    }
+
+    .visibility-indicator {
+      margin-left: 8px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .bitacora-card .visibility-indicator {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    .new-bitacora {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    .new-bitacora.active {
+      display: block;
+    }
+
+    .new-bitacora input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .color-picker {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .color-option {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.2s;
+    }
+
+    .color-option:hover {
+      transform: scale(1.1);
+    }
+
+    .color-option.selected {
+      border-color: #000;
+      transform: scale(1.1);
+    }
+
+    .new-bitacora button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .backup-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .backup-btn {
+      background: #f8fafc;
+      border: 2px solid #e5e7eb;
+      color: #374151;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .backup-btn:hover {
+      background: #f1f5f9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .backup-btn:active {
+      transform: translateY(0);
+    }
+
+    .backup-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+
+    .backup-modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: 50px auto;
+      position: relative;
+    }
+
+    .backup-list {
+      max-height: 300px;
+      overflow-y: auto;
+      margin: 15px 0;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+    }
+
+    .backup-item {
+      padding: 10px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .backup-item:last-child {
+      border-bottom: none;
+    }
+
+    .backup-item:hover {
+      background: #f8fafc;
+    }
+
+    .backup-info {
+      font-size: 14px;
+      color: #374151;
+    }
+
+    .backup-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .backup-actions button {
+      padding: 4px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
+      background: #f1f5f9;
+      color: #374151;
+    }
+
+    .backup-actions button:hover {
+      background: #e5e7eb;
+    }
+
+    .backup-actions button.restore {
+      background: #4ade80;
+      color: white;
+    }
+
+    .backup-actions button.delete {
+      background: #f87171;
+      color: white;
+    }
+
+    .credits {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.9em;
+      color: #4b5563;
+      text-align: center;
+      margin-top: -5px;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .help-question {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 8px 12px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .help-question:hover {
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .bitacora-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .bitacora-form-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .bitacora-form-group label {
+      font-weight: 600;
+      color: #388e3c;
+    }
+    .bitacora-form-group input[type="text"],
+    .bitacora-form-group input[type="number"],
+    .bitacora-form-group select {
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-family: 'Quicksand', sans-serif;
+    }
+    .bitacora-form-group input[type="text"]:focus,
+    .bitacora-form-group input[type="number"]:focus,
+    .bitacora-form-group select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    .bitacora-form-group button,
+    .bitacora-form-row button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      background-color: var(--primary-color);
+      color: white;
+      transition: all 0.2s;
+    }
+    .bitacora-form-group button:hover,
+    .bitacora-form-row button:hover {
+      background-color: var(--secondary-color);
+    }
+    .bitacora-form-group input[type="checkbox"] {
+      accent-color: var(--primary-color);
+      width: 1.1em;
+      height: 1.1em;
+    }
+    .cepa-item, .carpa-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafc;
+      border-radius: 0.5rem;
+      padding: 6px 10px;
+      margin-bottom: 4px;
+    }
+    .cepa-item input[type="number"], .carpa-item input[type="number"] {
+      width: 60px;
+      margin-left: 4px;
+    }
+    .cepa-remove, .carpa-remove {
+      background: #f87171;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0 10px;
+      font-size: 1.1em;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+    .cepa-remove:hover, .carpa-remove:hover {
+      background: #ef4444;
+    }
+    .bitacora-form-checkboxes label {
+      margin-right: 16px;
+      font-weight: 500;
+      color: #388e3c;
+    }
+    .luz-btn {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-size: 1.5rem;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #388e3c;
+    }
+    .luz-btn.selected, .luz-btn:active {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+    .luz-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafc;
+      border-radius: 0.5rem;
+      padding: 6px 10px;
+      margin-bottom: 4px;
+    }
+    .luz-remove {
+      background: #f87171;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0 10px;
+      font-size: 1.1em;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+    .luz-remove:hover {
+      background: #ef4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="backup-controls" style="display: flex; align-items: center; gap: 10px;">
+      <div id="ultimoRespaldo" style="font-size: 0.95em; color: #4b5563; margin-right: 18px; min-width: 180px;">Último respaldo: -</div>
+      <button class="backup-btn" onclick="createBackup()">
+        💾 Crear Respaldo
+      </button>
+      <button class="backup-btn" onclick="showBackups()">
+        ⏪ Restaurar
+      </button>
+      <div class="help-question" id="helpQuestion" title="¿Qué puede hacer Bitácora High Stakes?" onclick="showHelpModal()" style="margin-left: 8px;">
+        <span style="font-size: 2rem; cursor: pointer; user-select: none;">❓</span>
+      </div>
+    </div>
+    
+    <h1>Bitácora High Stakes 🌱</h1>
+    <div class="credits">Creada por Smart Honey Selections</div>
+
+    <!-- Selector de Bitácoras -->
+    <div class="bitacora-selector" id="bitacoraSelector">
+      <!-- Las bitácoras se generarán dinámicamente -->
+    </div>
+
+    <!-- Formulario para nueva bitácora -->
+    <div class="new-bitacora" id="newBitacoraForm">
+      <h3>Nueva Bitácora</h3>
+      <div class="bitacora-form-group">
+        <input type="text" id="newBitacoraName" placeholder="Nombre de la bitácora" />
+        <div class="color-picker" id="colorPicker">
+          <!-- Los colores se generarán dinámicamente como círculos -->
+        </div>
+      </div>
+      <!-- Cepas -->
+      <div class="bitacora-form-group">
+        <label>Cepas:</label>
+        <div id="cepasList"></div>
+        <div class="bitacora-form-row">
+          <input type="text" id="cepaNombre" placeholder="Nombre de la cepa" />
+          <input type="number" id="cepaCantidad" placeholder="Cantidad" min="1" value="1" />
+          <button type="button" onclick="addCepa()">+</button>
+        </div>
+      </div>
+      <!-- Tipo de cultivo -->
+      <div class="bitacora-form-group">
+        <label>Tipo de cultivo:</label>
+        <select id="tipoCultivo" onchange="toggleInteriorFields()">
+          <option value="">Selecciona...</option>
+          <option value="interior">Interior</option>
+          <option value="exterior">Exterior</option>
+          <option value="invernadero">Invernadero</option>
+        </select>
+      </div>
+      <div id="interiorFields" style="display:none;">
+        <div class="bitacora-form-group">
+          <label>¿Cuántas carpas?</label>
+          <input type="number" id="numCarpas" min="0" value="0" onchange="toggleCarpasFields()" />
+          <label><input type="checkbox" id="soloSala" onchange="toggleCarpasFields()" /> Solo una sala</label>
+          <div id="carpasList"></div>
+        </div>
+        <div class="bitacora-form-group">
+          <label>Lámparas de vegetación:</label>
+          <input type="number" id="lamparasVege" min="0" value="0" />
+          <input type="text" id="wattsVege" placeholder="Watts totales / por lámpara" />
+        </div>
+        <div class="bitacora-form-group">
+          <label>Lámparas de floración:</label>
+          <input type="number" id="lamparasFlora" min="0" value="0" />
+          <input type="text" id="wattsFlora" placeholder="Watts totales / por lámpara" />
+        </div>
+        <div class="bitacora-form-group">
+          <label>Ventiladores:</label>
+          <input type="number" id="ventiladores" min="0" value="0" />
+          <input type="text" id="pulgadasVentilador" placeholder="Pulgadas (opcional)" />
+        </div>
+        <div class="bitacora-form-group">
+          <label>Filtro de aire:</label>
+          <select id="filtroAire">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+          </select>
+        </div>
+        <div class="bitacora-form-group">
+          <label>Aire acondicionado:</label>
+          <select id="aireAcondicionado" onchange="toggleFrigorias()">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+          </select>
+          <input type="text" id="frigorias" placeholder="Frigorías" style="display:none;" />
+        </div>
+      </div>
+      <!-- Tipo de riego -->
+      <div class="bitacora-form-group bitacora-form-checkboxes">
+        <label>Tipo de riego:</label>
+        <div id="riegoOptions">
+          <label><input type="checkbox" value="manual" /> Manual</label>
+          <label><input type="checkbox" value="goteo" /> Goteo</label>
+          <label><input type="checkbox" value="hidroponica" /> Hidropónica</label>
+        </div>
+        <input type="text" id="detalleRiego" placeholder="Detalles de riego (opcional)" />
+      </div>
+      <!-- Sustrato -->
+      <div class="bitacora-form-group">
+        <label>Sustrato:</label>
+        <input type="text" id="sustrato" placeholder="Especifica el sustrato (opcional)" />
+      </div>
+      <!-- Tipo de luz -->
+      <div class="bitacora-form-group">
+        <label>Tipo de luz:</label>
+        <div id="luzOptions" style="display: flex; gap: 12px; margin-bottom: 8px;">
+          <button type="button" class="luz-btn" id="luzSolBtn" onclick="selectLuz('sol')">☀️ Sol</button>
+          <button type="button" class="luz-btn" id="luzArtificialBtn" onclick="selectLuz('luz')">💡 Luz</button>
+          <button type="button" class="luz-btn" id="luzMixtoBtn" onclick="selectLuz('mixto')">🔄 Mixto</button>
+        </div>
+        <div id="luzSolIcon" style="display:none; font-size:2rem; margin-bottom:8px;">☀️</div>
+        <div id="luzArtificialFields" style="display:none;">
+          <label>Agregar luces:</label>
+          <div id="lucesList"></div>
+          <div class="bitacora-form-row">
+            <input type="text" id="luzNombre" placeholder="Nombre de la luz" />
+            <input type="number" id="luzCantidad" placeholder="Cantidad" min="1" value="1" />
+            <input type="number" id="luzWatts" placeholder="Watts" min="1" />
+            <button type="button" onclick="addLuz()">+</button>
+          </div>
+        </div>
+      </div>
+      <button onclick="createNewBitacora()">Crear Bitácora</button>
+    </div>
+
+    <!-- Contenido principal (se mostrará solo cuando haya una bitácora seleccionada) -->
+    <div id="mainContent" style="display: none;">
+      <!-- Etapas -->
+      <label>Etapa:</label><br/>
+      <div>
+        <button class="stage-btn" id="btn-vege" onclick="setStage('vege')">🟢 Vegetativo</button>
+        <button class="stage-btn" id="btn-flora" onclick="setStage('flora')">🌺 Floración</button>
+        <button class="stage-btn" id="btn-general" onclick="setStage('general')">📖 General</button>
+      </div>
+
+      <!-- Resumen Semanal -->
+      <div class="weekly-summary" id="weeklySummary">
+        <h3>Resumen Semanal</h3>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <h4>Total Entradas</h4>
+            <div id="totalEntries">0</div>
+          </div>
+          <div class="summary-item">
+            <h4>Promedio Emocional</h4>
+            <div id="averageMood">-</div>
+          </div>
+          <div class="summary-item">
+            <h4>Días con Riego</h4>
+            <div id="wateredDays">0</div>
+          </div>
+        </div>
+        <div class="emotion-timeline" id="emotionTimeline">
+          <!-- La línea de tiempo se generará dinámicamente -->
+        </div>
+      </div>
+
+      <div id="floraStartContainer" style="display:none;">
+        <label>Inicio de floración:</label>
+        <input type="date" id="floraStart" onchange="setFloraStart()" />
+      </div>
+
+      <label>Fecha del registro:</label>
+      <input type="date" id="date" onfocus="this.showPicker()" />
+
+      <label>¿Cómo estuvo el día?</label><br/>
+      <div id="moodOptions"></div>
+
+      <label>Tareas realizadas:</label>
+      <textarea id="tasks"></textarea>
+
+      <label>¿Regaste hoy?</label><br/>
+      <button onclick="setWater(true)">💧 Sí</button>
+      <button onclick="setWater(false)">❌ No</button><br/>
+
+      <div id="waterDetails" style="display:none;">
+        <input type="text" id="waterAmount" placeholder="Cantidad de agua (L o ml)" />
+        <input type="text" id="nutrients" placeholder="Nutrientes utilizados" />
+        <input type="text" id="ph" placeholder="pH del agua" />
+        <input type="text" id="ec" placeholder="EC del agua" />
+      </div>
+
+      <label>Problemas o anomalías:</label>
+      <textarea id="issues"></textarea>
+
+      <label>Notas o reflexiones:</label>
+      <textarea id="notes"></textarea>
+
+      <button onclick="saveEntry()">Guardar entrada</button>
+      <button class="button-small" onclick="exportData()">📤 Exportar JSON</button>
+
+      <!-- Historial -->
+      <h2>Historial</h2>
+      <div id="calendarVisual"></div>
+      <div id="history"></div>
+    </div>
+
+    <!-- Modal de edición -->
+    <div class="modal" id="editModal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeEditModal()">&times;</span>
+        <h3>Editar Entrada</h3>
+        <input type="password" id="editPassword" placeholder="Contraseña" />
+        <div id="editForm" style="display: none;">
+          <!-- El formulario de edición se generará dinámicamente -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Agregar el modal de edición de bitácora -->
+    <div class="edit-bitacora-modal" id="editBitacoraModal">
+      <div class="edit-bitacora-content">
+        <span class="close-modal" onclick="closeEditBitacoraModal()">&times;</span>
+        <h3>Editar Bitácora</h3>
+        <input type="text" id="editBitacoraName" placeholder="Nombre de la bitácora" />
+        <div class="color-picker" id="editColorPicker">
+          <!-- Los colores se generarán dinámicamente -->
+        </div>
+        <!-- Cepas -->
+        <label>Cepas:</label>
+        <div id="editCepasList"></div>
+        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+          <input type="text" id="editCepaNombre" placeholder="Nombre de la cepa" style="flex:2;" />
+          <input type="number" id="editCepaCantidad" placeholder="Cantidad" min="1" value="1" style="width:70px;" />
+          <button type="button" onclick="addEditCepa()">+</button>
+        </div>
+        <!-- Tipo de cultivo -->
+        <label>Tipo de cultivo:</label>
+        <select id="editTipoCultivo" onchange="toggleEditInteriorFields()">
+          <option value="">Selecciona...</option>
+          <option value="interior">Interior</option>
+          <option value="exterior">Exterior</option>
+          <option value="invernadero">Invernadero</option>
+        </select>
+        <div id="editInteriorFields" style="display:none; margin-top:10px;">
+          <label>¿Cuántas carpas?</label>
+          <input type="number" id="editNumCarpas" min="0" value="0" style="width:70px;" onchange="toggleEditCarpasFields()" />
+          <label><input type="checkbox" id="editSoloSala" onchange="toggleEditCarpasFields()" /> Solo una sala</label>
+          <div id="editCarpasList" style="margin-bottom:10px;"></div>
+          <!-- Lámparas -->
+          <label>Lámparas de vegetación:</label>
+          <input type="number" id="editLamparasVege" min="0" value="0" style="width:70px;" />
+          <input type="text" id="editWattsVege" placeholder="Watts totales / por lámpara" />
+          <label>Lámparas de floración:</label>
+          <input type="number" id="editLamparasFlora" min="0" value="0" style="width:70px;" />
+          <input type="text" id="editWattsFlora" placeholder="Watts totales / por lámpara" />
+          <!-- Ventiladores -->
+          <label>Ventiladores:</label>
+          <input type="number" id="editVentiladores" min="0" value="0" style="width:70px;" />
+          <input type="text" id="editPulgadasVentilador" placeholder="Pulgadas (opcional)" />
+          <!-- Filtro de aire -->
+          <label>Filtro de aire:</label>
+          <select id="editFiltroAire">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+          </select>
+          <!-- Aire acondicionado -->
+          <label>Aire acondicionado:</label>
+          <select id="editAireAcondicionado" onchange="toggleEditFrigorias()">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+          </select>
+          <input type="text" id="editFrigorias" placeholder="Frigorías" style="display:none;" />
+        </div>
+        <!-- Tipo de riego -->
+        <label>Tipo de riego:</label>
+        <div id="editRiegoOptions">
+          <label><input type="checkbox" value="manual" /> Manual</label>
+          <label><input type="checkbox" value="goteo" /> Goteo</label>
+          <label><input type="checkbox" value="hidroponica" /> Hidropónica</label>
+        </div>
+        <input type="text" id="editDetalleRiego" placeholder="Detalles de riego (opcional)" />
+        <!-- Sustrato -->
+        <label>Sustrato:</label>
+        <input type="text" id="editSustrato" placeholder="Especifica el sustrato (opcional)" />
+        <div class="visibility-selector">
+          <label>Visibilidad:</label>
+          <select id="editBitacoraVisibility">
+            <option value="false">Privada</option>
+            <option value="true">Pública</option>
+          </select>
+        </div>
+        <button onclick="saveBitacoraEdit()">Guardar Cambios</button>
+      </div>
+    </div>
+
+    <!-- Modal de respaldos -->
+    <div class="backup-modal" id="backupModal">
+      <div class="backup-modal-content">
+        <span class="close-modal" onclick="closeBackupModal()">&times;</span>
+        <h3>Respaldos Guardados</h3>
+        <div class="backup-list" id="backupList">
+          <!-- Los respaldos se generarán dinámicamente -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de ayuda -->
+    <div class="modal" id="helpModal" style="display:none;">
+      <div class="modal-content" style="max-width: 400px; margin: 50px auto; background: #fff; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: relative;">
+        <span class="close-modal" onclick="closeHelpModal()" style="position: absolute; right: 1rem; top: 1rem; cursor: pointer; font-size: 1.5rem;">&times;</span>
+        <h2 style="font-family: 'Luckiest Guy', cursive; color: #388e3c;">¿Qué puede hacer Bitácora High Stakes?</h2>
+        <ul style="font-size: 1.1rem; color: #374151; margin-top: 1rem; list-style: none; padding-left: 0;">
+          <li><span style='font-size:1.3em; margin-right:6px;'>🌱</span>Gestiona varios cultivos en un solo lugar.</li>
+          <li><span style='font-size:1.3em; margin-right:6px;'>📊</span>Visualiza tu progreso con gráficos automáticos de emociones, riego y parámetros del agua.</li>
+          <li><span style='font-size:1.3em; margin-right:6px;'>💾</span>Guarda y recupera respaldos de tus datos fácilmente.</li>
+          <li><span style='font-size:1.3em; margin-right:6px;'>🔒</span>Comparte tus bitácoras o mantenlas privadas según prefieras.</li>
+          <li><span style='font-size:1.3em; margin-right:6px;'>📱</span>Accede desde cualquier dispositivo, incluso sin conexión (PWA).</li>
+          <li><span style='font-size:1.3em; margin-right:6px;'>📤</span>Exporta tus registros para llevar un control fuera de la app.</li>
+        </ul>
+        <div style="margin-top: 1.5rem; text-align: center; color: #4ade80; font-family: 'Luckiest Guy', cursive;">¡Tu cultivo, tu historia! 🌿</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Registrar el Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registrado:', registration);
+          })
+          .catch(error => {
+            console.log('Error al registrar ServiceWorker:', error);
+          });
+      });
+    }
+
+    // Manejar la instalación de la PWA
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      // Aquí podrías mostrar un botón para instalar la app
+    });
+
+    // Variables globales
+    let selectedBitacora = null;
+    let selectedMood = null;
+    let selectedStage = 'vege';
+    let didWater = false;
+    let tipoLuz = '';
+    let luces = [];
+
+    const moodStates = [
+      { value: 1, icon: '😞', label: 'Mal día', color: '#f87171' },
+      { value: 2, icon: '⚠️', label: 'Regular', color: '#facc15' },
+      { value: 3, icon: '🌿', label: 'Bueno', color: '#4ade80' },
+      { value: 4, icon: '🌞', label: 'Muy bueno', color: '#22c55e' }
+    ];
+
+    const availableColors = [
+      '#4ade80', '#0ea5e9', '#f87171', '#facc15',
+      '#a78bfa', '#f472b6', '#60a5fa', '#34d399'
+    ];
+
+    // Funciones auxiliares
+    function getEntries() {
+      if (!selectedBitacora) return [];
+      return selectedBitacora.entries[selectedStage] || [];
+    }
+
+    function updateWeeklySummary() {
+      if (!selectedBitacora) return;
+
+      const today = new Date();
+      const weekStart = new Date(today);
+      weekStart.setDate(today.getDate() - today.getDay());
+
+      const weekEntries = getEntries().filter(entry => {
+        const entryDate = new Date(entry.date);
+        return entryDate >= weekStart && entryDate <= today;
+      });
+
+      document.getElementById('totalEntries').textContent = weekEntries.length;
+      
+      const moods = weekEntries.map(e => e.mood).filter(m => m);
+      const avgMood = moods.length ? (moods.reduce((a, b) => a + b, 0) / moods.length).toFixed(1) : '-';
+      document.getElementById('averageMood').textContent = avgMood;
+      
+      const wateredDays = weekEntries.filter(e => e.didWater).length;
+      document.getElementById('wateredDays').textContent = wateredDays;
+
+      const timeline = document.getElementById('emotionTimeline');
+      timeline.innerHTML = weekEntries.map(entry => `
+        <div class="emotion-dot" style="background-color: ${moodStates.find(m => m.value === entry.mood)?.color}"
+             title="${entry.date}"></div>
+      `).join('');
+    }
+
+    function renderHistory() {
+      const entries = getEntries().sort((a,b) => new Date(b.date) - new Date(a.date));
+      const container = document.getElementById('history');
+      container.innerHTML = '';
+      const floraStart = selectedBitacora?.floraStart;
+
+      entries.forEach(e => {
+        let diaFlora = '';
+        if (selectedStage === 'flora' && floraStart) {
+          const start = new Date(floraStart);
+          const actual = new Date(e.date);
+          const diff = Math.floor((actual - start) / (1000 * 60 * 60 * 24)) + 1;
+          diaFlora = ` — Día ${diff} de flora`;
+        }
+
+        const moodEmoji = moodStates.find(m => m.value === e.mood)?.icon || '';
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `
+          <button class="edit-button" onclick="editEntry('${e.date}')">✏️</button>
+          <strong>${e.date}</strong> — ${moodEmoji} ${diaFlora}<br/>
+          <b>Tareas:</b> ${e.tasks}<br/>
+          <b>Riego:</b> ${e.didWater ? 'Sí' : 'No'} ${e.didWater ? `
+            <br/>💧 ${e.waterAmount} | 🧴 ${e.nutrients} | ⚗️ pH: ${e.ph} | 📈 EC: ${e.ec}` : ''}
+          <br/><b>Problemas:</b> ${e.issues}
+          <br/><b>Notas:</b> ${e.notes}`;
+        container.appendChild(div);
+      });
+    }
+
+    function renderCalendar() {
+      const entries = getEntries();
+      const map = {};
+      entries.forEach(e => { map[e.date] = e.mood; });
+
+      const container = document.getElementById('calendarVisual');
+      container.innerHTML = '<div class="calendar">';
+      for (let i = 34; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const k = d.toISOString().split('T')[0];
+        const mood = map[k];
+        const cls = mood ? 'm' + mood : '';
+        container.innerHTML += `<div class="day ${cls}" title="${k}"></div>`;
+      }
+      container.innerHTML += '</div>';
+    }
+
+    // Funciones de gestión de bitácoras
+    function createNewBitacora() {
+      const name = document.getElementById('newBitacoraName').value.trim();
+      const selectedColor = document.querySelector('.color-option.selected');
+      
+      if (!name) {
+        alert('Por favor, ingresa un nombre para la bitácora.');
+        return;
+      }
+      
+      if (!selectedColor) {
+        alert('Por favor, selecciona un color para la bitácora.');
+        return;
+      }
+
+      const color = selectedColor.style.backgroundColor;
+      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
+      
+      if (bitacoras.some(b => b.name.toLowerCase() === name.toLowerCase())) {
+        alert('Ya existe una bitácora con ese nombre. Por favor, elige otro.');
+        return;
+      }
+
+      const newBitacora = {
+        id: Date.now().toString(),
+        name,
+        color,
+        floraStart: null,
+        isPublic: true,
+        entries: {
+          vege: [],
+          flora: [],
+          general: []
+        }
+      };
+
+      bitacoras.push(newBitacora);
+      localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
+      
+      document.getElementById('newBitacoraName').value = '';
+      document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+      document.getElementById('newBitacoraForm').classList.remove('active');
+      
+      renderBitacoraSelector();
+      selectBitacora(newBitacora.id);
+    }
+
+    function renderBitacoraSelector() {
+      const container = document.getElementById('bitacoraSelector');
+      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
+      
+      container.innerHTML = '';
+      
+      const newButton = document.createElement('button');
+      newButton.className = 'bitacora-card';
+      newButton.style.backgroundColor = '#e5e7eb';
+      newButton.style.color = '#374151';
+      newButton.innerHTML = '+ Nueva Bitácora';
+      newButton.onclick = showNewBitacoraForm;
+      container.appendChild(newButton);
+
+      bitacoras.forEach(bitacora => {
+        const div = document.createElement('div');
+        div.className = `bitacora-card ${bitacora.id === selectedBitacora?.id ? 'active' : ''}`;
+        div.style.backgroundColor = bitacora.color;
+        div.style.color = '#fff';
+        
+        // Contenedor para el nombre y estado de visibilidad
+        const nameDiv = document.createElement('div');
+        nameDiv.innerHTML = `
+          ${bitacora.name}
+          <span class="visibility-indicator" title="${bitacora.isPublic ? 'Pública: Cualquiera con el enlace puede ver y compartir esta bitácora.' : 'Privada: Solo tú puedes ver esta bitácora.'}">
+            ${bitacora.isPublic ? '🌐' : '🔒'}
+          </span>
+        `;
+        div.appendChild(nameDiv);
+        
+        // Contenedor para los botones de acción
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'bitacora-actions';
+        
+        // Botón de editar
+        const editBtn = document.createElement('button');
+        editBtn.className = 'action-btn edit-btn';
+        editBtn.innerHTML = '✏️';
+        editBtn.onclick = (e) => {
+          e.stopPropagation();
+          showEditBitacoraModal(bitacora);
+        };
+        
+        // Botón de eliminar
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'action-btn delete-btn';
+        deleteBtn.innerHTML = '🗑️';
+        deleteBtn.onclick = (e) => {
+          e.stopPropagation();
+          if (confirm('¿Estás seguro de que quieres eliminar esta bitácora?')) {
+            deleteBitacora(bitacora.id);
+          }
+        };
+        
+        // Botón de compartir
+        const shareBtn = document.createElement('button');
+        shareBtn.className = 'action-btn share-btn';
+        shareBtn.innerHTML = '📤';
+        shareBtn.onclick = (e) => {
+          e.stopPropagation();
+          if (!bitacora.isPublic) {
+            alert('Esta bitácora es privada. Cámbiala a pública para poder compartirla.');
+            return;
+          }
+          shareBitacora(bitacora);
+        };
+        
+        actionsDiv.appendChild(editBtn);
+        actionsDiv.appendChild(deleteBtn);
+        actionsDiv.appendChild(shareBtn);
+        div.appendChild(actionsDiv);
+        
+        div.onclick = () => selectBitacora(bitacora.id);
+        container.appendChild(div);
+      });
+    }
+
+    function showNewBitacoraForm() {
+      const form = document.getElementById('newBitacoraForm');
+      form.classList.add('active');
+      document.getElementById('newBitacoraName').value = '';
+      renderColorPicker();
+      document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+      cepas = [];
+      renderCepasList();
+      document.getElementById('cepaNombre').value = '';
+      document.getElementById('cepaCantidad').value = 1;
+      document.getElementById('tipoCultivo').value = '';
+      document.getElementById('interiorFields').style.display = 'none';
+      document.getElementById('numCarpas').value = 0;
+      document.getElementById('soloSala').checked = false;
+      document.getElementById('carpasList').innerHTML = '';
+      document.getElementById('lamparasVege').value = 0;
+      document.getElementById('wattsVege').value = '';
+      document.getElementById('lamparasFlora').value = 0;
+      document.getElementById('wattsFlora').value = '';
+      document.getElementById('ventiladores').value = 0;
+      document.getElementById('pulgadasVentilador').value = '';
+      document.getElementById('filtroAire').value = 'no';
+      document.getElementById('aireAcondicionado').value = 'no';
+      document.getElementById('frigorias').value = '';
+      document.getElementById('frigorias').style.display = 'none';
+      document.querySelectorAll('#riegoOptions input[type=checkbox]').forEach(cb => cb.checked = false);
+      document.getElementById('detalleRiego').value = '';
+      document.getElementById('sustrato').value = '';
+      tipoLuz = '';
+      luces = [];
+      document.getElementById('luzSolBtn').classList.remove('selected');
+      document.getElementById('luzArtificialBtn').classList.remove('selected');
+      document.getElementById('luzMixtoBtn').classList.remove('selected');
+      document.getElementById('luzSolIcon').style.display = 'none';
+      document.getElementById('luzArtificialFields').style.display = 'none';
+      renderLucesList();
+      document.getElementById('luzNombre').value = '';
+      document.getElementById('luzCantidad').value = 1;
+      document.getElementById('luzWatts').value = '';
+    }
+
+    function renderColorPicker() {
+      const colorPicker = document.getElementById('colorPicker');
+      colorPicker.innerHTML = availableColors.map(color => `
+        <div class="color-option" style="background-color: ${color}" onclick="selectColor(this)"></div>
+      `).join('');
+    }
+
+    function selectColor(element) {
+      document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    let cepas = [];
+    function addCepa() {
+      const nombre = document.getElementById('cepaNombre').value.trim();
+      const cantidad = parseInt(document.getElementById('cepaCantidad').value, 10) || 1;
+      if (!nombre) return;
+      cepas.push({ nombre, cantidad });
+      renderCepasList();
+      document.getElementById('cepaNombre').value = '';
+      document.getElementById('cepaCantidad').value = 1;
+      document.getElementById('cepaNombre').focus();
+    }
+    function removeCepa(index) {
+      cepas.splice(index, 1);
+      renderCepasList();
+    }
+    function renderCepasList() {
+      const list = document.getElementById('cepasList');
+      list.innerHTML = '';
+      cepas.forEach((cepa, idx) => {
+        const div = document.createElement('div');
+        div.className = 'cepa-item';
+        div.innerHTML = `<span>${cepa.nombre}</span> <span>x${cepa.cantidad}</span> <button class='cepa-remove' onclick='removeCepa(${idx})'>🗑️</button>`;
+        list.appendChild(div);
+      });
+    }
+
+    function selectBitacora(id) {
+      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
+      selectedBitacora = bitacoras.find(b => b.id === id);
+      
+      if (selectedBitacora) {
+        document.getElementById('mainContent').style.display = 'block';
+        renderBitacoraSelector();
+        setStage('vege');
+        renderMoodButtons();
+        renderHistory();
+        renderCalendar();
+        updateWeeklySummary();
+      }
+    }
+
+    // Funciones de estado y renderizado
+    function setStage(stage) {
+      selectedStage = stage;
+      document.querySelectorAll('.stage-btn').forEach(btn => btn.classList.remove('stage-selected'));
+      document.getElementById('btn-' + stage).classList.add('stage-selected');
+      document.getElementById('floraStartContainer').style.display = stage === 'flora' ? 'block' : 'none';
+      renderHistory();
+      renderCalendar();
+      updateWeeklySummary();
+    }
+
+    function setMood(m) {
+      selectedMood = m;
+      renderMoodButtons();
+    }
+
+    function renderMoodButtons() {
+      const div = document.getElementById('moodOptions');
+      div.innerHTML = '';
+      moodStates.forEach(state => {
+        const span = document.createElement('span');
+        span.className = 'mood-btn' + (selectedMood === state.value ? ' mood-selected' : '');
+        span.innerText = `${state.icon} ${state.label}`;
+        span.onclick = () => setMood(state.value);
+        div.appendChild(span);
+      });
+    }
+
+    function setWater(val) {
+      didWater = val;
+      document.getElementById('waterDetails').style.display = val ? 'block' : 'none';
+    }
+
+    function setFloraStart() {
+      if (selectedBitacora) {
+        selectedBitacora.floraStart = document.getElementById('floraStart').value;
+        const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
+        const index = bitacoras.findIndex(b => b.id === selectedBitacora.id);
+        if (index !== -1) {
+          bitacoras[index] = selectedBitacora;
+          localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
+        }
+      }
+    }
+
+    function saveEntry() {
+      if (!selectedBitacora) {
+        alert('Por favor, selecciona una bitácora primero.');
+        return;
+      }
+
+      const date = document.getElementById('date').value;
+      if (!date || !selectedMood) {
+        alert('Elegí fecha y estado emocional.');
+        return;
+      }
+
+      const entry = {
+        date,
+        mood: selectedMood,
+        tasks: document.getElementById('tasks').value,
+        issues: document.getElementById('issues').value,
+        notes: document.getElementById('notes').value,
+        didWater,
+        waterAmount: document.getElementById('waterAmount').value,
+        nutrients: document.getElementById('nutrients').value,
+        ph: document.getElementById('ph').value,
+        ec: document.getElementById('ec').value
+      };
+
+      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
+      const bitacoraIndex = bitacoras.findIndex(b => b.id === selectedBitacora.id);
+      
+      if (bitacoraIndex !== -1) {
+        let entries = bitacoras[bitacoraIndex].entries[selectedStage].filter(e => e.date !== date);
+      entries.push(entry);
+        bitacoras[bitacoraIndex].entries[selectedStage] = entries;
+        
+        localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
+        selectedBitacora = bitacoras[bitacoraIndex];
+        
+      renderHistory();
+      renderCalendar();
+        updateWeeklySummary();
+      }
+    }
+
+    function editEntry(date) {
+      const modal = document.getElementById('editModal');
+      modal.style.display = 'block';
+      
+      document.getElementById('editPassword').value = '';
+      document.getElementById('editForm').style.display = 'none';
+    }
+
+    function verifyEditPassword() {
+      const password = document.getElementById('editPassword').value;
+      if (password === 'FUCK I MISS') {
+        document.getElementById('editForm').style.display = 'block';
+        // Aquí cargaríamos los datos de la entrada para editar
+      } else {
+        alert('Contraseña incorrecta');
+      }
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    function exportData() {
+      if (!selectedBitacora) {
+        alert('Por favor, selecciona una bitácora primero.');
+        return;
+      }
+      
+      const data = {
+        bitacora: selectedBitacora,
+        exportDate: new Date().toISOString()
+      };
+      
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `bitacora_${selectedBitacora.name}_export.json`;
+      a.click();
+    }
+
+    function showEditBitacoraModal(bitacora) {
+      const modal = document.getElementById('editBitacoraModal');
+      const nameInput = document.getElementById('editBitacoraName');
+      const colorPicker = document.getElementById('editColorPicker');
+      
+      nameInput.value = bitacora.name;
+      colorPicker.innerHTML = availableColors.map(color => `
+        <div class="color-option ${color === bitacora.color ? 'selected' : ''}" 
+             style="background-color: ${color}" 
+             onclick="selectEditColor(this)"></div>
+      `).join('');
+
+      // Agregar el selector de visibilidad
+      const visibilityDiv = document.createElement('div');
+      visibilityDiv.className = 'visibility-selector';
+      visibilityDiv.innerHTML = `
+        <label>Visibilidad:</label>
+        <select id="editBitacoraVisibility">
+          <option value="false" ${!bitacora.isPublic ? 'selected' : ''}>Privada</option>
+          <option value="true" ${bitacora.isPublic ? 'selected' : ''}>Pública</option>
+        </select>
+      `;
+      modal.querySelector('.edit-bitacora-content').insertBefore(
+        visibilityDiv,
+        modal.querySelector('.edit-bitacora-content button')
+      );
+      
+      modal.dataset.bitacoraId = bitacora.id;
+      modal.style.display = 'block';
+    }
+
+    function closeEditBitacoraModal() {
+      document.getElementById('editBitacoraModal').style.display = 'none';
+    }
+
+    function selectEditColor(element) {
+      document.querySelectorAll('#editColorPicker .color-option').forEach(opt => 
+        opt.classList.remove('selected')
+      );
+      element.classList.add('selected');
+    }
+
+    function saveBitacoraEdit() {
+      const modal = document.getElementById('editBitacoraModal');
+      const bitacoraId = modal.dataset.bitacoraId;
+      const newName = document.getElementById('editBitacoraName').value.trim();
+      const selectedColor = document.querySelector('#editColorPicker .color-option.selected');
+      const isPublic = document.getElementById('editBitacoraVisibility').value === 'true';
+      
+      if (!newName) {
+        alert('Por favor, ingresa un nombre para la bitácora.');
+        return;
+      }
+      
+      if (!selectedColor) {
+        alert('Por favor, selecciona un color para la bitácora.');
+        return;
+      }
+      
+      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
+      const index = bitacoras.findIndex(b => b.id === bitacoraId);
+      
+      if (index !== -1) {
+        // Verificar si el nuevo nombre ya existe
+        if (bitacoras.some(b => b.id !== bitacoraId && b.name.toLowerCase() === newName.toLowerCase())) {
+          alert('Ya existe una bitácora con ese nombre. Por favor, elige otro.');
+          return;
+        }
+        
+        bitacoras[index].name = newName;
+        bitacoras[index].color = selectedColor.style.backgroundColor;
+        bitacoras[index].isPublic = isPublic;
+        
+        localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
+        
+        if (selectedBitacora?.id === bitacoraId) {
+          selectedBitacora = bitacoras[index];
+        }
+        
+        renderBitacoraSelector();
+        closeEditBitacoraModal();
+      }
+    }
+
+    function deleteBitacora(id) {
+      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
+      const newBitacoras = bitacoras.filter(b => b.id !== id);
+      
+      localStorage.setItem('bitacoras', JSON.stringify(newBitacoras));
+      
+      if (selectedBitacora?.id === id) {
+        selectedBitacora = null;
+        document.getElementById('mainContent').style.display = 'none';
+      }
+      
+      renderBitacoraSelector();
+    }
+
+    function shareBitacora(bitacora) {
+      // Crear un objeto con los datos necesarios para compartir
+      const shareData = {
+        id: bitacora.id,
+        name: bitacora.name,
+        entries: bitacora.entries
+      };
+      
+      // Convertir a base64 para el link
+      const encodedData = btoa(JSON.stringify(shareData));
+      const shareUrl = `${window.location.origin}${window.location.pathname}?share=${encodedData}`;
+      
+      // Crear el mensaje para WhatsApp
+      const message = `¡Mira mi bitácora "${bitacora.name}"!\n${shareUrl}`;
+      
+      // Abrir WhatsApp con el mensaje
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    // Inicialización
+    (function init() {
+      renderBitacoraSelector();
+      
+      // Verificar si hay un link compartido
+      const urlParams = new URLSearchParams(window.location.search);
+      const sharedData = urlParams.get('share');
+      
+      if (sharedData) {
+        try {
+          const decodedData = JSON.parse(atob(sharedData));
+          // Crear una nueva bitácora con los datos compartidos
+          const newBitacora = {
+            id: Date.now().toString(),
+            name: `${decodedData.name} (Compartida)`,
+            color: availableColors[Math.floor(Math.random() * availableColors.length)],
+            floraStart: null,
+            isPublic: true,
+            entries: decodedData.entries
+          };
+          
+          const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
+          bitacoras.push(newBitacora);
+          localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
+          
+          // Limpiar la URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+          
+          // Seleccionar la nueva bitácora
+          selectBitacora(newBitacora.id);
+        } catch (error) {
+          console.error('Error al procesar datos compartidos:', error);
+        }
+      } else {
+        const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
+        if (bitacoras.length > 0) {
+          selectBitacora(bitacoras[0].id);
+        } else {
+          showNewBitacoraForm();
+        }
+      }
+    })();
+
+    // Funciones de respaldo
+    function createBackup() {
+      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
+      const backup = {
+        timestamp: new Date().toISOString(),
+        data: bitacoras
+      };
+      
+      const backups = JSON.parse(localStorage.getItem('bitacora_backups') || '[]');
+      backups.unshift(backup);
+      
+      // Mantener solo los últimos 10 respaldos
+      if (backups.length > 10) {
+        backups.pop();
+      }
+      
+      localStorage.setItem('bitacora_backups', JSON.stringify(backups));
+      alert('Respaldo creado exitosamente');
+    }
+
+    function showBackups() {
+      const modal = document.getElementById('backupModal');
+      const backupList = document.getElementById('backupList');
+      const backups = JSON.parse(localStorage.getItem('bitacora_backups') || '[]');
+      
+      backupList.innerHTML = backups.map((backup, index) => {
+        const date = new Date(backup.timestamp);
+        const formattedDate = date.toLocaleString();
+        const bitacoraCount = backup.data.length;
+        
+        return `
+          <div class="backup-item">
+            <div class="backup-info">
+              <div>${formattedDate}</div>
+              <div>${bitacoraCount} bitácora${bitacoraCount !== 1 ? 's' : ''}</div>
+            </div>
+            <div class="backup-actions">
+              <button class="restore" onclick="restoreBackup(${index})">Restaurar</button>
+              <button class="delete" onclick="deleteBackup(${index})">Eliminar</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      modal.style.display = 'block';
+    }
+
+    function closeBackupModal() {
+      document.getElementById('backupModal').style.display = 'none';
+    }
+
+    function restoreBackup(index) {
+      if (!confirm('¿Estás seguro de que quieres restaurar este respaldo? Se perderán los cambios no guardados.')) {
+        return;
+      }
+      
+      const backups = JSON.parse(localStorage.getItem('bitacora_backups') || '[]');
+      const backup = backups[index];
+      
+      if (backup) {
+        localStorage.setItem('bitacoras', JSON.stringify(backup.data));
+        selectedBitacora = null;
+        renderBitacoraSelector();
+        closeBackupModal();
+        
+        // Seleccionar la primera bitácora si existe
+        if (backup.data.length > 0) {
+          selectBitacora(backup.data[0].id);
+        } else {
+          showNewBitacoraForm();
+        }
+        
+        alert('Respaldo restaurado exitosamente');
+      }
+    }
+
+    function deleteBackup(index) {
+      if (!confirm('¿Estás seguro de que quieres eliminar este respaldo?')) {
+        return;
+      }
+      
+      const backups = JSON.parse(localStorage.getItem('bitacora_backups') || '[]');
+      backups.splice(index, 1);
+      localStorage.setItem('bitacora_backups', JSON.stringify(backups));
+      
+      showBackups(); // Actualizar la lista
+    }
+
+    function showHelpModal() {
+      document.getElementById('helpModal').style.display = 'block';
+    }
+
+    function closeHelpModal() {
+      document.getElementById('helpModal').style.display = 'none';
+    }
+
+    // Lógica para tipo de luz
+    function selectLuz(tipo) {
+      tipoLuz = tipo;
+      document.getElementById('luzSolBtn').classList.remove('selected');
+      document.getElementById('luzArtificialBtn').classList.remove('selected');
+      document.getElementById('luzMixtoBtn').classList.remove('selected');
+      document.getElementById('luzSolIcon').style.display = 'none';
+      document.getElementById('luzArtificialFields').style.display = 'none';
+      if (tipo === 'sol') {
+        document.getElementById('luzSolBtn').classList.add('selected');
+        document.getElementById('luzSolIcon').style.display = 'block';
+      } else if (tipo === 'luz') {
+        document.getElementById('luzArtificialBtn').classList.add('selected');
+        document.getElementById('luzArtificialFields').style.display = 'block';
+      } else if (tipo === 'mixto') {
+        document.getElementById('luzMixtoBtn').classList.add('selected');
+        document.getElementById('luzSolIcon').style.display = 'block';
+        document.getElementById('luzArtificialFields').style.display = 'block';
+      }
+    }
+    function addLuz() {
+      const nombre = document.getElementById('luzNombre').value.trim();
+      const cantidad = parseInt(document.getElementById('luzCantidad').value, 10) || 1;
+      const watts = parseInt(document.getElementById('luzWatts').value, 10) || 0;
+      if (!nombre || !watts) return;
+      luces.push({ nombre, cantidad, watts });
+      renderLucesList();
+      document.getElementById('luzNombre').value = '';
+      document.getElementById('luzCantidad').value = 1;
+      document.getElementById('luzWatts').value = '';
+      document.getElementById('luzNombre').focus();
+    }
+    function removeLuz(index) {
+      luces.splice(index, 1);
+      renderLucesList();
+    }
+    function renderLucesList() {
+      const list = document.getElementById('lucesList');
+      list.innerHTML = '';
+      luces.forEach((luz, idx) => {
+        const div = document.createElement('div');
+        div.className = 'luz-item';
+        div.innerHTML = `<span>${luz.nombre}</span> <span>x${luz.cantidad}</span> <span>${luz.watts}W</span> <button class='luz-remove' onclick='removeLuz(${idx})'>🗑️</button>`;
+        list.appendChild(div);
+      });
+    }
+
+    // Mostrar la fecha del último respaldo
+    function setUltimoRespaldo(fecha) {
+      const el = document.getElementById('ultimoRespaldo');
+      if (fecha) {
+        el.textContent = 'Último respaldo: ' + fecha;
+        localStorage.setItem('ultimoRespaldo', fecha);
+      } else {
+        const guardado = localStorage.getItem('ultimoRespaldo');
+        el.textContent = 'Último respaldo: ' + (guardado || '-');
+      }
+    }
+    // Llamar al cargar la página
+    setUltimoRespaldo();
+    // Modificar createBackup para actualizar la fecha
+    const originalCreateBackup = window.createBackup;
+    window.createBackup = function() {
+      if (originalCreateBackup) originalCreateBackup();
+      const fecha = new Date().toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
+      setUltimoRespaldo(fecha);
+    }
+  </script>
+</body>
+</html>
