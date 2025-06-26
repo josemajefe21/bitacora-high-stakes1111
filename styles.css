@@ -172,25 +172,24 @@ body {
 
 @media (max-width: 600px) {
   .backup-controls {
-    position: fixed !important;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: auto !important;
-    width: 100vw;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     justify-content: center;
-    background: rgba(255,255,255,0.97);
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
-    padding: 8px 0 8px 0;
-    z-index: 1200;
-    gap: 8px;
-    border-radius: 0;
+    margin-bottom: 18px;
+    position: static !important;
+    background: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
   }
   .backup-controls > * {
     margin: 0 2px !important;
   }
   .container {
-    padding-bottom: 70px !important; /* Espacio para los controles fijos */
+    padding-top: 20px !important;
+    padding-bottom: 0 !important;
   }
 }
 
