@@ -1353,20 +1353,7 @@
   </div>
 
   <div class="container">
-    <div class="header-bar" style="display: flex; align-items: center; gap: 16px; justify-content: space-between; flex-wrap: wrap;">
-      <div class="backup-controls" style="display: flex; align-items: center; gap: 10px;">
-        <div id="ultimoRespaldo" style="font-size: 0.95em; color: #4b5563; margin-right: 18px; min-width: 120px;">Último respaldo: -</div>
-        <button class="backup-btn" onclick="createBackup()">
-          💾 Crear Respaldo
-        </button>
-        <button class="backup-btn" onclick="showBackups()">
-          ⏪ Restaurar
-        </button>
-        <div class="help-question" id="helpQuestion" title="¿Qué puede hacer Bitácora High Stakes?" onclick="showHelpModal()" style="margin-left: 8px;">
-          <span style="font-size: 2rem; cursor: pointer; user-select: none;">❓</span>
-        </div>
-        <button id="toggleDarkMode" class="backup-btn" style="font-size: 1.3em;" title="Cambiar modo claro/oscuro" onclick="toggleDarkMode()">🌙</button>
-      </div>
+    <div class="header-bar" style="display: flex; align-items: center; gap: 16px; justify-content: flex-end; flex-wrap: wrap;">
       <!-- Información del Usuario -->
       <div class="user-info" id="userInfo" style="display: none; margin-left: 10px;">
         <div class="user-avatar" id="userAvatar">U</div>
