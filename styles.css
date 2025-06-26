@@ -171,22 +171,6 @@ body {
 }
 
 @media (max-width: 600px) {
-  .backup-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 18px;
-    position: static !important;
-    background: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
-    width: auto !important;
-  }
-  .backup-controls > * {
-    margin: 0 2px !important;
-  }
   .container {
     padding-top: 20px !important;
     padding-bottom: 0 !important;
@@ -215,22 +199,6 @@ body {
     gap: 6px !important;
     padding: 8px 0 8px 0;
     border-radius: 0 0 12px 12px;
-  }
-  .backup-controls {
-    justify-content: center;
-    flex-wrap: wrap;
-    width: 100%;
-    background: none;
-    box-shadow: none;
-    border-radius: 0;
-    padding: 0;
-  }
-  .user-info {
-    justify-content: center;
-    width: 100%;
-    margin-left: 0 !important;
-    margin-top: 2px;
-    margin-bottom: 2px;
   }
   .container {
     padding-top: 90px !important; /* Espacio para el header fijo */
