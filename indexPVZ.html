@@ -2330,92 +2330,7 @@
     }
 
     // Funciones de gestión de bitácoras
-    function createNewBitacora() {
-      const name = document.getElementById('newBitacoraName').value.trim();
-      const selectedColor = document.querySelector('.color-option.selected');
-      
-      if (!name) {
-        alert('Por favor, ingresa un nombre para la bitácora.');
-        return;
-      }
-      
-      if (!selectedColor) {
-        alert('Por favor, selecciona un color para la bitácora.');
-        return;
-      }
-
-      const color = selectedColor.style.backgroundColor;
-      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
-      
-      if (bitacoras.some(b => b.name.toLowerCase() === name.toLowerCase())) {
-        alert('Ya existe una bitácora con ese nombre. Por favor, elige otro.');
-        return;
-      }
-
-      // Recopilar todas las características de la bitácora
-      const tipoCultivo = document.getElementById('tipoCultivo').value;
-      const numCarpas = parseInt(document.getElementById('numCarpas').value) || 0;
-      const soloSala = document.getElementById('soloSala').checked;
-      const lamparasVege = parseInt(document.getElementById('lamparasVege').value) || 0;
-      const wattsVege = document.getElementById('wattsVege').value;
-      const lamparasFlora = parseInt(document.getElementById('lamparasFlora').value) || 0;
-      const wattsFlora = document.getElementById('wattsFlora').value;
-      const ventiladores = parseInt(document.getElementById('ventiladores').value) || 0;
-      const pulgadasVentilador = document.getElementById('pulgadasVentilador').value;
-      const filtroAire = document.getElementById('filtroAire').value;
-      const aireAcondicionado = document.getElementById('aireAcondicionado').value;
-      const frigorias = document.getElementById('frigorias').value;
-      
-      // Recopilar tipo de riego
-      const riegoOptions = [];
-      document.querySelectorAll('#riegoOptions input[type=checkbox]:checked').forEach(cb => {
-        riegoOptions.push(cb.value);
-      });
-      const detalleRiego = document.getElementById('detalleRiego').value;
-      const sustrato = document.getElementById('sustrato').value;
-
-      const newBitacora = {
-        id: Date.now().toString(),
-        name,
-        color,
-        floraStart: null,
-        isPublic: true,
-        // Características de la bitácora
-        cepas: [...cepas],
-        tipoCultivo,
-        numCarpas,
-        soloSala,
-        lamparasVege,
-        wattsVege,
-        lamparasFlora,
-        wattsFlora,
-        ventiladores,
-        pulgadasVentilador,
-        filtroAire,
-        aireAcondicionado,
-        frigorias,
-        riegoOptions,
-        detalleRiego,
-        sustrato,
-        tipoLuz,
-        luces: [...luces],
-        entries: {
-          vege: [],
-          flora: [],
-          general: []
-        }
-      };
-
-      bitacoras.push(newBitacora);
-      localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
-      
-      document.getElementById('newBitacoraName').value = '';
-      document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
-      document.getElementById('newBitacoraForm').classList.remove('active');
-      
-      renderBitacoraSelector();
-      selectBitacora(newBitacora.id);
-    }
+    // Función createNewBitacora eliminada - se usa la versión con Firebase arriba
 
     function renderBitacoraSelector() {
       const container = document.getElementById('bitacoraSelector');
@@ -2731,59 +2646,26 @@
       document.getElementById('waterDetails').style.display = val ? 'block' : 'none';
     }
 
-    function setFloraStart() {
-      if (selectedBitacora) {
+    async function setFloraStart() {
+      if (selectedBitacora && currentUser) {
         selectedBitacora.floraStart = document.getElementById('floraStart').value;
         const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
         const index = bitacoras.findIndex(b => b.id === selectedBitacora.id);
         if (index !== -1) {
           bitacoras[index] = selectedBitacora;
           localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
+          
+          // Guardar en Firebase
+          try {
+            await saveBitacoraToFirestore(selectedBitacora);
+          } catch (error) {
+            console.error('Error al guardar fecha de floración:', error);
+          }
         }
       }
     }
 
-    function saveEntry() {
-      if (!selectedBitacora) {
-        alert('Por favor, selecciona una bitácora primero.');
-        return;
-      }
-
-      const date = document.getElementById('date').value;
-      if (!date || !selectedMood) {
-        alert('Elegí fecha y estado emocional.');
-        return;
-      }
-
-      const entry = {
-        date,
-        mood: selectedMood,
-        tasks: document.getElementById('tasks').value,
-        issues: document.getElementById('issues').value,
-        notes: document.getElementById('notes').value,
-        didWater,
-        waterAmount: document.getElementById('waterAmount').value,
-        nutrients: document.getElementById('nutrients').value,
-        ph: document.getElementById('ph').value,
-        ec: document.getElementById('ec').value
-      };
-
-      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
-      const bitacoraIndex = bitacoras.findIndex(b => b.id === selectedBitacora.id);
-      
-      if (bitacoraIndex !== -1) {
-        let entries = bitacoras[bitacoraIndex].entries[selectedStage].filter(e => e.date !== date);
-      entries.push(entry);
-        bitacoras[bitacoraIndex].entries[selectedStage] = entries;
-        
-        localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
-        selectedBitacora = bitacoras[bitacoraIndex];
-        
-      renderHistory();
-      renderCalendar();
-        updateWeeklySummary();
-      }
-    }
+    // Función saveEntry eliminada - se usa la versión con Firebase arriba
 
     function editEntry(date) {
       const modal = document.getElementById('editModal');
@@ -2867,7 +2749,7 @@
       element.classList.add('selected');
     }
 
-    function saveBitacoraEdit() {
+    async function saveBitacoraEdit() {
       const modal = document.getElementById('editBitacoraModal');
       const bitacoraId = modal.dataset.bitacoraId;
       const newName = document.getElementById('editBitacoraName').value.trim();
@@ -2902,6 +2784,15 @@
         
         if (selectedBitacora?.id === bitacoraId) {
           selectedBitacora = bitacoras[index];
+        }
+        
+        // Guardar en Firebase
+        if (currentUser) {
+          try {
+            await saveBitacoraToFirestore(bitacoras[index]);
+          } catch (error) {
+            console.error('Error al guardar cambios en Firebase:', error);
+          }
         }
         
         renderBitacoraSelector();
