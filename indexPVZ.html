@@ -2586,6 +2586,12 @@
       selectedBitacora = bitacoras.find(b => b.id === id);
       
       if (selectedBitacora) {
+        // Inicializar variables globales con datos de la bitácora
+        cepas = selectedBitacora.cepas || [];
+        extractores = selectedBitacora.extractores || [];
+        luces = selectedBitacora.luces || [];
+        tipoLuz = selectedBitacora.tipoLuz || '';
+        
         document.getElementById('mainContent').style.display = 'block';
         renderBitacoraSelector();
         setStage('vege');
@@ -2876,93 +2882,7 @@
       }
     })();
 
-    // Funciones de respaldo
-    function createBackup() {
-      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
-      const backup = {
-        timestamp: new Date().toISOString(),
-        data: bitacoras
-      };
-      
-      const backups = JSON.parse(localStorage.getItem('bitacora_backups') || '[]');
-      backups.unshift(backup);
-      
-      // Mantener solo los últimos 10 respaldos
-      if (backups.length > 10) {
-        backups.pop();
-      }
-      
-      localStorage.setItem('bitacora_backups', JSON.stringify(backups));
-      alert('Respaldo creado exitosamente');
-    }
-
-    function showBackups() {
-      const modal = document.getElementById('backupModal');
-      const backupList = document.getElementById('backupList');
-      const backups = JSON.parse(localStorage.getItem('bitacora_backups') || '[]');
-      
-      backupList.innerHTML = backups.map((backup, index) => {
-        const date = new Date(backup.timestamp);
-        const formattedDate = date.toLocaleString();
-        const bitacoraCount = backup.data.length;
-        
-        return `
-          <div class="backup-item">
-            <div class="backup-info">
-              <div>${formattedDate}</div>
-              <div>${bitacoraCount} bitácora${bitacoraCount !== 1 ? 's' : ''}</div>
-            </div>
-            <div class="backup-actions">
-              <button class="restore" onclick="restoreBackup(${index})">Restaurar</button>
-              <button class="delete" onclick="deleteBackup(${index})">Eliminar</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-      
-      modal.style.display = 'block';
-    }
-
-    function closeBackupModal() {
-      document.getElementById('backupModal').style.display = 'none';
-    }
-
-    function restoreBackup(index) {
-      if (!confirm('¿Estás seguro de que quieres restaurar este respaldo? Se perderán los cambios no guardados.')) {
-        return;
-      }
-      
-      const backups = JSON.parse(localStorage.getItem('bitacora_backups') || '[]');
-      const backup = backups[index];
-      
-      if (backup) {
-        localStorage.setItem('bitacoras', JSON.stringify(backup.data));
-        selectedBitacora = null;
-        renderBitacoraSelector();
-        closeBackupModal();
-        
-        // Seleccionar la primera bitácora si existe
-        if (backup.data.length > 0) {
-          selectBitacora(backup.data[0].id);
-        } else {
-          showNewBitacoraForm();
-        }
-        
-        alert('Respaldo restaurado exitosamente');
-      }
-    }
-
-    function deleteBackup(index) {
-      if (!confirm('¿Estás seguro de que quieres eliminar este respaldo?')) {
-        return;
-      }
-      
-      const backups = JSON.parse(localStorage.getItem('bitacora_backups') || '[]');
-      backups.splice(index, 1);
-      localStorage.setItem('bitacora_backups', JSON.stringify(backups));
-      
-      showBackups(); // Actualizar la lista
-    }
+    // Funciones de respaldo eliminadas - ya no se usan
 
     function showHelpModal() {
       document.getElementById('helpModal').style.display = 'block';
@@ -3295,26 +3215,7 @@
       container.appendChild(infoGrid);
     }
 
-    // Mostrar la fecha del último respaldo
-    function setUltimoRespaldo(fecha) {
-      const el = document.getElementById('ultimoRespaldo');
-      if (fecha) {
-        el.textContent = 'Último respaldo: ' + fecha;
-        localStorage.setItem('ultimoRespaldo', fecha);
-      } else {
-        const guardado = localStorage.getItem('ultimoRespaldo');
-        el.textContent = 'Último respaldo: ' + (guardado || '-');
-      }
-    }
-    // Llamar al cargar la página
-    setUltimoRespaldo();
-    // Modificar createBackup para actualizar la fecha
-    const originalCreateBackup = window.createBackup;
-    window.createBackup = function() {
-      if (originalCreateBackup) originalCreateBackup();
-      const fecha = new Date().toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
-      setUltimoRespaldo(fecha);
-    }
+    // Funciones de respaldo eliminadas - ya no se usan
 
     // Funciones auxiliares para el formulario
     function toggleInteriorFields() {
