@@ -2,6 +2,15 @@
 
 Aplicación web profesional para seguimiento de cultivos, con sistema de usuarios y base de datos en la nube.
 
+## 🌐 ACCESO DIRECTO
+
+### 📱 URL Principal para Usar:
+**https://bitacora-high-stakes.vercel.app**
+
+✅ **Esta URL siempre tiene la versión más actualizada**  
+📲 **Guárdala en el inicio de tu celular para acceso rápido**  
+🔄 **Se actualiza automáticamente con cada mejora**
+
 ## 🚀 Características Principales
 
 ### 🔐 Sistema de Usuarios
