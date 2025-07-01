@@ -1506,6 +1506,7 @@
         <button class="stage-btn" id="btn-vege" onclick="setStage('vege')">🟢 Vegetativo</button>
         <button class="stage-btn" id="btn-flora" onclick="setStage('flora')">🌺 Floración</button>
         <button class="stage-btn" id="btn-general" onclick="setStage('general')">📖 General</button>
+        <button class="stage-btn" id="btn-problems" onclick="setStage('problems')">🚨 Problemas</button>
       </div>
 
       <!-- Resumen Semanal -->
@@ -1528,13 +1529,92 @@
         <div class="emotion-timeline" id="emotionTimeline">
           <!-- La línea de tiempo se generará dinámicamente -->
         </div>
+        
+        <!-- Resumen IA -->
+        <div class="ai-summary" id="aiSummary" style="display: none; margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border-left: 4px solid #0ea5e9;">
+          <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <span style="font-size: 1.2em;">🤖</span>
+            <h4 style="margin: 0 0 0 8px; color: #0369a1;">Análisis Semanal IA</h4>
+            <button onclick="regenerateAISummary()" style="margin-left: auto; padding: 4px 8px; font-size: 0.8em; background: #0ea5e9; color: white; border: none; border-radius: 6px; cursor: pointer;">🔄 Regenerar</button>
+          </div>
+          <div id="aiSummaryContent" style="color: #1e40af; line-height: 1.6;">
+            <!-- El contenido se generará automáticamente -->
+          </div>
+        </div>
       </div>
 
       <!-- Características de la Bitácora (se mostrará solo en la sección general) -->
       <div class="bitacora-info" id="bitacoraInfo" style="display: none;">
-        <h3>📋 Características de la Bitácora</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h3>📋 Características de la Bitácora</h3>
+          <button onclick="editCurrentBitacora()" class="button-small" style="background: #3b82f6; color: white; border-color: #3b82f6;">
+            ✏️ Editar Bitácora
+          </button>
+        </div>
         <div id="bitacoraInfoContent">
           <!-- El contenido se generará dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Sección de Gestión de Problemas (se mostrará solo en la sección problemas) -->
+      <div class="problems-section" id="problemsSection" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3>🚨 Gestión de Problemas</h3>
+          <button onclick="addNewProblemFromSection()" class="button-small" style="background: #ef4444; color: white; border-color: #ef4444;">
+            ➕ Nuevo Problema
+          </button>
+        </div>
+        
+        <!-- Estadísticas rápidas -->
+        <div class="problems-stats-section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px;">
+          <div class="stat-card" style="background: #f0fdf4; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #22c55e;" id="problemsActiveSection">0</div>
+            <div style="font-size: 0.9em; color: #16a34a;">Activos</div>
+          </div>
+          <div class="stat-card" style="background: #fef2f2; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #ef4444;" id="problemsCriticalSection">0</div>
+            <div style="font-size: 0.9em; color: #dc2626;">Críticos</div>
+          </div>
+          <div class="stat-card" style="background: #f0f9ff; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #0ea5e9;" id="problemsResolvedSection">0</div>
+            <div style="font-size: 0.9em; color: #0284c7;">Resueltos</div>
+          </div>
+          <div class="stat-card" style="background: #fffbeb; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #f59e0b;" id="avgResolutionTimeSection">0h</div>
+            <div style="font-size: 0.9em; color: #d97706;">Tiempo Promedio</div>
+          </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="problems-filters-section" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+          <select id="filterStatusSection" onchange="filterProblemsSection()" style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 6px; background: white; color: #374151; font-size: 0.9em;">
+            <option value="all">Todos los estados</option>
+            <option value="reported">📝 Reportados</option>
+            <option value="in-progress">⏳ En Proceso</option>
+            <option value="resolved">✅ Resueltos</option>
+            <option value="unresolved">❌ No Resueltos</option>
+          </select>
+          <select id="filterSeveritySection" onchange="filterProblemsSection()" style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 6px; background: white; color: #374151; font-size: 0.9em;">
+            <option value="all">Todas las gravedades</option>
+            <option value="high">🔴 Críticos</option>
+            <option value="moderate">🟠 Moderados</option>
+            <option value="low">🟡 Leves</option>
+            <option value="info">🟢 Informativos</option>
+          </select>
+          <select id="filterCategorySection" onchange="filterProblemsSection()" style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 6px; background: white; color: #374151; font-size: 0.9em;">
+            <option value="all">Todas las categorías</option>
+            <option value="pest">🐛 Plagas</option>
+            <option value="nutrition">🌱 Nutrición</option>
+            <option value="watering">💧 Riego</option>
+            <option value="environment">🌡️ Ambiente</option>
+            <option value="growth">📏 Crecimiento</option>
+            <option value="other">❓ Otro</option>
+          </select>
+        </div>
+
+        <!-- Lista de problemas -->
+        <div class="problems-list-section" id="problemsListSection" style="max-height: 500px; overflow-y: auto; padding-right: 5px;">
+          <!-- Los problemas se generarán dinámicamente -->
         </div>
       </div>
 
@@ -1586,7 +1666,8 @@
       <div class="modal-content">
         <span class="close-modal" onclick="closeEditModal()">&times;</span>
         <h3>Editar Entrada</h3>
-        <input type="password" id="editPassword" placeholder="Contraseña" />
+        <input type="password" id="editPassword" placeholder="Contraseña" onkeypress="if(event.key==='Enter') verifyEditPassword()" />
+        <button onclick="verifyEditPassword()" style="margin: 10px 0; background: #22c55e;">Verificar Contraseña</button>
         <div id="editForm" style="display: none;">
           <!-- El formulario de edición se generará dinámicamente -->
         </div>
@@ -1696,6 +1777,132 @@
       </div>
     </div>
 
+    <!-- Modal de Gestión de Problemas -->
+    <div class="modal" id="problemsModal" style="display:none;">
+      <div class="modal-content" style="max-width: 800px; margin: 20px auto;">
+        <span class="close-modal" onclick="closeProblemsModal()">&times;</span>
+        <h2 style="font-family: 'Luckiest Guy', cursive; color: #388e3c;">🚨 Gestión de Problemas</h2>
+        
+        <!-- Estadísticas rápidas -->
+        <div class="problems-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px;">
+          <div class="stat-card" style="background: #f0fdf4; padding: 10px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #22c55e;" id="problemsActive">0</div>
+            <div style="font-size: 0.9em; color: #16a34a;">Activos</div>
+          </div>
+          <div class="stat-card" style="background: #fef2f2; padding: 10px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #ef4444;" id="problemsCritical">0</div>
+            <div style="font-size: 0.9em; color: #dc2626;">Críticos</div>
+          </div>
+          <div class="stat-card" style="background: #f0f9ff; padding: 10px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #0ea5e9;" id="problemsResolved">0</div>
+            <div style="font-size: 0.9em; color: #0284c7;">Resueltos</div>
+          </div>
+          <div class="stat-card" style="background: #fffbeb; padding: 10px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #f59e0b;" id="avgResolutionTime">0h</div>
+            <div style="font-size: 0.9em; color: #d97706;">Tiempo Promedio</div>
+          </div>
+        </div>
+
+        <!-- Formulario para nuevo problema -->
+        <div class="new-problem-form" style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+          <h3>➕ Reportar Nuevo Problema</h3>
+          <div style="display: grid; grid-template-columns: 1fr 150px 150px; gap: 10px; margin-bottom: 10px;">
+            <input type="text" id="newProblemTitle" placeholder="Describe el problema..." style="padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb;">
+            <select id="newProblemSeverity" style="padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb;">
+              <option value="low">🟡 Leve</option>
+              <option value="moderate">🟠 Moderado</option>
+              <option value="high">🔴 Crítico</option>
+              <option value="info">🟢 Informativo</option>
+            </select>
+            <select id="newProblemCategory" style="padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb;">
+              <option value="pest">🐛 Plagas</option>
+              <option value="nutrition">🌱 Nutrición</option>
+              <option value="watering">💧 Riego</option>
+              <option value="environment">🌡️ Ambiente</option>
+              <option value="growth">📏 Crecimiento</option>
+              <option value="other">❓ Otro</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <textarea id="newProblemDescription" placeholder="Descripción detallada (opcional)..." style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb; min-height: 60px;"></textarea>
+            <button onclick="addNewProblem()" style="background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer;">
+              Reportar
+            </button>
+          </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="problems-filters" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+          <select id="filterStatus" onchange="filterProblems()" style="padding: 6px; border-radius: 4px; border: 1px solid #e5e7eb;">
+            <option value="all">Todos los estados</option>
+            <option value="reported">📝 Reportados</option>
+            <option value="in-progress">⏳ En Proceso</option>
+            <option value="resolved">✅ Resueltos</option>
+            <option value="unresolved">❌ No Resueltos</option>
+          </select>
+          <select id="filterSeverity" onchange="filterProblems()" style="padding: 6px; border-radius: 4px; border: 1px solid #e5e7eb;">
+            <option value="all">Todas las gravedades</option>
+            <option value="high">🔴 Críticos</option>
+            <option value="moderate">🟠 Moderados</option>
+            <option value="low">🟡 Leves</option>
+            <option value="info">🟢 Informativos</option>
+          </select>
+          <select id="filterCategory" onchange="filterProblems()" style="padding: 6px; border-radius: 4px; border: 1px solid #e5e7eb;">
+            <option value="all">Todas las categorías</option>
+            <option value="pest">🐛 Plagas</option>
+            <option value="nutrition">🌱 Nutrición</option>
+            <option value="watering">💧 Riego</option>
+            <option value="environment">🌡️ Ambiente</option>
+            <option value="growth">📏 Crecimiento</option>
+            <option value="other">❓ Otro</option>
+          </select>
+        </div>
+
+        <!-- Lista de problemas -->
+        <div class="problems-list" id="problemsList" style="max-height: 400px; overflow-y: auto;">
+          <!-- Los problemas se generarán dinámicamente -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para editar problema -->
+    <div class="modal" id="editProblemModal" style="display:none;">
+      <div class="modal-content" style="max-width: 500px; margin: 50px auto;">
+        <span class="close-modal" onclick="closeEditProblemModal()">&times;</span>
+        <h3>✏️ Editar Problema</h3>
+        <div style="margin-bottom: 15px;">
+          <label>Estado:</label>
+          <select id="editProblemStatus" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb; margin-top: 5px;">
+            <option value="reported">📝 Reportado</option>
+            <option value="in-progress">⏳ En Proceso</option>
+            <option value="resolved">✅ Resuelto</option>
+            <option value="unresolved">❌ No Resuelto</option>
+          </select>
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label>Gravedad:</label>
+          <select id="editProblemSeverity" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb; margin-top: 5px;">
+            <option value="low">🟡 Leve</option>
+            <option value="moderate">🟠 Moderado</option>
+            <option value="high">🔴 Crítico</option>
+            <option value="info">🟢 Informativo</option>
+          </select>
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label>Solución aplicada:</label>
+          <textarea id="editProblemSolution" placeholder="Describe la solución aplicada..." style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb; margin-top: 5px; min-height: 80px;"></textarea>
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button onclick="closeEditProblemModal()" style="background: #6b7280; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer;">
+            Cancelar
+          </button>
+          <button onclick="saveProblemEdit()" style="background: #22c55e; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer;">
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Modal de ayuda -->
     <div class="modal" id="helpModal" style="display:none;">
       <div class="modal-content" style="max-width: 400px; margin: 50px auto; background: #fff; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: relative;">
@@ -1759,6 +1966,97 @@
       '#4ade80', '#0ea5e9', '#f87171', '#facc15',
       '#a78bfa', '#f472b6', '#60a5fa', '#34d399'
     ];
+
+    // ===== SISTEMA DE PROTECCIÓN DE DATOS INTEGRADO =====
+    console.log("🛡️ Activando protecciones integradas...");
+
+    // Guardado antes de cerrar página
+    window.addEventListener('beforeunload', function(e) {
+      try {
+        if (userBitacoras && userBitacoras.length > 0) {
+          localStorage.setItem('bitacoras', JSON.stringify(userBitacoras));
+          localStorage.setItem('emergency_backup_on_exit', JSON.stringify({
+            timestamp: new Date().toISOString(),
+            userBitacoras: userBitacoras,
+            selectedBitacora: selectedBitacora,
+            message: 'Guardado automático al cerrar página'
+          }));
+          console.log("✅ Respaldo de emergencia creado al cerrar");
+        }
+      } catch (error) {
+        console.error("Error en guardado de emergencia:", error);
+      }
+    });
+
+    // Auto-guardado cada 30 segundos
+    setInterval(() => {
+      if (userBitacoras && userBitacoras.length > 0) {
+        try {
+          localStorage.setItem('bitacoras', JSON.stringify(userBitacoras));
+          localStorage.setItem(`auto_save_${Date.now()}`, JSON.stringify({
+            timestamp: new Date().toISOString(),
+            userBitacoras: userBitacoras,
+            type: 'continuous_auto_save'
+          }));
+          
+          if (currentUser && selectedBitacora) {
+            saveBitacoraToFirestore(selectedBitacora).catch(error => {
+              console.error("Error en auto-guardado Firebase:", error);
+            });
+          }
+          
+          console.log("🔄 Auto-guardado completado:", new Date().toLocaleTimeString());
+          
+          // Limpiar respaldos antiguos
+          const autoSaveKeys = Object.keys(localStorage).filter(key => key.startsWith('auto_save_'));
+          if (autoSaveKeys.length > 20) {
+            autoSaveKeys.sort();
+            for (let i = 0; i < autoSaveKeys.length - 20; i++) {
+              localStorage.removeItem(autoSaveKeys[i]);
+            }
+          }
+        } catch (error) {
+          console.error("Error en auto-guardado:", error);
+        }
+      }
+    }, 30000);
+
+    // Función de restauración de emergencia
+    window.emergencyRestore = function() {
+      console.log("🚑 RESTAURACIÓN DE EMERGENCIA...");
+      const backupKeys = Object.keys(localStorage).filter(key => 
+        key.includes('backup') || key.includes('auto_save') || key.startsWith('before_') || key.startsWith('after_')
+      );
+      
+      if (backupKeys.length === 0) {
+        alert("No se encontraron respaldos");
+        return;
+      }
+      
+      const backups = backupKeys.map(key => {
+        try {
+          const data = JSON.parse(localStorage.getItem(key));
+          return { key, timestamp: data.timestamp, data };
+        } catch {
+          return null;
+        }
+      }).filter(Boolean);
+      
+      backups.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      
+      console.log(`📦 Encontrados ${backups.length} respaldos`);
+      const latest = backups[0];
+      if (latest.data.userBitacoras) {
+        userBitacoras = latest.data.userBitacoras;
+        renderBitacoraSelector();
+        if (userBitacoras.length > 0) {
+          selectBitacora(userBitacoras[0].id);
+        }
+        alert(`✅ Datos restaurados desde ${latest.timestamp}`);
+      }
+    };
+
+    console.log("✅ PROTECCIONES INTEGRADAS ACTIVADAS");
 
     // ===== FUNCIÓN DE GUARDADO AUTOMÁTICO =====
     async function autoSave() {
@@ -2265,25 +2563,404 @@
       const weekStart = new Date(today);
       weekStart.setDate(today.getDate() - today.getDay());
 
-      const weekEntries = getEntries().filter(entry => {
-        const entryDate = new Date(entry.date);
-        return entryDate >= weekStart && entryDate <= today;
-      });
+      let weekEntries = [];
+      
+      // En la sección general, combinar entradas de todas las etapas SIN DUPLICADOS
+      if (selectedStage === 'general') {
+        const allEntries = [];
+        if (selectedBitacora.entries.vege) allEntries.push(...selectedBitacora.entries.vege);
+        if (selectedBitacora.entries.flora) allEntries.push(...selectedBitacora.entries.flora);
+        if (selectedBitacora.entries.general) allEntries.push(...selectedBitacora.entries.general);
+        
+        // Eliminar duplicados por fecha - mantener la entrada más completa
+        const entriesByDate = {};
+        allEntries.forEach(entry => {
+          const date = entry.date;
+          if (!entriesByDate[date] || 
+              (entry.tasks && entry.tasks.length > (entriesByDate[date].tasks || '').length)) {
+            entriesByDate[date] = entry;
+          }
+        });
+        
+        // Filtrar por semana actual
+        weekEntries = Object.values(entriesByDate).filter(entry => {
+          const entryDate = new Date(entry.date);
+          return entryDate >= weekStart && entryDate <= today;
+        });
+      } else {
+        // En otras etapas, usar solo entradas de esa etapa
+        weekEntries = getEntries().filter(entry => {
+          const entryDate = new Date(entry.date);
+          return entryDate >= weekStart && entryDate <= today;
+        });
+      }
 
+      // Actualizar la UI
       document.getElementById('totalEntries').textContent = weekEntries.length;
       
+      // MEJORAR DISPLAY DEL PROMEDIO EMOCIONAL
       const moods = weekEntries.map(e => e.mood).filter(m => m);
-      const avgMood = moods.length ? (moods.reduce((a, b) => a + b, 0) / moods.length).toFixed(1) : '-';
-      document.getElementById('averageMood').textContent = avgMood;
+      let avgMoodDisplay = '-';
+      if (moods.length > 0) {
+        const avgMood = moods.reduce((a, b) => a + b, 0) / moods.length;
+        const moodLabels = ['😔', '😐', '😊', '🤩'];
+        const moodTexts = ['Difícil', 'Regular', 'Bueno', 'Excelente'];
+        const moodIndex = Math.round(avgMood) - 1;
+        avgMoodDisplay = `${moodLabels[moodIndex]} ${moodTexts[moodIndex]} (${avgMood.toFixed(1)})`;
+      }
+      document.getElementById('averageMood').textContent = avgMoodDisplay;
       
-      const wateredDays = weekEntries.filter(e => e.didWater).length;
-      document.getElementById('wateredDays').textContent = wateredDays;
+      // CORREGIR CONTEO DE DÍAS DE RIEGO - evitar duplicados
+      const uniqueWateredDates = new Set();
+      weekEntries.forEach(entry => {
+        if (entry.didWater) {
+          uniqueWateredDates.add(entry.date);
+        }
+      });
+      document.getElementById('wateredDays').textContent = uniqueWateredDates.size;
 
+      // Timeline emocional mejorado
       const timeline = document.getElementById('emotionTimeline');
-      timeline.innerHTML = weekEntries.map(entry => `
-        <div class="emotion-dot" style="background-color: ${moodStates.find(m => m.value === entry.mood)?.color}"
-             title="${entry.date}"></div>
-      `).join('');
+      const sortedEntries = weekEntries.sort((a, b) => new Date(a.date) - new Date(b.date));
+      timeline.innerHTML = sortedEntries.map(entry => {
+        const mood = moodStates.find(m => m.value === entry.mood);
+        return `<div class="emotion-dot" 
+                     style="background-color: ${mood?.color || '#e2e8f0'}"
+                     title="${entry.date} - ${mood?.label || 'Sin estado'} - ${entry.tasks?.substring(0, 30) || 'Sin tareas'}..."></div>`;
+      }).join('');
+
+      // Generar resumen con IA si estamos en general y hay datos
+      if (selectedStage === 'general' && weekEntries.length > 0) {
+        generateAISummary(weekEntries);
+      } else if (selectedStage === 'general') {
+        // Ocultar resumen IA si no hay datos
+        const aiSummary = document.getElementById('aiSummary');
+        if (aiSummary) aiSummary.style.display = 'none';
+      }
+
+      console.log(`✅ Resumen semanal actualizado para ${selectedStage}: ${weekEntries.length} entradas únicas, ${uniqueWateredDates.size} días de riego`);
+    }
+
+    // ===== SISTEMA DE IA PARA RESÚMENES SEMANALES =====
+    
+    let currentWeekEntries = [];
+    
+    async function generateAISummary(weekEntries) {
+      currentWeekEntries = weekEntries;
+      const aiSummary = document.getElementById('aiSummary');
+      const content = document.getElementById('aiSummaryContent');
+      
+      if (weekEntries.length === 0) {
+        aiSummary.style.display = 'none';
+        return;
+      }
+      
+      // Mostrar loading
+      aiSummary.style.display = 'block';
+      content.innerHTML = '<div style="text-align: center; color: #64748b;"><span style="animation: pulse 2s infinite;">🧠 Analizando datos...</span></div>';
+      
+      // Simular procesamiento de IA
+      setTimeout(() => {
+        const summary = analyzeWeekWithAI(weekEntries);
+        content.innerHTML = summary;
+      }, 1500);
+    }
+    
+    function analyzeWeekWithAI(entries) {
+      // Remover duplicados por fecha antes del análisis
+      const uniqueEntriesByDate = {};
+      entries.forEach(entry => {
+        const date = entry.date;
+        if (!uniqueEntriesByDate[date] || 
+            (entry.tasks && entry.tasks.length > (uniqueEntriesByDate[date].tasks || '').length)) {
+          uniqueEntriesByDate[date] = entry;
+        }
+      });
+      
+      const uniqueEntries = Object.values(uniqueEntriesByDate);
+      
+      const analysis = {
+        totalDays: uniqueEntries.length,
+        moods: uniqueEntries.map(e => e.mood).filter(Boolean),
+        tasks: uniqueEntries.map(e => e.tasks).filter(Boolean),
+        issues: uniqueEntries.map(e => e.issues).filter(Boolean),
+        notes: uniqueEntries.map(e => e.notes).filter(Boolean),
+        watering: uniqueEntries, // Pasar todas las entradas, la función filtrará
+        dates: uniqueEntries.map(e => e.date).sort()
+      };
+      
+      // Análisis emocional
+      const moodAnalysis = analyzeMoodPatterns(analysis.moods);
+      
+      // Análisis de tareas
+      const taskAnalysis = analyzeTaskPatterns(analysis.tasks);
+      
+      // Análisis de problemas
+      const issueAnalysis = analyzeIssuePatterns(analysis.issues);
+      
+      // Análisis de riego (ahora recibe todas las entradas)
+      const wateringAnalysis = analyzeWateringPatterns(analysis.watering, analysis.totalDays);
+      
+      // Recomendaciones inteligentes
+      const recommendations = generateRecommendations(analysis, moodAnalysis, taskAnalysis, issueAnalysis, wateringAnalysis);
+      
+      // Generar resumen narrativo
+      const narrative = generateNarrative(analysis, moodAnalysis, taskAnalysis, issueAnalysis, wateringAnalysis);
+      
+      return `
+        <div style="margin-bottom: 15px;">
+          <strong>📊 Análisis de la Semana:</strong><br/>
+          ${narrative}
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+          <strong>🎯 Puntos Clave:</strong>
+          <ul style="margin: 8px 0; padding-left: 20px;">
+            ${moodAnalysis.insights.map(insight => `<li>${insight}</li>`).join('')}
+            ${taskAnalysis.insights.map(insight => `<li>${insight}</li>`).join('')}
+            ${wateringAnalysis.insights.map(insight => `<li>${insight}</li>`).join('')}
+            ${issueAnalysis.insights.map(insight => `<li>${insight}</li>`).join('')}
+          </ul>
+        </div>
+        
+        <div style="background: #f0fdf4; padding: 10px; border-radius: 8px; border-left: 3px solid #22c55e;">
+          <strong>💡 Recomendaciones IA:</strong><br/>
+          ${recommendations.join('<br/>• ')}
+        </div>
+      `;
+    }
+    
+    function analyzeMoodPatterns(moods) {
+      if (moods.length === 0) return { trend: 'neutral', insights: ['Sin datos emocionales esta semana'] };
+      
+      const avg = moods.reduce((a, b) => a + b, 0) / moods.length;
+      const trend = moods.length > 1 ? (moods[moods.length - 1] > moods[0] ? 'improving' : 'declining') : 'stable';
+      
+      const insights = [];
+      
+      if (avg >= 3.5) insights.push('Estado emocional excelente esta semana 😊');
+      else if (avg >= 2.5) insights.push('Estado emocional positivo en general 🌿');
+      else if (avg >= 2) insights.push('Estado emocional variable, con altibajos ⚠️');
+      else insights.push('Semana challenging emocionalmente 😔');
+      
+      if (trend === 'improving') insights.push('Tendencia emocional al alza 📈');
+      else if (trend === 'declining') insights.push('Tendencia emocional a la baja 📉');
+      
+      const moodCounts = [1,2,3,4].map(mood => moods.filter(m => m === mood).length);
+      const dominantMood = moodCounts.indexOf(Math.max(...moodCounts)) + 1;
+      
+      const moodLabels = ['días difíciles', 'días regulares', 'días buenos', 'días excelentes'];
+      insights.push(`Predominaron los ${moodLabels[dominantMood - 1]}`);
+      
+      return { avg, trend, insights, dominantMood };
+    }
+    
+    function analyzeTaskPatterns(tasks) {
+      if (tasks.length === 0) return { insights: ['No se registraron tareas esta semana'] };
+      
+      const insights = [];
+      const allTasks = tasks.join(' ').toLowerCase();
+      
+      // Detectar patrones en las tareas
+      const patterns = {
+        riego: ['riego', 'regar', 'agua', 'hidratar'],
+        poda: ['poda', 'podar', 'cortar', 'trim'],
+        fertilizante: ['fertilizar', 'nutriente', 'abono', 'ferti'],
+        entrenamiento: ['doblar', 'lst', 'scrog', 'entrenar', 'guiar'],
+        limpieza: ['limpiar', 'aspirar', 'ordenar', 'mantener'],
+        observacion: ['revisar', 'observar', 'ver', 'check', 'inspeccionar']
+      };
+      
+      const taskFrequency = {};
+      Object.keys(patterns).forEach(category => {
+        const count = patterns[category].reduce((acc, keyword) => 
+          acc + (allTasks.split(keyword).length - 1), 0);
+        if (count > 0) taskFrequency[category] = count;
+      });
+      
+      const topTasks = Object.entries(taskFrequency)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3);
+      
+      if (topTasks.length > 0) {
+        insights.push(`Actividades principales: ${topTasks.map(([task, _]) => 
+          task.charAt(0).toUpperCase() + task.slice(1)).join(', ')}`);
+      }
+      
+      insights.push(`Registraste actividades en ${tasks.length} días`);
+      
+      if (taskFrequency.riego > 0) insights.push('Buen seguimiento de riego 💧');
+      if (taskFrequency.poda > 0) insights.push('Realizaste trabajos de poda ✂️');
+      if (taskFrequency.observacion > 0) insights.push('Excelente observación de las plantas 👀');
+      
+      return { insights, taskFrequency, topTasks };
+    }
+    
+    function analyzeIssuePatterns(issues) {
+      if (issues.length === 0) return { insights: ['No se reportaron problemas esta semana ✅'] };
+      
+      const insights = [];
+      const allIssues = issues.join(' ').toLowerCase();
+      
+      const problemPatterns = {
+        plagas: ['plaga', 'insecto', 'araña', 'pulgon', 'mosca', 'trip'],
+        hongos: ['hongo', 'moho', 'botrytis', 'oidio', 'roya'],
+        nutrientes: ['amarill', 'quema', 'deficiencia', 'exceso', 'nutriente'],
+        riego: ['seca', 'marchita', 'riego', 'agua'],
+        ambiente: ['temperatura', 'humedad', 'ventilacion', 'calor', 'frio']
+      };
+      
+      const problemCount = {};
+      Object.keys(problemPatterns).forEach(category => {
+        const count = problemPatterns[category].reduce((acc, keyword) => 
+          acc + (allIssues.split(keyword).length - 1), 0);
+        if (count > 0) problemCount[category] = count;
+      });
+      
+      if (Object.keys(problemCount).length > 0) {
+        const mainProblem = Object.entries(problemCount)
+          .sort((a, b) => b[1] - a[1])[0][0];
+        insights.push(`Problema principal: ${mainProblem} 🚨`);
+      }
+      
+      insights.push(`Se reportaron problemas en ${issues.length} días`);
+      
+      return { insights, problemCount };
+    }
+    
+    function analyzeWateringPatterns(watering, totalDays) {
+      // Contar días únicos de riego (evitar duplicados por fecha)
+      const uniqueWateringDates = new Set();
+      const wateringEntries = [];
+      
+      watering.forEach(entry => {
+        if (entry.didWater && !uniqueWateringDates.has(entry.date)) {
+          uniqueWateringDates.add(entry.date);
+          wateringEntries.push(entry);
+        }
+      });
+      
+      const wateringDays = uniqueWateringDates.size;
+      const wateringRatio = totalDays > 0 ? wateringDays / totalDays : 0;
+      
+      const insights = [];
+      
+      if (wateringDays === 0) {
+        insights.push('No se registraron riegos esta semana 🏜️');
+      } else if (wateringRatio >= 0.8) {
+        insights.push('Excelente consistencia en el riego 💧');
+      } else if (wateringRatio >= 0.5) {
+        insights.push('Buen patrón de riego en general 🌊');
+      } else if (wateringRatio >= 0.3) {
+        insights.push('Riego moderado esta semana 💧');
+      } else {
+        insights.push('Pocos días de riego registrados 🏜️');
+      }
+      
+      // Analizar nutrientes si están disponibles
+      const withNutrients = wateringEntries.filter(w => w.nutrients && w.nutrients.trim()).length;
+      if (withNutrients > 0) {
+        insights.push(`Uso de nutrientes en ${withNutrients} de ${wateringDays} riegos 🧪`);
+      }
+      
+      // Analizar pH si está disponible
+      const withPh = wateringEntries.filter(w => w.ph && w.ph.trim()).length;
+      if (withPh > 0) {
+        const phValues = wateringEntries.map(w => parseFloat(w.ph)).filter(ph => !isNaN(ph) && ph > 0);
+        if (phValues.length > 0) {
+          const avgPh = phValues.reduce((a, b) => a + b, 0) / phValues.length;
+          if (avgPh >= 6.0 && avgPh <= 7.0) {
+            insights.push(`pH promedio excelente: ${avgPh.toFixed(1)} 🎯`);
+          } else if (avgPh >= 5.5 && avgPh <= 7.5) {
+            insights.push(`pH promedio aceptable: ${avgPh.toFixed(1)} ⚠️`);
+          } else {
+            insights.push(`pH promedio fuera de rango: ${avgPh.toFixed(1)} 🚨`);
+          }
+        }
+      }
+      
+      return { insights, wateringRatio, wateringDays, uniqueWateringDates: uniqueWateringDates.size };
+    }
+    
+    function generateRecommendations(analysis, moodAnalysis, taskAnalysis, issueAnalysis, wateringAnalysis) {
+      const recommendations = [];
+      
+      // Recomendaciones basadas en el estado emocional
+      if (moodAnalysis.avg < 2.5) {
+        recommendations.push('💆‍♀️ Considera tomarte más tiempo para disfrutar el proceso de cultivo');
+        recommendations.push('📚 Quizás revisar técnicas que puedan simplificar tu rutina');
+      } else if (moodAnalysis.avg >= 3.5) {
+        recommendations.push('🎉 ¡Excelente semana! Mantén esta energía positiva');
+        recommendations.push('📈 Considera documentar qué estrategias están funcionando mejor');
+      }
+      
+      // Recomendaciones de riego
+      if (wateringAnalysis.wateringRatio < 0.3) {
+        recommendations.push('💧 Considera establecer un cronograma de riego más consistente');
+      } else if (wateringAnalysis.wateringRatio > 0.8) {
+        recommendations.push('✅ Excelente disciplina de riego, sigue así');
+      }
+      
+      // Recomendaciones de tareas
+      if (taskAnalysis.taskFrequency && taskAnalysis.taskFrequency.observacion > 0) {
+        recommendations.push('👀 Tu atención al detalle es excelente, sigue observando');
+      } else {
+        recommendations.push('🔍 Intenta dedicar más tiempo a observar detalles de las plantas');
+      }
+      
+      // Recomendaciones de problemas
+      if (issueAnalysis.problemCount && Object.keys(issueAnalysis.problemCount).length > 0) {
+        recommendations.push('🛡️ Considera medidas preventivas para los problemas detectados');
+        recommendations.push('📖 Investigar sobre el manejo específico de estos problemas');
+      } else {
+        recommendations.push('🌟 ¡Sin problemas reportados! Excelente manejo preventivo');
+      }
+      
+      // Recomendación general
+      recommendations.push('📊 Sigue registrando datos para análisis más precisos');
+      
+      return recommendations;
+    }
+    
+    function generateNarrative(analysis, moodAnalysis, taskAnalysis, issueAnalysis, wateringAnalysis) {
+      const moodDescriptions = {
+        1: 'una semana desafiante',
+        2: 'una semana con altibajos', 
+        3: 'una semana positiva',
+        4: 'una semana excelente'
+      };
+      
+      const moodDesc = moodDescriptions[Math.round(moodAnalysis.avg)] || 'una semana interesante';
+      
+      let narrative = `Esta fue ${moodDesc} con ${analysis.totalDays} días de registros. `;
+      
+      if (wateringAnalysis.wateringDays > 0) {
+        narrative += `Regaste en ${wateringAnalysis.wateringDays} ocasiones. `;
+      }
+      
+      if (taskAnalysis.topTasks && taskAnalysis.topTasks.length > 0) {
+        narrative += `Te enfocaste principalmente en ${taskAnalysis.topTasks[0][0]}. `;
+      }
+      
+      if (issueAnalysis.problemCount && Object.keys(issueAnalysis.problemCount).length > 0) {
+        narrative += `Detectaste algunos problemas que requerirán atención. `;
+      } else {
+        narrative += `No reportaste problemas significativos. `;
+      }
+      
+      if (moodAnalysis.trend === 'improving') {
+        narrative += `La tendencia emocional fue al alza, ¡buen indicador! `;
+      } else if (moodAnalysis.trend === 'declining') {
+        narrative += `Hubo algunos desafíos hacia el final de la semana. `;
+      }
+      
+      return narrative;
+    }
+    
+    function regenerateAISummary() {
+      if (currentWeekEntries.length > 0) {
+        generateAISummary(currentWeekEntries);
+      }
     }
 
     function renderHistory() {
@@ -2602,6 +3279,10 @@
         renderHistory();
         renderCalendar();
         updateWeeklySummary();
+        
+        // Actualizar indicador de problemas
+        updateProblemsIndicator();
+        updateProblemsButtonIndicator();
       }
     }
 
@@ -2615,16 +3296,24 @@
       // Mostrar/ocultar elementos según la etapa
       const floraStartContainer = document.getElementById('floraStartContainer');
       const bitacoraInfo = document.getElementById('bitacoraInfo');
+      const problemsSection = document.getElementById('problemsSection');
       const entryForm = document.getElementById('entryForm');
       
       floraStartContainer.style.display = stage === 'flora' ? 'block' : 'none';
       
       if (stage === 'general') {
         bitacoraInfo.style.display = 'block';
+        problemsSection.style.display = 'none';
         if (entryForm) entryForm.style.display = 'none';
         renderBitacoraInfo();
+      } else if (stage === 'problems') {
+        bitacoraInfo.style.display = 'none';
+        problemsSection.style.display = 'block';
+        if (entryForm) entryForm.style.display = 'none';
+        renderProblemsSection();
       } else {
         bitacoraInfo.style.display = 'none';
+        problemsSection.style.display = 'none';
         if (entryForm) entryForm.style.display = 'block';
       }
       
@@ -2674,7 +3363,10 @@
 
     // Función saveEntry eliminada - se usa la versión con Firebase arriba
 
+    let editingDate = null;
+
     function editEntry(date) {
+      editingDate = date;
       const modal = document.getElementById('editModal');
       modal.style.display = 'block';
       
@@ -2686,14 +3378,254 @@
       const password = document.getElementById('editPassword').value;
       if (password === 'FUCK I MISS') {
         document.getElementById('editForm').style.display = 'block';
-        // Aquí cargaríamos los datos de la entrada para editar
+        loadEntryDataForEditing(editingDate);
       } else {
         alert('Contraseña incorrecta');
       }
     }
 
+    function loadEntryDataForEditing(date) {
+      if (!selectedBitacora || !date) return;
+      
+      const entries = selectedBitacora.entries[selectedStage] || [];
+      const entry = entries.find(e => e.date === date);
+      
+      if (!entry) {
+        alert('No se encontró la entrada para editar');
+        return;
+      }
+
+      // Inicializar variables de edición con los datos actuales
+      editSelectedMood = entry.mood;
+      editDidWater = entry.didWater;
+
+      // Generar el formulario de edición con los datos actuales
+      const editForm = document.getElementById('editForm');
+      editForm.innerHTML = `
+        <div style="margin-bottom: 10px;">
+          <label>Fecha:</label>
+          <input type="date" id="editDate" value="${entry.date}" />
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+          <label>Estado emocional:</label>
+          <div id="editMoodOptions">
+            ${moodStates.map(state => `
+              <span class="mood-btn ${entry.mood === state.value ? 'mood-selected' : ''}" 
+                    onclick="setEditMood(${state.value})" 
+                    data-mood="${state.value}">
+                ${state.icon} ${state.label}
+              </span>
+            `).join('')}
+          </div>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+          <label>Tareas realizadas:</label>
+          <textarea id="editTasks" style="width: 100%; margin: 5px 0;">${entry.tasks || ''}</textarea>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+          <label>¿Regaste hoy?</label><br/>
+          <button type="button" onclick="setEditWater(true)" 
+                  style="background: ${entry.didWater ? '#22c55e' : '#e5e7eb'}; color: ${entry.didWater ? 'white' : 'black'};">
+            💧 Sí
+          </button>
+          <button type="button" onclick="setEditWater(false)" 
+                  style="background: ${!entry.didWater ? '#ef4444' : '#e5e7eb'}; color: ${!entry.didWater ? 'white' : 'black'};">
+            ❌ No
+          </button>
+        </div>
+        
+        <div id="editWaterDetails" style="display: ${entry.didWater ? 'block' : 'none'}; margin-bottom: 10px;">
+          <input type="text" id="editWaterAmount" placeholder="Cantidad de agua (L o ml)" value="${entry.waterAmount || ''}" />
+          <input type="text" id="editNutrients" placeholder="Nutrientes utilizados" value="${entry.nutrients || ''}" />
+          <input type="text" id="editPh" placeholder="pH del agua" value="${entry.ph || ''}" />
+          <input type="text" id="editEc" placeholder="EC del agua" value="${entry.ec || ''}" />
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+          <label>Problemas o anomalías:</label>
+          <textarea id="editIssues" style="width: 100%; margin: 5px 0;">${entry.issues || ''}</textarea>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+          <label>Notas o reflexiones:</label>
+          <textarea id="editNotes" style="width: 100%; margin: 5px 0;">${entry.notes || ''}</textarea>
+        </div>
+        
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button onclick="closeEditModal()" style="background: #6b7280;">Cancelar</button>
+          <button onclick="saveEditedEntry()" style="background: #22c55e;">Guardar Cambios</button>
+        </div>
+      `;
+    }
+
+    let editSelectedMood = null;
+    let editDidWater = false;
+
+    function setEditMood(mood) {
+      editSelectedMood = mood;
+      document.querySelectorAll('#editMoodOptions .mood-btn').forEach(btn => {
+        btn.classList.remove('mood-selected');
+        if (parseInt(btn.dataset.mood) === mood) {
+          btn.classList.add('mood-selected');
+        }
+      });
+    }
+
+    function setEditWater(val) {
+      editDidWater = val;
+      document.getElementById('editWaterDetails').style.display = val ? 'block' : 'none';
+      
+      // Actualizar estilos de botones
+      const siBtn = document.querySelector('[onclick="setEditWater(true)"]');
+      const noBtn = document.querySelector('[onclick="setEditWater(false)"]');
+      
+      if (val) {
+        siBtn.style.background = '#22c55e';
+        siBtn.style.color = 'white';
+        noBtn.style.background = '#e5e7eb';
+        noBtn.style.color = 'black';
+      } else {
+        siBtn.style.background = '#e5e7eb';
+        siBtn.style.color = 'black';
+        noBtn.style.background = '#ef4444';
+        noBtn.style.color = 'white';
+      }
+    }
+
+    async function saveEditedEntry() {
+      if (!selectedBitacora || !editingDate) {
+        alert('Error: No hay bitácora seleccionada o fecha de edición');
+        return;
+      }
+
+      // Verificación de seguridad adicional
+      if (!userBitacoras || userBitacoras.length === 0) {
+        alert('Error crítico: No hay datos de bitácoras cargadas. No se puede continuar.');
+        return;
+      }
+      
+      const newDate = document.getElementById('editDate').value;
+      const tasks = document.getElementById('editTasks').value;
+      const issues = document.getElementById('editIssues').value;
+      const notes = document.getElementById('editNotes').value;
+      const waterAmount = document.getElementById('editWaterAmount').value;
+      const nutrients = document.getElementById('editNutrients').value;
+      const ph = document.getElementById('editPh').value;
+      const ec = document.getElementById('editEc').value;
+      
+      if (!newDate || !editSelectedMood) {
+        alert('Por favor completa la fecha y el estado emocional.');
+        return;
+      }
+
+      // Crear respaldo antes de editar
+      try {
+        const backupData = JSON.stringify({
+          timestamp: new Date().toISOString(),
+          operation: 'edit_entry',
+          selectedBitacora: JSON.parse(JSON.stringify(selectedBitacora)),
+          userBitacoras: JSON.parse(JSON.stringify(userBitacoras)),
+          editingDate: editingDate,
+          newDate: newDate
+        });
+        localStorage.setItem(`edit_backup_${Date.now()}`, backupData);
+        console.log('✅ Respaldo de edición creado antes de modificar');
+      } catch (error) {
+        console.error('❌ Error creando respaldo:', error);
+      }
+
+      const updatedEntry = {
+        date: newDate,
+        mood: editSelectedMood,
+        tasks,
+        issues,
+        notes,
+        didWater: editDidWater,
+        waterAmount,
+        nutrients,
+        ph,
+        ec,
+        updatedAt: new Date().toISOString()
+      };
+
+      try {
+        // Verificar que la bitácora existe en el array
+        const bitacoraIndex = userBitacoras.findIndex(b => b.id === selectedBitacora.id);
+        
+        if (bitacoraIndex === -1) {
+          throw new Error('La bitácora seleccionada no se encuentra en la lista');
+        }
+
+        // Verificar que la estructura de entradas existe
+        if (!userBitacoras[bitacoraIndex].entries) {
+          userBitacoras[bitacoraIndex].entries = { vege: [], flora: [], general: [] };
+        }
+        if (!userBitacoras[bitacoraIndex].entries[selectedStage]) {
+          userBitacoras[bitacoraIndex].entries[selectedStage] = [];
+        }
+
+        // Crear una copia de las entradas para manipular
+        let entries = [...userBitacoras[bitacoraIndex].entries[selectedStage]];
+        
+        // Remover la entrada antigua
+        entries = entries.filter(e => e.date !== editingDate);
+        
+        // Agregar la entrada actualizada
+        entries.push(updatedEntry);
+        
+        // Actualizar solo esta etapa de entradas
+        userBitacoras[bitacoraIndex].entries[selectedStage] = entries;
+        selectedBitacora = userBitacoras[bitacoraIndex];
+        
+        console.log(`✅ Entrada editada: ${editingDate} → ${newDate} en etapa ${selectedStage}`);
+        console.log(`Total entradas en ${selectedStage}:`, entries.length);
+        
+        // Guardar en Firestore
+        await saveBitacoraToFirestore(selectedBitacora);
+        
+        // Actualizar UI
+        renderHistory();
+        renderCalendar();
+        updateWeeklySummary();
+        
+        // Cerrar modal
+        closeEditModal();
+        
+        alert('Entrada actualizada exitosamente');
+        
+      } catch (error) {
+        console.error('❌ Error al actualizar entrada:', error);
+        alert(`Error al actualizar la entrada: ${error.message}`);
+        
+        // Intentar restaurar desde el respaldo más reciente
+        console.log('Intentando restaurar desde respaldo...');
+        try {
+          const backupKeys = Object.keys(localStorage).filter(key => key.startsWith('edit_backup_'));
+          if (backupKeys.length > 0) {
+            const latestBackup = backupKeys.sort().pop();
+            const backupData = JSON.parse(localStorage.getItem(latestBackup));
+            userBitacoras = backupData.userBitacoras;
+            selectedBitacora = backupData.selectedBitacora;
+            renderBitacoraSelector();
+            selectBitacora(selectedBitacora.id);
+            console.log('✅ Datos restaurados desde respaldo');
+          }
+        } catch (restoreError) {
+          console.error('❌ Error al restaurar respaldo:', restoreError);
+        }
+      }
+    }
+
     function closeEditModal() {
       document.getElementById('editModal').style.display = 'none';
+      // Limpiar variables de edición
+      editingDate = null;
+      editSelectedMood = null;
+      editDidWater = false;
+      document.getElementById('editForm').innerHTML = '';
     }
 
     function exportData() {
@@ -2714,6 +3646,75 @@
       a.click();
     }
 
+    function editCurrentBitacora() {
+      if (!selectedBitacora) {
+        alert('No hay bitácora seleccionada');
+        return;
+      }
+      showEditBitacoraModal(selectedBitacora);
+    }
+
+    function loadBitacoraDataToEditForm(bitacora) {
+      // Cargar cepas
+      editCepas = bitacora.cepas ? [...bitacora.cepas] : [];
+      renderEditCepasList();
+      
+      // Cargar tipo de cultivo
+      document.getElementById('editTipoCultivo').value = bitacora.tipoCultivo || '';
+      toggleEditInteriorFields();
+      
+      // Cargar datos de cultivo interior
+      if (bitacora.tipoCultivo === 'interior') {
+        document.getElementById('editNumCarpas').value = bitacora.numCarpas || 0;
+        document.getElementById('editSoloSala').checked = bitacora.soloSala || false;
+        toggleEditCarpasFields();
+        
+        // Cargar carpas
+        if (bitacora.carpas && bitacora.carpas.length > 0) {
+          setTimeout(() => {
+            const carpaInputs = document.querySelectorAll('#editCarpasList input');
+            bitacora.carpas.forEach((carpa, index) => {
+              if (carpaInputs[index]) {
+                carpaInputs[index].value = carpa.metrosCuadrados || '';
+              }
+            });
+          }, 100);
+        }
+        
+        // Cargar lámparas
+        document.getElementById('editLamparasVege').value = bitacora.lamparasVege || 0;
+        document.getElementById('editWattsVege').value = bitacora.wattsVege || '';
+        document.getElementById('editLamparasFlora').value = bitacora.lamparasFlora || 0;
+        document.getElementById('editWattsFlora').value = bitacora.wattsFlora || '';
+        
+        // Cargar ventiladores
+        document.getElementById('editVentiladores').value = bitacora.ventiladores || 0;
+        document.getElementById('editPulgadasVentilador').value = bitacora.pulgadasVentilador || '';
+        
+        // Cargar extractores
+        editExtractores = bitacora.extractores ? [...bitacora.extractores] : [];
+        renderEditExtractoresList();
+        
+        // Cargar filtro de aire
+        document.getElementById('editFiltroAire').value = bitacora.filtroAire || 'no';
+        
+        // Cargar aire acondicionado
+        document.getElementById('editAireAcondicionado').value = bitacora.aireAcondicionado || 'no';
+        document.getElementById('editFrigorias').value = bitacora.frigorias || '';
+        toggleEditFrigorias();
+      }
+      
+      // Cargar tipo de riego
+      const riegoCheckboxes = document.querySelectorAll('#editRiegoOptions input[type="checkbox"]');
+      riegoCheckboxes.forEach(checkbox => {
+        checkbox.checked = bitacora.riegoOptions && bitacora.riegoOptions.includes(checkbox.value);
+      });
+      document.getElementById('editDetalleRiego').value = bitacora.detalleRiego || '';
+      
+      // Cargar sustrato
+      document.getElementById('editSustrato').value = bitacora.sustrato || '';
+    }
+
     function showEditBitacoraModal(bitacora) {
       const modal = document.getElementById('editBitacoraModal');
       const nameInput = document.getElementById('editBitacoraName');
@@ -2726,7 +3727,15 @@
              onclick="selectEditColor(this)"></div>
       `).join('');
 
+      // Cargar datos existentes de la bitácora
+      loadBitacoraDataToEditForm(bitacora);
+
       // Agregar el selector de visibilidad
+      const existingVisibility = modal.querySelector('.visibility-selector');
+      if (existingVisibility) {
+        existingVisibility.remove();
+      }
+      
       const visibilityDiv = document.createElement('div');
       visibilityDiv.className = 'visibility-selector';
       visibilityDiv.innerHTML = `
@@ -2800,6 +3809,12 @@
         }
         
         renderBitacoraSelector();
+        
+        // Si estamos en la sección general, actualizar la vista
+        if (selectedStage === 'general') {
+          renderBitacoraInfo();
+        }
+        
         closeEditBitacoraModal();
       }
     }
@@ -3414,6 +4429,521 @@
         showNewBitacoraForm();
       }
     }
+
+    // ========== SISTEMA DE GESTIÓN DE PROBLEMAS ==========
+    
+    // Variables globales para problemas
+    let currentEditingProblemId = null;
+    let allProblems = [];
+
+    // Funciones principales del sistema de problemas
+    function showProblemsManager() {
+      if (!selectedBitacora) {
+        alert('Selecciona una bitácora primero');
+        return;
+      }
+      
+      loadProblems();
+      updateProblemStats();
+      renderProblemsList();
+      document.getElementById('problemsModal').style.display = 'block';
+    }
+
+    function closeProblemsModal() {
+      document.getElementById('problemsModal').style.display = 'none';
+      resetFilters();
+    }
+
+    function closeEditProblemModal() {
+      document.getElementById('editProblemModal').style.display = 'none';
+      currentEditingProblemId = null;
+    }
+
+    // Cargar problemas de la bitácora actual
+    function loadProblems() {
+      if (!selectedBitacora) return;
+      
+      // Inicializar problemas si no existen
+      if (!selectedBitacora.problems) {
+        selectedBitacora.problems = [];
+      }
+      
+      allProblems = [...selectedBitacora.problems];
+    }
+
+    // Agregar nuevo problema
+    function addNewProblem() {
+      const title = document.getElementById('newProblemTitle').value.trim();
+      const severity = document.getElementById('newProblemSeverity').value;
+      const category = document.getElementById('newProblemCategory').value;
+      const description = document.getElementById('newProblemDescription').value.trim();
+      
+      if (!title) {
+        alert('Por favor describe el problema');
+        return;
+      }
+      
+      const newProblem = {
+        id: Date.now().toString(),
+        title: title,
+        description: description,
+        severity: severity,
+        category: category,
+        status: 'reported',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        solution: '',
+        resolvedAt: null
+      };
+      
+      // Agregar a la bitácora actual
+      if (!selectedBitacora.problems) {
+        selectedBitacora.problems = [];
+      }
+      selectedBitacora.problems.push(newProblem);
+      
+      // Guardar automáticamente
+      autoSave();
+      
+      // Actualizar vista
+      loadProblems();
+      updateProblemStats();
+      renderProblemsList();
+      
+      // Si estamos en la sección de problemas, actualizar también
+      if (selectedStage === 'problems') {
+        updateProblemStatsSection();
+        renderProblemsListSection();
+      }
+      
+      // Actualizar indicador del botón
+      updateProblemsButtonIndicator();
+      
+      // Limpiar formulario
+      document.getElementById('newProblemTitle').value = '';
+      document.getElementById('newProblemDescription').value = '';
+      document.getElementById('newProblemSeverity').value = 'low';
+      document.getElementById('newProblemCategory').value = 'pest';
+      
+      console.log('Problema agregado:', newProblem);
+    }
+
+    // Editar problema
+    function editProblem(problemId) {
+      const problem = allProblems.find(p => p.id === problemId);
+      if (!problem) return;
+      
+      currentEditingProblemId = problemId;
+      
+      // Llenar formulario de edición
+      document.getElementById('editProblemStatus').value = problem.status;
+      document.getElementById('editProblemSeverity').value = problem.severity;
+      document.getElementById('editProblemSolution').value = problem.solution || '';
+      
+      document.getElementById('editProblemModal').style.display = 'block';
+    }
+
+    // Guardar edición de problema
+    function saveProblemEdit() {
+      if (!currentEditingProblemId) return;
+      
+      const status = document.getElementById('editProblemStatus').value;
+      const severity = document.getElementById('editProblemSeverity').value;
+      const solution = document.getElementById('editProblemSolution').value.trim();
+      
+      // Encontrar problema en la bitácora
+      const problemIndex = selectedBitacora.problems.findIndex(p => p.id === currentEditingProblemId);
+      if (problemIndex === -1) return;
+      
+      const oldStatus = selectedBitacora.problems[problemIndex].status;
+      
+      // Actualizar problema
+      selectedBitacora.problems[problemIndex].status = status;
+      selectedBitacora.problems[problemIndex].severity = severity;
+      selectedBitacora.problems[problemIndex].solution = solution;
+      selectedBitacora.problems[problemIndex].updatedAt = new Date().toISOString();
+      
+      // Si se marca como resuelto y antes no lo estaba
+      if (status === 'resolved' && oldStatus !== 'resolved') {
+        selectedBitacora.problems[problemIndex].resolvedAt = new Date().toISOString();
+      }
+      // Si se desmarca como resuelto
+      else if (status !== 'resolved' && oldStatus === 'resolved') {
+        selectedBitacora.problems[problemIndex].resolvedAt = null;
+      }
+      
+      // Guardar automáticamente
+      autoSave();
+      
+      // Actualizar vista
+      loadProblems();
+      updateProblemStats();
+      renderProblemsList();
+      
+      // Si estamos en la sección de problemas, actualizar también
+      if (selectedStage === 'problems') {
+        updateProblemStatsSection();
+        renderProblemsListSection();
+      }
+      
+      // Actualizar indicador del botón
+      updateProblemsButtonIndicator();
+      
+      closeEditProblemModal();
+      
+      console.log('Problema actualizado:', selectedBitacora.problems[problemIndex]);
+    }
+
+    // Eliminar problema
+    function deleteProblem(problemId) {
+      if (!confirm('¿Estás seguro de que quieres eliminar este problema?')) return;
+      
+      const problemIndex = selectedBitacora.problems.findIndex(p => p.id === problemId);
+      if (problemIndex === -1) return;
+      
+      selectedBitacora.problems.splice(problemIndex, 1);
+      
+      // Guardar automáticamente
+      autoSave();
+      
+      // Actualizar vista
+      loadProblems();
+      updateProblemStats();
+      renderProblemsList();
+      
+      // Si estamos en la sección de problemas, actualizar también
+      if (selectedStage === 'problems') {
+        updateProblemStatsSection();
+        renderProblemsListSection();
+      }
+      
+      // Actualizar indicador del botón
+      updateProblemsButtonIndicator();
+      
+      console.log('Problema eliminado');
+    }
+
+    // Actualizar estadísticas
+    function updateProblemStats() {
+      const active = allProblems.filter(p => p.status !== 'resolved' && p.status !== 'unresolved').length;
+      const critical = allProblems.filter(p => p.severity === 'high' && p.status !== 'resolved').length;
+      const resolved = allProblems.filter(p => p.status === 'resolved').length;
+      
+      // Calcular tiempo promedio de resolución
+      const resolvedProblems = allProblems.filter(p => p.status === 'resolved' && p.resolvedAt && p.createdAt);
+      let avgTime = 0;
+      
+      if (resolvedProblems.length > 0) {
+        const totalHours = resolvedProblems.reduce((sum, problem) => {
+          const created = new Date(problem.createdAt);
+          const resolved = new Date(problem.resolvedAt);
+          const hours = (resolved - created) / (1000 * 60 * 60);
+          return sum + hours;
+        }, 0);
+        avgTime = Math.round(totalHours / resolvedProblems.length);
+      }
+      
+      document.getElementById('problemsActive').textContent = active;
+      document.getElementById('problemsCritical').textContent = critical;
+      document.getElementById('problemsResolved').textContent = resolved;
+      document.getElementById('avgResolutionTime').textContent = avgTime + 'h';
+    }
+
+    // Renderizar lista de problemas
+    function renderProblemsList() {
+      const container = document.getElementById('problemsList');
+      container.innerHTML = '';
+      
+      if (allProblems.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #6b7280;">No hay problemas reportados 🎉</div>';
+        return;
+      }
+      
+      // Aplicar filtros
+      let filteredProblems = [...allProblems];
+      
+      const statusFilter = document.getElementById('filterStatus').value;
+      const severityFilter = document.getElementById('filterSeverity').value;
+      const categoryFilter = document.getElementById('filterCategory').value;
+      
+      if (statusFilter !== 'all') {
+        if (statusFilter === 'unresolved') {
+          filteredProblems = filteredProblems.filter(p => p.status !== 'resolved');
+        } else {
+          filteredProblems = filteredProblems.filter(p => p.status === statusFilter);
+        }
+      }
+      
+      if (severityFilter !== 'all') {
+        filteredProblems = filteredProblems.filter(p => p.severity === severityFilter);
+      }
+      
+      if (categoryFilter !== 'all') {
+        filteredProblems = filteredProblems.filter(p => p.category === categoryFilter);
+      }
+      
+      // Ordenar por fecha (más recientes primero)
+      filteredProblems.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      
+      if (filteredProblems.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #6b7280;">No hay problemas que coincidan con los filtros</div>';
+        return;
+      }
+      
+      filteredProblems.forEach(problem => {
+        const problemCard = createProblemCard(problem);
+        container.appendChild(problemCard);
+      });
+    }
+
+    // Crear tarjeta de problema
+    function createProblemCard(problem) {
+      const card = document.createElement('div');
+      card.className = 'problem-card';
+      card.style.cssText = `
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      `;
+      
+      // Colores según gravedad
+      const severityColors = {
+        high: '#ef4444',
+        moderate: '#f59e0b',
+        low: '#eab308',
+        info: '#22c55e'
+      };
+      
+      // Iconos según estado
+      const statusIcons = {
+        reported: '📝',
+        'in-progress': '⏳',
+        resolved: '✅',
+        unresolved: '❌'
+      };
+      
+      // Iconos según categoría
+      const categoryIcons = {
+        pest: '🐛',
+        nutrition: '🌱',
+        watering: '💧',
+        environment: '🌡️',
+        growth: '📏',
+        other: '❓'
+      };
+      
+      const createdDate = new Date(problem.createdAt).toLocaleDateString();
+      const createdTime = new Date(problem.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      
+      card.innerHTML = `
+        <div style="display: flex; justify-content: between; align-items: flex-start; margin-bottom: 10px;">
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+              <span style="background: ${severityColors[problem.severity]}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold;">
+                ${problem.severity.toUpperCase()}
+              </span>
+              <span style="background: #f3f4f6; padding: 2px 8px; border-radius: 12px; font-size: 0.8em;">
+                ${statusIcons[problem.status]} ${problem.status.replace('-', ' ').toUpperCase()}
+              </span>
+              <span style="background: #f3f4f6; padding: 2px 8px; border-radius: 12px; font-size: 0.8em;">
+                ${categoryIcons[problem.category]}
+              </span>
+            </div>
+            <h4 style="margin: 0 0 8px 0; color: #1f2937; font-weight: 600;">${problem.title}</h4>
+            ${problem.description ? `<p style="margin: 0 0 8px 0; color: #6b7280; font-size: 0.9em;">${problem.description}</p>` : ''}
+            ${problem.solution ? `<div style="background: #f0fdf4; padding: 8px; border-radius: 6px; margin-top: 8px;"><strong>Solución:</strong> ${problem.solution}</div>` : ''}
+            <div style="font-size: 0.8em; color: #9ca3af; margin-top: 8px;">
+              Creado: ${createdDate} ${createdTime}
+              ${problem.resolvedAt ? ` • Resuelto: ${new Date(problem.resolvedAt).toLocaleDateString()}` : ''}
+            </div>
+          </div>
+          <div style="display: flex; gap: 5px; margin-left: 10px;">
+            <button onclick="editProblem('${problem.id}')" style="background: #3b82f6; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8em;">
+              ✏️
+            </button>
+            <button onclick="deleteProblem('${problem.id}')" style="background: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8em;">
+              🗑️
+            </button>
+          </div>
+        </div>
+      `;
+      
+      return card;
+    }
+
+    // Filtrar problemas
+    function filterProblems() {
+      renderProblemsList();
+    }
+
+    // Resetear filtros
+    function resetFilters() {
+      document.getElementById('filterStatus').value = 'all';
+      document.getElementById('filterSeverity').value = 'all';
+      document.getElementById('filterCategory').value = 'all';
+    }
+
+    // Función para mostrar indicador de problemas activos en la interfaz principal
+    function updateProblemsIndicator() {
+      if (!selectedBitacora || !selectedBitacora.problems) return;
+      
+      const activeProblems = selectedBitacora.problems.filter(p => 
+        p.status !== 'resolved' && p.status !== 'unresolved'
+      ).length;
+      
+      const criticalProblems = selectedBitacora.problems.filter(p => 
+        p.severity === 'high' && p.status !== 'resolved'
+      ).length;
+      
+      // Buscar el botón de gestionar problemas y actualizar su texto
+      const problemButton = document.querySelector('button[onclick="showProblemsManager()"]');
+      if (problemButton) {
+        let buttonText = '🚨 Gestionar Problemas';
+        if (activeProblems > 0) {
+          buttonText += ` (${activeProblems})`;
+          if (criticalProblems > 0) {
+            buttonText += ` 🔴${criticalProblems}`;
+            problemButton.style.background = '#fef2f2';
+            problemButton.style.borderColor = '#ef4444';
+          } else {
+            problemButton.style.background = '#fffbeb';
+            problemButton.style.borderColor = '#f59e0b';
+          }
+        } else {
+          problemButton.style.background = '';
+          problemButton.style.borderColor = '';
+        }
+        problemButton.textContent = buttonText;
+      }
+    }
+
+    // ========== FUNCIONES PARA SECCIÓN DE PROBLEMAS ==========
+    
+    function renderProblemsSection() {
+      if (!selectedBitacora) return;
+      
+      loadProblems();
+      updateProblemStatsSection();
+      renderProblemsListSection();
+    }
+
+    function updateProblemStatsSection() {
+      const active = allProblems.filter(p => p.status !== 'resolved' && p.status !== 'unresolved').length;
+      const critical = allProblems.filter(p => p.severity === 'high' && p.status !== 'resolved').length;
+      const resolved = allProblems.filter(p => p.status === 'resolved').length;
+      
+      // Calcular tiempo promedio de resolución
+      const resolvedProblems = allProblems.filter(p => p.status === 'resolved' && p.resolvedAt && p.createdAt);
+      let avgTime = 0;
+      
+      if (resolvedProblems.length > 0) {
+        const totalHours = resolvedProblems.reduce((sum, problem) => {
+          const created = new Date(problem.createdAt);
+          const resolved = new Date(problem.resolvedAt);
+          const hours = (resolved - created) / (1000 * 60 * 60);
+          return sum + hours;
+        }, 0);
+        avgTime = Math.round(totalHours / resolvedProblems.length);
+      }
+      
+      document.getElementById('problemsActiveSection').textContent = active;
+      document.getElementById('problemsCriticalSection').textContent = critical;
+      document.getElementById('problemsResolvedSection').textContent = resolved;
+      document.getElementById('avgResolutionTimeSection').textContent = avgTime + 'h';
+    }
+
+    function renderProblemsListSection() {
+      const container = document.getElementById('problemsListSection');
+      container.innerHTML = '';
+      
+      if (allProblems.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #6b7280; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">No hay problemas reportados 🎉<br><small>¡Tu cultivo está en perfecto estado!</small></div>';
+        return;
+      }
+      
+      // Aplicar filtros
+      let filteredProblems = [...allProblems];
+      
+      const statusFilter = document.getElementById('filterStatusSection').value;
+      const severityFilter = document.getElementById('filterSeveritySection').value;
+      const categoryFilter = document.getElementById('filterCategorySection').value;
+      
+      if (statusFilter !== 'all') {
+        if (statusFilter === 'unresolved') {
+          filteredProblems = filteredProblems.filter(p => p.status !== 'resolved');
+        } else {
+          filteredProblems = filteredProblems.filter(p => p.status === statusFilter);
+        }
+      }
+      
+      if (severityFilter !== 'all') {
+        filteredProblems = filteredProblems.filter(p => p.severity === severityFilter);
+      }
+      
+      if (categoryFilter !== 'all') {
+        filteredProblems = filteredProblems.filter(p => p.category === categoryFilter);
+      }
+      
+      // Ordenar por fecha (más recientes primero)
+      filteredProblems.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      
+      if (filteredProblems.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #6b7280; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">No hay problemas que coincidan con los filtros</div>';
+        return;
+      }
+      
+      filteredProblems.forEach(problem => {
+        const problemCard = createProblemCard(problem);
+        container.appendChild(problemCard);
+      });
+    }
+
+    function filterProblemsSection() {
+      renderProblemsListSection();
+    }
+
+    function addNewProblemFromSection() {
+      // Abrir el modal original de problemas
+      showProblemsManager();
+    }
+
+    // Función para actualizar el indicador del botón de problemas
+    function updateProblemsButtonIndicator() {
+      if (!selectedBitacora || !selectedBitacora.problems) return;
+      
+      const activeProblems = selectedBitacora.problems.filter(p => 
+        p.status !== 'resolved' && p.status !== 'unresolved'
+      ).length;
+      
+      const criticalProblems = selectedBitacora.problems.filter(p => 
+        p.severity === 'high' && p.status !== 'resolved'
+      ).length;
+      
+      // Actualizar el texto del botón de problemas
+      const problemButton = document.getElementById('btn-problems');
+      if (problemButton) {
+        let buttonText = '🚨 Problemas';
+        let buttonStyle = '';
+        
+        if (activeProblems > 0) {
+          buttonText += ` (${activeProblems})`;
+          if (criticalProblems > 0) {
+            buttonText += ` 🔴`;
+            buttonStyle = 'background: #fef2f2; border-color: #ef4444; color: #dc2626;';
+          } else {
+            buttonStyle = 'background: #fffbeb; border-color: #f59e0b; color: #d97706;';
+          }
+        }
+        
+        problemButton.innerHTML = buttonText;
+        problemButton.style.cssText = buttonStyle;
+      }
+    }
+
+    // ========== FIN SISTEMA DE GESTIÓN DE PROBLEMAS ==========
   </script>
 </body>
 </html>

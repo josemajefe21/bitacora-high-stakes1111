@@ -204,4 +204,373 @@ body {
     padding-top: 90px !important; /* Espacio para el header fijo */
     padding-bottom: 0 !important;
   }
-} 
+}
+
+/* ========== ESTILOS PARA SISTEMA DE PROBLEMAS ========== */
+
+/* Botón de gestionar problemas */
+.button-small {
+  padding: 8px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  color: #374151;
+  font-size: 0.9em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.button-small:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+}
+
+/* Modal de problemas */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  width: 90%;
+  max-width: 800px;
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #6b7280;
+  font-weight: bold;
+}
+
+.close-modal:hover {
+  color: #374151;
+}
+
+/* Estadísticas de problemas */
+.problems-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+/* Formulario de nuevo problema */
+.new-problem-form {
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #e5e7eb;
+}
+
+.new-problem-form h3 {
+  margin-bottom: 15px;
+  color: #374151;
+  font-size: 1.1em;
+}
+
+/* Filtros de problemas */
+.problems-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.problems-filters select {
+  padding: 6px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: white;
+  color: #374151;
+  font-size: 0.9em;
+}
+
+/* Lista de problemas */
+.problems-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.problem-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.problem-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Estilos para la sección de información de bitácora */
+.bitacora-info h3 {
+  margin: 0;
+  color: #374151;
+  font-size: 1.2em;
+}
+
+/* Estilos para la sección de problemas */
+.problems-section h3 {
+  margin: 0;
+  color: #374151;
+  font-size: 1.2em;
+}
+
+.problems-stats-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.problems-filters-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.problems-list-section {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* Responsive para sección general */
+@media (max-width: 600px) {
+  .bitacora-info > div:first-child,
+  .problems-section > div:first-child {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+  
+  .bitacora-info .button-small,
+  .problems-section .button-small {
+    align-self: flex-end;
+    font-size: 0.8em !important;
+    padding: 6px 10px !important;
+  }
+  
+  .problems-stats-section {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .problems-filters-section {
+    flex-direction: column !important;
+  }
+  
+  .problems-filters-section select {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .problems-stats-section {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Responsive para problemas */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    margin: 10px;
+    max-height: 95vh;
+  }
+  
+  .new-problem-form > div:first-of-type {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+  
+  .problems-filters {
+    flex-direction: column;
+  }
+  
+  .problems-filters select {
+    width: 100%;
+  }
+  
+  .problems-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .problems-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .problem-card {
+    padding: 12px;
+  }
+  
+  .problem-card > div {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .problem-card > div > div:last-child {
+    margin-left: 0 !important;
+    margin-top: 10px;
+    align-self: flex-end;
+  }
+}
+
+/* ========== FIN ESTILOS SISTEMA DE PROBLEMAS ========== */
+
+/* ========== ESTILOS PARA SISTEMA DE IA ==========*/
+
+.weekly-summary {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #e6ffed 100%);
+  border-radius: 12px;
+  border: 1px solid #d1fae5;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.summary-item {
+  text-align: center;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.summary-item h4 {
+  margin: 0 0 8px 0;
+  font-size: 0.9em;
+  color: #374151;
+  font-weight: 600;
+}
+
+.summary-item div {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #22c55e;
+}
+
+.emotion-timeline {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.emotion-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.emotion-dot:hover {
+  transform: scale(1.3);
+}
+
+/* Animación pulse para el loading */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.ai-summary {
+  animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive para el resumen semanal */
+@media (max-width: 600px) {
+  .summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  
+  .summary-item {
+    padding: 8px;
+  }
+  
+  .summary-item h4 {
+    font-size: 0.8em;
+  }
+  
+  .summary-item div {
+    font-size: 1.2em;
+  }
+  
+  .ai-summary {
+    margin-top: 15px;
+    padding: 12px;
+  }
+  
+  .emotion-timeline {
+    gap: 2px;
+  }
+  
+  .emotion-dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* ========== FIN ESTILOS SISTEMA DE IA ========== */
