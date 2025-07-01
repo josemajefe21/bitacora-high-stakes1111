@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "alias": [
+    "bitacora-high-stakes.vercel.app"
+  ],
   "builds": [
     {
       "src": "*.html",
