@@ -1399,25 +1399,32 @@
         <button class="stage-btn" id="btn-problems" onclick="setStage('problems')">🚨 Problemas</button>
       </div>
 
-      <!-- Resumen Semanal -->
-      <div class="weekly-summary" id="weeklySummary">
-        <h3>Resumen Semanal</h3>
-        <div class="summary-grid">
-          <div class="summary-item">
-            <h4>Total Entradas</h4>
-            <div id="totalEntries">0</div>
+      <!-- Resumen Semanal Mejorado -->
+      <div class="weekly-summary" id="weeklySummary" style="display: block !important; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h3 style="margin: 0; color: #374151;">📊 Resumen Semanal</h3>
+          <button onclick="forceUpdateWeeklySummary()" style="padding: 6px 12px; font-size: 0.8em; background: #22c55e; color: white; border: none; border-radius: 6px; cursor: pointer;">
+            🔄 Actualizar
+          </button>
+        </div>
+        
+        <div class="summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin-bottom: 15px;">
+          <div class="summary-item" style="text-align: center; padding: 12px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+            <h4 style="margin: 0 0 8px 0; font-size: 0.85em; color: #6b7280; font-weight: 600;">📝 Total Entradas</h4>
+            <div id="totalEntries" style="font-size: 1.8em; font-weight: bold; color: #22c55e;">0</div>
           </div>
-          <div class="summary-item">
-            <h4>Promedio Emocional</h4>
-            <div id="averageMood">-</div>
+          <div class="summary-item" style="text-align: center; padding: 12px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+            <h4 style="margin: 0 0 8px 0; font-size: 0.85em; color: #6b7280; font-weight: 600;">😊 Promedio</h4>
+            <div id="averageMood" style="font-size: 1.1em; font-weight: bold; color: #3b82f6; line-height: 1.2;">-</div>
           </div>
-          <div class="summary-item">
-            <h4>Días con Riego</h4>
-            <div id="wateredDays">0</div>
+          <div class="summary-item" style="text-align: center; padding: 12px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+            <h4 style="margin: 0 0 8px 0; font-size: 0.85em; color: #6b7280; font-weight: 600;">💧 Días Riego</h4>
+            <div id="wateredDays" style="font-size: 1.8em; font-weight: bold; color: #0ea5e9;">0</div>
           </div>
         </div>
-        <div class="emotion-timeline" id="emotionTimeline">
-          <!-- La línea de tiempo se generará dinámicamente -->
+        
+        <div class="emotion-timeline" id="emotionTimeline" style="margin-bottom: 15px; min-height: 120px; background: #f8fafc; border-radius: 8px; padding: 10px; border: 1px solid #e2e8f0;">
+          <div style="text-align: center; color: #6b7280; padding: 40px 20px;">🔄 Cargando gráfico semanal...</div>
         </div>
         
         <!-- Resumen IA -->
@@ -2440,9 +2447,16 @@
       return selectedBitacora.entries[selectedStage] || [];
     }
 
-    // ✅ FUNCIÓN CORREGIDA: updateWeeklySummary sin errores
+    // 🚀 FUNCIÓN COMPLETAMENTE MEJORADA: updateWeeklySummary con debug y gráficos
     function updateWeeklySummary() {
-      if (!selectedBitacora) return;
+      console.log('🔄 INICIANDO updateWeeklySummary()...');
+      console.log('selectedBitacora:', !!selectedBitacora);
+      console.log('selectedStage:', selectedStage);
+      
+      if (!selectedBitacora) {
+        console.log('❌ No hay bitácora seleccionada');
+        return;
+      }
 
       const today = new Date();
       const weekStart = new Date(today);
@@ -2450,15 +2464,28 @@
 
       let weekEntries = [];
       
-      // ✅ LÓGICA SIMPLIFICADA: Mejor manejo de duplicados
+      // 🔍 LÓGICA MEJORADA: Mejor manejo y debug de datos
       if (selectedStage === 'general') {
+        console.log('📊 Procesando sección GENERAL - combinando todas las etapas');
+        
         // Recopilar todas las entradas
         const allEntries = [];
-        if (selectedBitacora.entries.vege) allEntries.push(...selectedBitacora.entries.vege);
-        if (selectedBitacora.entries.flora) allEntries.push(...selectedBitacora.entries.flora);
-        if (selectedBitacora.entries.general) allEntries.push(...selectedBitacora.entries.general);
+        if (selectedBitacora.entries.vege) {
+          allEntries.push(...selectedBitacora.entries.vege);
+          console.log('✅ Agregadas entradas VEGE:', selectedBitacora.entries.vege.length);
+        }
+        if (selectedBitacora.entries.flora) {
+          allEntries.push(...selectedBitacora.entries.flora);
+          console.log('✅ Agregadas entradas FLORA:', selectedBitacora.entries.flora.length);
+        }
+        if (selectedBitacora.entries.general) {
+          allEntries.push(...selectedBitacora.entries.general);
+          console.log('✅ Agregadas entradas GENERAL:', selectedBitacora.entries.general.length);
+        }
         
-        // ✅ CORRECCIÓN: Lógica simplificada de duplicados
+        console.log('📈 Total entradas encontradas:', allEntries.length);
+        
+        // ✅ ELIMINACIÓN DE DUPLICADOS mejorada
         const uniqueEntries = new Map();
         allEntries.forEach(entry => {
           if (!uniqueEntries.has(entry.date)) {
@@ -2466,29 +2493,62 @@
           }
         });
         
+        console.log('🔗 Entradas únicas después de eliminar duplicados:', uniqueEntries.size);
+        
         // Filtrar por semana actual
         weekEntries = Array.from(uniqueEntries.values()).filter(entry => {
           const entryDate = new Date(entry.date);
-          return entryDate >= weekStart && entryDate <= today;
+          const inWeek = entryDate >= weekStart && entryDate <= today;
+          if (inWeek) console.log('📅 Entrada en semana actual:', entry.date);
+          return inWeek;
         });
       } else {
-        // En otras etapas, usar solo entradas de esa etapa
-        weekEntries = getEntries().filter(entry => {
+        console.log('📊 Procesando etapa específica:', selectedStage);
+        const allEntriesStage = getEntries();
+        console.log('📈 Entradas en etapa:', allEntriesStage.length);
+        
+        weekEntries = allEntriesStage.filter(entry => {
           const entryDate = new Date(entry.date);
-          return entryDate >= weekStart && entryDate <= today;
+          const inWeek = entryDate >= weekStart && entryDate <= today;
+          if (inWeek) console.log('📅 Entrada en semana actual:', entry.date);
+          return inWeek;
         });
       }
 
-      // ✅ CORRECCIÓN: Verificar que elementos DOM existen
+      console.log('🎯 ENTRADAS FINALES DE LA SEMANA:', weekEntries.length);
+
+      // 🔍 VERIFICACIÓN DE ELEMENTOS DOM con debug
+      const weeklySummaryContainer = document.getElementById('weeklySummary');
       const totalEntriesEl = document.getElementById('totalEntries');
       const averageMoodEl = document.getElementById('averageMood');
       const wateredDaysEl = document.getElementById('wateredDays');
       const timelineEl = document.getElementById('emotionTimeline');
       
-      if (totalEntriesEl) totalEntriesEl.textContent = weekEntries.length;
+      console.log('🔍 Elementos DOM encontrados:');
+      console.log('- weeklySummary:', !!weeklySummaryContainer);
+      console.log('- totalEntries:', !!totalEntriesEl);
+      console.log('- averageMood:', !!averageMoodEl);
+      console.log('- wateredDays:', !!wateredDaysEl);
+      console.log('- emotionTimeline:', !!timelineEl);
       
-      // ✅ PROMEDIO EMOCIONAL MEJORADO
+      // 🎯 MOSTRAR EL RESUMEN SEMANAL
+      if (weeklySummaryContainer) {
+        weeklySummaryContainer.style.display = 'block';
+        console.log('✅ weeklySummary mostrado');
+      } else {
+        console.error('❌ NO SE ENCONTRÓ weeklySummary container');
+      }
+      
+      // 📊 ACTUALIZAR TOTAL DE ENTRADAS
+      if (totalEntriesEl) {
+        totalEntriesEl.textContent = weekEntries.length;
+        console.log('✅ Total entradas actualizado:', weekEntries.length);
+      }
+      
+      // 😊 PROMEDIO EMOCIONAL MEJORADO
       const moods = weekEntries.map(e => e.mood).filter(m => m && m >= 1 && m <= 4);
+      console.log('😊 Estados emocionales encontrados:', moods);
+      
       let avgMoodDisplay = '-';
       if (moods.length > 0) {
         const avgMood = moods.reduce((a, b) => a + b, 0) / moods.length;
@@ -2496,39 +2556,94 @@
         const moodTexts = ['Difícil', 'Regular', 'Bueno', 'Excelente'];
         const moodIndex = Math.max(0, Math.min(3, Math.round(avgMood) - 1));
         avgMoodDisplay = `${moodLabels[moodIndex]} ${moodTexts[moodIndex]} (${avgMood.toFixed(1)})`;
+        console.log('✅ Promedio emocional calculado:', avgMoodDisplay);
       }
-      if (averageMoodEl) averageMoodEl.textContent = avgMoodDisplay;
+      if (averageMoodEl) {
+        averageMoodEl.textContent = avgMoodDisplay;
+        console.log('✅ Promedio emocional actualizado en DOM');
+      }
       
-      // ✅ CONTEO DE RIEGO CORREGIDO - 100% preciso
+      // 💧 CONTEO DE RIEGO CORREGIDO - 100% preciso
       const uniqueWateredDates = new Set();
       weekEntries.forEach(entry => {
         if (entry.didWater === true) {
           uniqueWateredDates.add(entry.date);
+          console.log('💧 Día de riego encontrado:', entry.date);
         }
       });
-      if (wateredDaysEl) wateredDaysEl.textContent = uniqueWateredDates.size;
-
-      // ✅ Timeline emocional con verificación
-      if (timelineEl) {
-        const sortedEntries = weekEntries.sort((a, b) => new Date(a.date) - new Date(b.date));
-        timelineEl.innerHTML = sortedEntries.map(entry => {
-          const mood = moodStates.find(m => m.value === entry.mood);
-          return `<div class="emotion-dot" 
-                       style="background-color: ${mood?.color || '#e2e8f0'}"
-                       title="${entry.date} - ${mood?.label || 'Sin estado'} - ${entry.tasks?.substring(0, 30) || 'Sin tareas'}..."></div>`;
-        }).join('');
+      
+      console.log('💧 Días únicos de riego:', uniqueWateredDates.size);
+      if (wateredDaysEl) {
+        wateredDaysEl.textContent = uniqueWateredDates.size;
+        console.log('✅ Días de riego actualizados en DOM');
       }
 
-      // Generar resumen con IA si estamos en general y hay datos
+      // 🎨 TIMELINE EMOCIONAL CON GRÁFICO MEJORADO
+      if (timelineEl) {
+        const sortedEntries = weekEntries.sort((a, b) => new Date(a.date) - new Date(b.date));
+        
+        if (sortedEntries.length === 0) {
+          timelineEl.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 20px;">No hay datos de esta semana para mostrar</div>';
+        } else {
+          // 🎨 CREAR GRÁFICO VISUAL MEJORADO
+          timelineEl.innerHTML = `
+            <div style="margin-bottom: 10px; font-weight: 600; color: #374151;">📈 Timeline Semanal:</div>
+            <div style="display: flex; gap: 3px; align-items: end; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+              ${sortedEntries.map((entry, index) => {
+                const mood = moodStates.find(m => m.value === entry.mood);
+                const height = mood ? mood.value * 20 + 10 : 10;
+                const date = new Date(entry.date);
+                const dayName = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'][date.getDay()];
+                
+                return `
+                  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; min-height: 90px;">
+                    <div style="
+                      background-color: ${mood?.color || '#e2e8f0'};
+                      width: 100%;
+                      max-width: 25px;
+                      height: ${height}px;
+                      border-radius: 4px 4px 0 0;
+                      margin-bottom: 4px;
+                      position: relative;
+                      transition: all 0.2s;
+                      border: 2px solid ${entry.didWater ? '#22c55e' : 'transparent'};
+                    " title="${entry.date} - ${mood?.label || 'Sin estado'} - ${entry.didWater ? 'Con riego' : 'Sin riego'} - ${entry.tasks?.substring(0, 30) || 'Sin tareas'}...">
+                      ${entry.didWater ? '<div style="position: absolute; top: -8px; left: 50%; transform: translateX(-50%); font-size: 12px;">💧</div>' : ''}
+                    </div>
+                    <div style="font-size: 10px; color: #6b7280; text-align: center; line-height: 1.2;">
+                      ${dayName}<br/>
+                      ${date.getDate()}
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.8em; color: #6b7280;">
+              <span>📊 Altura = Estado emocional</span>
+              <span>💧 Borde verde = Riego</span>
+            </div>
+          `;
+        }
+        console.log('✅ Timeline gráfico actualizado');
+      }
+
+      // 🤖 GENERAR RESUMEN IA si estamos en general y hay datos
       if (selectedStage === 'general' && weekEntries.length > 0) {
+        console.log('🤖 Generando resumen IA...');
         generateAISummary(weekEntries);
       } else if (selectedStage === 'general') {
         // Ocultar resumen IA si no hay datos
         const aiSummary = document.getElementById('aiSummary');
-        if (aiSummary) aiSummary.style.display = 'none';
+        if (aiSummary) {
+          aiSummary.style.display = 'none';
+          console.log('🤖 Resumen IA ocultado (sin datos)');
+        }
       }
 
-      console.log(`✅ Resumen semanal CORREGIDO para ${selectedStage}: ${weekEntries.length} entradas únicas, ${uniqueWateredDates.size} días de riego`);
+      console.log(`🎉 RESUMEN SEMANAL COMPLETADO para ${selectedStage}:`);
+      console.log(`  📊 ${weekEntries.length} entradas únicas`);
+      console.log(`  💧 ${uniqueWateredDates.size} días de riego`);
+      console.log(`  😊 Promedio emocional: ${avgMoodDisplay}`);
     }
 
     // ===== SISTEMA DE IA PARA RESÚMENES SEMANALES =====
@@ -2855,6 +2970,33 @@
         generateAISummary(currentWeekEntries);
       }
     }
+    
+    // 🔄 FUNCIÓN PARA FORZAR ACTUALIZACIÓN DEL RESUMEN SEMANAL
+    function forceUpdateWeeklySummary() {
+      console.log('🔄 FORZANDO actualización del resumen semanal...');
+      
+      // Mostrar indicador de carga
+      const timelineEl = document.getElementById('emotionTimeline');
+      if (timelineEl) {
+        timelineEl.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 40px 20px;">🔄 Actualizando datos...</div>';
+      }
+      
+      // Actualizar después de un pequeño delay para mostrar el loading
+      setTimeout(() => {
+        updateWeeklySummary();
+      }, 200);
+    }
+    
+    // 📱 FUNCIÓN PARA VERIFICAR Y MOSTRAR RESUMEN EN MÓVIL
+    function ensureWeeklySummaryVisible() {
+      const weeklySummary = document.getElementById('weeklySummary');
+      if (weeklySummary) {
+        weeklySummary.style.display = 'block';
+        weeklySummary.style.visibility = 'visible';
+        weeklySummary.style.opacity = '1';
+        console.log('✅ Resumen semanal forzado a visible');
+      }
+    }
 
     function renderHistory() {
       const entries = getEntries().sort((a,b) => new Date(b.date) - new Date(a.date));
@@ -3168,6 +3310,8 @@
       selectedBitacora = userBitacoras.find(b => b.id === id);
       
       if (selectedBitacora) {
+        console.log('🎯 SELECCIONANDO BITÁCORA:', selectedBitacora.name);
+        
         // Inicializar variables globales con datos de la bitácora
         cepas = selectedBitacora.cepas || [];
         extractores = selectedBitacora.extractores || [];
@@ -3180,7 +3324,13 @@
         renderMoodButtons();
         renderHistory();
         renderCalendar();
-        updateWeeklySummary();
+        
+        // 🎯 ASEGURAR QUE EL RESUMEN SEMANAL SEA VISIBLE
+        setTimeout(() => {
+          ensureWeeklySummaryVisible();
+          updateWeeklySummary();
+          console.log('✅ Bitácora cargada, resumen semanal actualizado');
+        }, 300);
         
         // Actualizar indicador de problemas
         updateProblemsIndicator();
@@ -3204,10 +3354,16 @@
       floraStartContainer.style.display = stage === 'flora' ? 'block' : 'none';
       
       if (stage === 'general') {
+        console.log('📊 Cambiando a sección GENERAL');
         bitacoraInfo.style.display = 'block';
         problemsSection.style.display = 'none';
         if (entryForm) entryForm.style.display = 'none';
         renderBitacoraInfo();
+        // 🎯 FORZAR ACTUALIZACIÓN DEL RESUMEN SEMANAL
+        setTimeout(() => {
+          console.log('🔄 Actualizando resumen semanal para GENERAL...');
+          updateWeeklySummary();
+        }, 100);
       } else if (stage === 'problems') {
         console.log('🚨 Mostrando sección de problemas');
         bitacoraInfo.style.display = 'none';
@@ -3220,6 +3376,7 @@
         if (entryForm) entryForm.style.display = 'none';
         renderProblemsSection();
       } else {
+        console.log('📝 Cambiando a etapa:', stage);
         bitacoraInfo.style.display = 'none';
         problemsSection.style.display = 'none';
         if (entryForm) entryForm.style.display = 'block';
@@ -3227,6 +3384,9 @@
       
       renderHistory();
       renderCalendar();
+      
+      // 🎯 SIEMPRE ACTUALIZAR RESUMEN SEMANAL
+      console.log('🔄 Actualizando resumen semanal...');
       updateWeeklySummary();
     }
 

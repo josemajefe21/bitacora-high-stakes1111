@@ -456,18 +456,21 @@ body {
 
 /* ========== FIN ESTILOS SISTEMA DE PROBLEMAS ========== */
 
-/* ========== ESTILOS PARA SISTEMA DE IA ==========*/
+/* ========== ESTILOS PARA SISTEMA DE IA Y RESUMEN SEMANAL ========== */
 
 .weekly-summary {
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
   padding: 15px;
   background: linear-gradient(135deg, #f0fdf4 0%, #e6ffed 100%);
   border-radius: 12px;
   border: 1px solid #d1fae5;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .summary-grid {
-  display: grid;
+  display: grid !important;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 15px;
   margin-bottom: 15px;
@@ -475,31 +478,28 @@ body {
 
 .summary-item {
   text-align: center;
-  padding: 10px;
+  padding: 12px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 1px solid #e5e7eb;
 }
 
 .summary-item h4 {
   margin: 0 0 8px 0;
-  font-size: 0.9em;
-  color: #374151;
+  font-size: 0.85em;
+  color: #6b7280;
   font-weight: 600;
 }
 
-.summary-item div {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #22c55e;
-}
-
 .emotion-timeline {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 10px;
+  display: block !important;
+  margin-bottom: 15px;
+  min-height: 120px;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
 }
 
 .emotion-dot {
@@ -539,38 +539,84 @@ body {
   }
 }
 
-/* Responsive para el resumen semanal */
-@media (max-width: 600px) {
+/* 📱 RESPONSIVE MEJORADO PARA MÓVIL */
+@media (max-width: 768px) {
+  .weekly-summary {
+    margin: 10px 0 20px 0 !important;
+    padding: 12px !important;
+    display: block !important;
+    visibility: visible !important;
+  }
+  
   .summary-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
   }
   
   .summary-item {
-    padding: 8px;
+    padding: 10px 6px !important;
   }
   
   .summary-item h4 {
-    font-size: 0.8em;
-  }
-  
-  .summary-item div {
-    font-size: 1.2em;
-  }
-  
-  .ai-summary {
-    margin-top: 15px;
-    padding: 12px;
+    font-size: 0.75em !important;
+    margin-bottom: 6px !important;
   }
   
   .emotion-timeline {
-    gap: 2px;
+    min-height: 100px !important;
+    padding: 8px !important;
+    margin-bottom: 12px !important;
   }
   
-  .emotion-dot {
-    width: 10px;
-    height: 10px;
+  .ai-summary {
+    margin-top: 12px !important;
+    padding: 10px !important;
+    font-size: 0.9em !important;
   }
+}
+
+@media (max-width: 480px) {
+  .weekly-summary {
+    margin: 8px 0 15px 0 !important;
+    padding: 10px !important;
+  }
+  
+  .summary-grid {
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 6px !important;
+  }
+  
+  .summary-item {
+    padding: 8px 4px !important;
+  }
+  
+  .summary-item h4 {
+    font-size: 0.7em !important;
+    line-height: 1.2 !important;
+  }
+  
+  .emotion-timeline {
+    min-height: 80px !important;
+    padding: 6px !important;
+  }
+}
+
+/* 🔄 FORZAR VISIBILIDAD EN TODOS LOS CASOS */
+#weeklySummary {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+#totalEntries, #averageMood, #wateredDays {
+  display: block !important;
+  visibility: visible !important;
+}
+
+#emotionTimeline {
+  display: block !important;
+  visibility: visible !important;
+  min-height: 100px !important;
 }
 
 /* ========== FIN ESTILOS SISTEMA DE IA ========== */
