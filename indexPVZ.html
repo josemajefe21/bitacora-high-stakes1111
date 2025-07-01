@@ -528,117 +528,7 @@
       margin-top: 10px;
     }
 
-    .backup-controls {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      gap: 10px;
-      z-index: 100;
-    }
 
-    .backup-btn {
-      background: #f8fafc;
-      border: 2px solid #e5e7eb;
-      color: #374151;
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 14px;
-      transition: all 0.2s;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .backup-btn:hover {
-      background: #f1f5f9;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .backup-btn:active {
-      transform: translateY(0);
-    }
-
-    .backup-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-    }
-
-    .backup-modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 500px;
-      margin: 50px auto;
-      position: relative;
-    }
-
-    .backup-list {
-      max-height: 300px;
-      overflow-y: auto;
-      margin: 15px 0;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-    }
-
-    .backup-item {
-      padding: 10px;
-      border-bottom: 1px solid #e5e7eb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .backup-item:last-child {
-      border-bottom: none;
-    }
-
-    .backup-item:hover {
-      background: #f8fafc;
-    }
-
-    .backup-info {
-      font-size: 14px;
-      color: #374151;
-    }
-
-    .backup-actions {
-      display: flex;
-      gap: 5px;
-    }
-
-    .backup-actions button {
-      padding: 4px 8px;
-      font-size: 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      border: none;
-      background: #f1f5f9;
-      color: #374151;
-    }
-
-    .backup-actions button:hover {
-      background: #e5e7eb;
-    }
-
-    .backup-actions button.restore {
-      background: #4ade80;
-      color: white;
-    }
-
-    .backup-actions button.delete {
-      background: #f87171;
-      color: white;
-    }
 
     .credits {
       font-family: 'Quicksand', sans-serif;
@@ -1218,16 +1108,16 @@
     body.dark-mode .m2 { background-color: #ca8a04 !important; }
     body.dark-mode .m3 { background-color: #16a34a !important; }
     body.dark-mode .m4 { background-color: #166534 !important; }
-    body.dark-mode .backup-btn, body.dark-mode button, body.dark-mode .stage-btn, body.dark-mode .button-small {
+    body.dark-mode button, body.dark-mode .stage-btn, body.dark-mode .button-small {
       background: #334155 !important;
       color: #f3f4f6 !important;
       border-color: #4ade80 !important;
     }
-    body.dark-mode .backup-btn:hover, body.dark-mode button:hover, body.dark-mode .stage-btn:hover, body.dark-mode .button-small:hover {
+    body.dark-mode button:hover, body.dark-mode .stage-btn:hover, body.dark-mode .button-small:hover {
       background: #4ade80 !important;
       color: #18181b !important;
     }
-    body.dark-mode .modal, body.dark-mode .backup-modal {
+    body.dark-mode .modal {
       background: rgba(24,24,27,0.85) !important;
     }
     body.dark-mode input, body.dark-mode textarea, body.dark-mode select {
@@ -1279,7 +1169,7 @@
       color: #f3f4f6 !important;
       border: 2px solid #4ade80 !important;
     }
-    body.dark-mode .modal-content, body.dark-mode .edit-bitacora-content, body.dark-mode .backup-modal-content {
+    body.dark-mode .modal-content, body.dark-mode .edit-bitacora-content {
       background: #18181b !important;
       color: #f3f4f6 !important;
     }
@@ -1766,16 +1656,7 @@
       </div>
     </div>
 
-    <!-- Modal de respaldos -->
-    <div class="backup-modal" id="backupModal">
-      <div class="backup-modal-content">
-        <span class="close-modal" onclick="closeBackupModal()">&times;</span>
-        <h3>Respaldos Guardados</h3>
-        <div class="backup-list" id="backupList">
-          <!-- Los respaldos se generarán dinámicamente -->
-        </div>
-      </div>
-    </div>
+
 
     <!-- Modal de Gestión de Problemas -->
     <div class="modal" id="problemsModal" style="display:none;">
@@ -1911,7 +1792,7 @@
         <ul style="font-size: 1.1rem; color: #374151; margin-top: 1rem; list-style: none; padding-left: 0;">
           <li><span style='font-size:1.3em; margin-right:6px;'>🌱</span>Gestiona varios cultivos en un solo lugar.</li>
           <li><span style='font-size:1.3em; margin-right:6px;'>📊</span>Visualiza tu progreso con gráficos automáticos de emociones, riego y parámetros del agua.</li>
-          <li><span style='font-size:1.3em; margin-right:6px;'>💾</span>Guarda y recupera respaldos de tus datos fácilmente.</li>
+  
           <li><span style='font-size:1.3em; margin-right:6px;'>🔒</span>Comparte tus bitácoras o mantenlas privadas según prefieras.</li>
           <li><span style='font-size:1.3em; margin-right:6px;'>📱</span>Accede desde cualquier dispositivo, incluso sin conexión (PWA).</li>
           <li><span style='font-size:1.3em; margin-right:6px;'>📤</span>Exporta tus registros para llevar un control fuera de la app.</li>
