@@ -7,7 +7,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Bitácora">
-  <title>Bitácora High Stakes v2.1</title>
+  <title>Bitácora High Stakes v3.0 - Cloud Only</title>
   <!-- PWA Meta Tags -->
   <meta name="description" content="Bitácora para seguimiento de cultivos">
   <link rel="manifest" href="manifest.json">
@@ -1979,6 +1979,9 @@
       }
     }
 
+    // Variable global para almacenar bitácoras en memoria
+    let userBitacoras = [];
+
     // Cargar bitácoras del usuario
     async function loadUserBitacoras() {
       if (!currentUser) return;
@@ -1988,40 +1991,29 @@
         const bitacorasSnapshot = await db.collection('users').doc(currentUser.uid)
           .collection('bitacoras').get();
 
-        const bitacoras = [];
+        userBitacoras = [];
         bitacorasSnapshot.forEach(doc => {
-          bitacoras.push({
+          userBitacoras.push({
             id: doc.id,
             ...doc.data()
           });
         });
 
-        console.log('Bitácoras cargadas desde Firebase:', bitacoras.length);
-        
-        // Guardar en localStorage para compatibilidad
-        localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
+        console.log('Bitácoras cargadas desde Firebase:', userBitacoras.length);
         
         // Renderizar selector de bitácoras
         renderBitacoraSelector();
         
         // Seleccionar primera bitácora si existe
-        if (bitacoras.length > 0) {
-          selectBitacora(bitacoras[0].id);
+        if (userBitacoras.length > 0) {
+          selectBitacora(userBitacoras[0].id);
         } else {
           showNewBitacoraForm();
         }
 
       } catch (error) {
         console.error('Error al cargar bitácoras:', error);
-        // En caso de error, intentar cargar desde localStorage
-        const localBitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
-        if (localBitacoras.length > 0) {
-          console.log('Usando bitácoras desde localStorage como respaldo');
-          renderBitacoraSelector();
-          selectBitacora(localBitacoras[0].id);
-        } else {
-          showNewBitacoraForm();
-        }
+        alert('Error al cargar bitácoras. Verifica tu conexión a internet.');
       }
     }
 
@@ -2073,8 +2065,7 @@
 
     // Limpiar datos del usuario
     function clearUserData() {
-      localStorage.removeItem('bitacoras');
-      localStorage.removeItem('bitacora_backups');
+      userBitacoras = [];
       selectedBitacora = null;
       document.getElementById('mainContent').style.display = 'none';
       document.getElementById('bitacoraSelector').innerHTML = '';
@@ -2105,8 +2096,7 @@
       const color = selectedColor.style.backgroundColor;
       
       // Verificar si ya existe una bitácora con ese nombre
-      const existingBitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
-      if (existingBitacoras.some(b => b.name.toLowerCase() === name.toLowerCase())) {
+      if (userBitacoras.some(b => b.name.toLowerCase() === name.toLowerCase())) {
         alert('Ya existe una bitácora con ese nombre. Por favor, elige otro.');
         return;
       }
@@ -2182,10 +2172,9 @@
         await saveBitacoraToFirestore(newBitacora);
         console.log('Bitácora guardada exitosamente en Firebase');
         
-        // Actualizar localStorage
-        existingBitacoras.push(newBitacora);
-        localStorage.setItem('bitacoras', JSON.stringify(existingBitacoras));
-        console.log('Bitácora guardada en localStorage, total:', existingBitacoras.length);
+        // Actualizar array en memoria
+        userBitacoras.push(newBitacora);
+        console.log('Bitácora agregada a memoria, total:', userBitacoras.length);
         
         // Limpiar formulario
         document.getElementById('newBitacoraName').value = '';
@@ -2236,17 +2225,15 @@
       };
 
       try {
-        // Actualizar en localStorage
-        const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
-        const bitacoraIndex = bitacoras.findIndex(b => b.id === selectedBitacora.id);
+        // Actualizar en memoria
+        const bitacoraIndex = userBitacoras.findIndex(b => b.id === selectedBitacora.id);
         
         if (bitacoraIndex !== -1) {
-          let entries = bitacoras[bitacoraIndex].entries[selectedStage].filter(e => e.date !== date);
+          let entries = userBitacoras[bitacoraIndex].entries[selectedStage].filter(e => e.date !== date);
           entries.push(entry);
-          bitacoras[bitacoraIndex].entries[selectedStage] = entries;
+          userBitacoras[bitacoraIndex].entries[selectedStage] = entries;
           
-          localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
-          selectedBitacora = bitacoras[bitacoraIndex];
+          selectedBitacora = userBitacoras[bitacoraIndex];
           
           // Guardar en Firestore
           await saveBitacoraToFirestore(selectedBitacora);
@@ -2349,7 +2336,6 @@
 
     function renderBitacoraSelector() {
       const container = document.getElementById('bitacoraSelector');
-      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
       
       container.innerHTML = '';
       
@@ -2362,7 +2348,7 @@
       newButton.onclick = toggleNewBitacoraForm;
       container.appendChild(newButton);
       
-      bitacoras.forEach(bitacora => {
+      userBitacoras.forEach(bitacora => {
         const div = document.createElement('div');
         div.className = `bitacora-card ${bitacora.id === selectedBitacora?.id ? 'active' : ''}`;
         div.style.backgroundColor = bitacora.color;
@@ -2597,8 +2583,7 @@
     }
 
     function selectBitacora(id) {
-      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
-      selectedBitacora = bitacoras.find(b => b.id === id);
+      selectedBitacora = userBitacoras.find(b => b.id === id);
       
       if (selectedBitacora) {
         // Inicializar variables globales con datos de la bitácora
@@ -2670,11 +2655,9 @@
     async function setFloraStart() {
       if (selectedBitacora && currentUser) {
         selectedBitacora.floraStart = document.getElementById('floraStart').value;
-        const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
-        const index = bitacoras.findIndex(b => b.id === selectedBitacora.id);
+        const index = userBitacoras.findIndex(b => b.id === selectedBitacora.id);
         if (index !== -1) {
-          bitacoras[index] = selectedBitacora;
-          localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
+          userBitacoras[index] = selectedBitacora;
           
           // Guardar en Firebase
           try {
@@ -2787,30 +2770,27 @@
         return;
       }
       
-      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
-      const index = bitacoras.findIndex(b => b.id === bitacoraId);
+      const index = userBitacoras.findIndex(b => b.id === bitacoraId);
       
       if (index !== -1) {
         // Verificar si el nuevo nombre ya existe
-        if (bitacoras.some(b => b.id !== bitacoraId && b.name.toLowerCase() === newName.toLowerCase())) {
+        if (userBitacoras.some(b => b.id !== bitacoraId && b.name.toLowerCase() === newName.toLowerCase())) {
           alert('Ya existe una bitácora con ese nombre. Por favor, elige otro.');
           return;
         }
         
-        bitacoras[index].name = newName;
-        bitacoras[index].color = selectedColor.style.backgroundColor;
-        bitacoras[index].isPublic = isPublic;
-        
-        localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
+        userBitacoras[index].name = newName;
+        userBitacoras[index].color = selectedColor.style.backgroundColor;
+        userBitacoras[index].isPublic = isPublic;
         
         if (selectedBitacora?.id === bitacoraId) {
-          selectedBitacora = bitacoras[index];
+          selectedBitacora = userBitacoras[index];
         }
         
         // Guardar en Firebase
         if (currentUser) {
           try {
-            await saveBitacoraToFirestore(bitacoras[index]);
+            await saveBitacoraToFirestore(userBitacoras[index]);
           } catch (error) {
             console.error('Error al guardar cambios en Firebase:', error);
           }
@@ -2821,18 +2801,27 @@
       }
     }
 
-    function deleteBitacora(id) {
-      const bitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
-      const newBitacoras = bitacoras.filter(b => b.id !== id);
+    async function deleteBitacora(id) {
+      if (!currentUser) return;
       
-      localStorage.setItem('bitacoras', JSON.stringify(newBitacoras));
-      
-      if (selectedBitacora?.id === id) {
-        selectedBitacora = null;
-        document.getElementById('mainContent').style.display = 'none';
+      try {
+        // Eliminar de Firebase
+        await db.collection('users').doc(currentUser.uid)
+          .collection('bitacoras').doc(id).delete();
+        
+        // Eliminar de memoria
+        userBitacoras = userBitacoras.filter(b => b.id !== id);
+        
+        if (selectedBitacora?.id === id) {
+          selectedBitacora = null;
+          document.getElementById('mainContent').style.display = 'none';
+        }
+        
+        renderBitacoraSelector();
+      } catch (error) {
+        console.error('Error al eliminar bitácora:', error);
+        alert('Error al eliminar la bitácora.');
       }
-      
-      renderBitacoraSelector();
     }
 
     function shareBitacora(bitacora) {
