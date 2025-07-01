@@ -7,7 +7,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Bitácora">
-  <title>Bitácora High Stakes</title>
+  <title>Bitácora High Stakes v2.1</title>
   <!-- PWA Meta Tags -->
   <meta name="description" content="Bitácora para seguimiento de cultivos">
   <link rel="manifest" href="manifest.json">
@@ -1984,6 +1984,7 @@
       if (!currentUser) return;
 
       try {
+        console.log('Cargando bitácoras del usuario:', currentUser.uid);
         const bitacorasSnapshot = await db.collection('users').doc(currentUser.uid)
           .collection('bitacoras').get();
 
@@ -1995,6 +1996,8 @@
           });
         });
 
+        console.log('Bitácoras cargadas desde Firebase:', bitacoras.length);
+        
         // Guardar en localStorage para compatibilidad
         localStorage.setItem('bitacoras', JSON.stringify(bitacoras));
         
@@ -2010,6 +2013,15 @@
 
       } catch (error) {
         console.error('Error al cargar bitácoras:', error);
+        // En caso de error, intentar cargar desde localStorage
+        const localBitacoras = JSON.parse(localStorage.getItem('bitacoras') || '[]');
+        if (localBitacoras.length > 0) {
+          console.log('Usando bitácoras desde localStorage como respaldo');
+          renderBitacoraSelector();
+          selectBitacora(localBitacoras[0].id);
+        } else {
+          showNewBitacoraForm();
+        }
       }
     }
 
@@ -2166,11 +2178,14 @@
 
       try {
         // Guardar en Firestore
+        console.log('Guardando nueva bitácora en Firebase:', newBitacora.name);
         await saveBitacoraToFirestore(newBitacora);
+        console.log('Bitácora guardada exitosamente en Firebase');
         
         // Actualizar localStorage
         existingBitacoras.push(newBitacora);
         localStorage.setItem('bitacoras', JSON.stringify(existingBitacoras));
+        console.log('Bitácora guardada en localStorage, total:', existingBitacoras.length);
         
         // Limpiar formulario
         document.getElementById('newBitacoraName').value = '';
