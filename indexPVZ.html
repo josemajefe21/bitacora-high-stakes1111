@@ -3188,8 +3188,14 @@
         if (entryForm) entryForm.style.display = 'none';
         renderBitacoraInfo();
       } else if (stage === 'problems') {
+        console.log('🚨 Mostrando sección de problemas');
         bitacoraInfo.style.display = 'none';
-        problemsSection.style.display = 'block';
+        if (problemsSection) {
+          problemsSection.style.display = 'block';
+          console.log('✅ problemsSection mostrada');
+        } else {
+          console.error('❌ problemsSection no encontrada');
+        }
         if (entryForm) entryForm.style.display = 'none';
         renderProblemsSection();
       } else {
@@ -4384,7 +4390,13 @@
       selectedBitacora.problems.push(newProblem);
       
       // Guardar automáticamente
-      autoSave();
+      if (currentUser) {
+        saveBitacoraToFirestore(selectedBitacora).then(() => {
+          console.log('✅ Problema guardado en Firebase');
+        }).catch(error => {
+          console.error('❌ Error guardando problema:', error);
+        });
+      }
       
       // Actualizar vista
       loadProblems();
@@ -4454,7 +4466,13 @@
       }
       
       // Guardar automáticamente
-      autoSave();
+      if (currentUser) {
+        saveBitacoraToFirestore(selectedBitacora).then(() => {
+          console.log('✅ Problema actualizado en Firebase');
+        }).catch(error => {
+          console.error('❌ Error actualizando problema:', error);
+        });
+      }
       
       // Actualizar vista
       loadProblems();
@@ -4485,7 +4503,13 @@
       selectedBitacora.problems.splice(problemIndex, 1);
       
       // Guardar automáticamente
-      autoSave();
+      if (currentUser) {
+        saveBitacoraToFirestore(selectedBitacora).then(() => {
+          console.log('✅ Problema eliminado en Firebase');
+        }).catch(error => {
+          console.error('❌ Error eliminando problema:', error);
+        });
+      }
       
       // Actualizar vista
       loadProblems();
@@ -4524,15 +4548,22 @@
         avgTime = Math.round(totalHours / resolvedProblems.length);
       }
       
-      document.getElementById('problemsActive').textContent = active;
-      document.getElementById('problemsCritical').textContent = critical;
-      document.getElementById('problemsResolved').textContent = resolved;
-      document.getElementById('avgResolutionTime').textContent = avgTime + 'h';
+      const activeEl = document.getElementById('problemsActive');
+      const criticalEl = document.getElementById('problemsCritical');
+      const resolvedEl = document.getElementById('problemsResolved');
+      const avgTimeEl = document.getElementById('avgResolutionTime');
+      
+      if (activeEl) activeEl.textContent = active;
+      if (criticalEl) criticalEl.textContent = critical;
+      if (resolvedEl) resolvedEl.textContent = resolved;
+      if (avgTimeEl) avgTimeEl.textContent = avgTime + 'h';
     }
 
     // Renderizar lista de problemas
     function renderProblemsList() {
       const container = document.getElementById('problemsList');
+      if (!container) return; // Elemento no existe, salir silenciosamente
+      
       container.innerHTML = '';
       
       if (allProblems.length === 0) {
@@ -4543,9 +4574,13 @@
       // Aplicar filtros
       let filteredProblems = [...allProblems];
       
-      const statusFilter = document.getElementById('filterStatus').value;
-      const severityFilter = document.getElementById('filterSeverity').value;
-      const categoryFilter = document.getElementById('filterCategory').value;
+      const statusFilterEl = document.getElementById('filterStatus');
+      const severityFilterEl = document.getElementById('filterSeverity');
+      const categoryFilterEl = document.getElementById('filterCategory');
+      
+      const statusFilter = statusFilterEl ? statusFilterEl.value : 'all';
+      const severityFilter = severityFilterEl ? severityFilterEl.value : 'all';
+      const categoryFilter = categoryFilterEl ? categoryFilterEl.value : 'all';
       
       if (statusFilter !== 'all') {
         if (statusFilter === 'unresolved') {
@@ -4662,9 +4697,13 @@
 
     // Resetear filtros
     function resetFilters() {
-      document.getElementById('filterStatus').value = 'all';
-      document.getElementById('filterSeverity').value = 'all';
-      document.getElementById('filterCategory').value = 'all';
+      const statusEl = document.getElementById('filterStatus');
+      const severityEl = document.getElementById('filterSeverity');
+      const categoryEl = document.getElementById('filterCategory');
+      
+      if (statusEl) statusEl.value = 'all';
+      if (severityEl) severityEl.value = 'all';
+      if (categoryEl) categoryEl.value = 'all';
     }
 
     // Función para mostrar indicador de problemas activos en la interfaz principal
@@ -4730,14 +4769,21 @@
         avgTime = Math.round(totalHours / resolvedProblems.length);
       }
       
-      document.getElementById('problemsActiveSection').textContent = active;
-      document.getElementById('problemsCriticalSection').textContent = critical;
-      document.getElementById('problemsResolvedSection').textContent = resolved;
-      document.getElementById('avgResolutionTimeSection').textContent = avgTime + 'h';
+      const activeSectionEl = document.getElementById('problemsActiveSection');
+      const criticalSectionEl = document.getElementById('problemsCriticalSection');
+      const resolvedSectionEl = document.getElementById('problemsResolvedSection');
+      const avgTimeSectionEl = document.getElementById('avgResolutionTimeSection');
+      
+      if (activeSectionEl) activeSectionEl.textContent = active;
+      if (criticalSectionEl) criticalSectionEl.textContent = critical;
+      if (resolvedSectionEl) resolvedSectionEl.textContent = resolved;
+      if (avgTimeSectionEl) avgTimeSectionEl.textContent = avgTime + 'h';
     }
 
     function renderProblemsListSection() {
       const container = document.getElementById('problemsListSection');
+      if (!container) return; // Elemento no existe, salir silenciosamente
+      
       container.innerHTML = '';
       
       if (allProblems.length === 0) {
@@ -4748,9 +4794,13 @@
       // Aplicar filtros
       let filteredProblems = [...allProblems];
       
-      const statusFilter = document.getElementById('filterStatusSection').value;
-      const severityFilter = document.getElementById('filterSeveritySection').value;
-      const categoryFilter = document.getElementById('filterCategorySection').value;
+      const statusFilterEl = document.getElementById('filterStatusSection');
+      const severityFilterEl = document.getElementById('filterSeveritySection');
+      const categoryFilterEl = document.getElementById('filterCategorySection');
+      
+      const statusFilter = statusFilterEl ? statusFilterEl.value : 'all';
+      const severityFilter = severityFilterEl ? severityFilterEl.value : 'all';
+      const categoryFilter = categoryFilterEl ? categoryFilterEl.value : 'all';
       
       if (statusFilter !== 'all') {
         if (statusFilter === 'unresolved') {
