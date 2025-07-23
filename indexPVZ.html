@@ -1246,8 +1246,40 @@
   </div>
 
   <div class="container">
-    <div class="header-bar" style="display: flex; align-items: center; gap: 16px; justify-content: flex-end; flex-wrap: wrap;">
-      <!-- Información del Usuario -->
+    <div class="header-bar" style="display: flex; align-items: center; gap: 16px; justify-content: space-between; flex-wrap: wrap;">
+      <!-- Controles de Papelera y Ayuda (lado izquierdo) -->
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <button id="trashButton" onclick="showTrashManager()" style="
+          background: #f87171;
+          color: white;
+          border: none;
+          padding: 8px 12px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: bold;
+          display: none;
+          align-items: center;
+          gap: 5px;
+          transition: all 0.2s;
+        " title="Ver bitácoras eliminadas (se conservan 7 días)">
+          🗑️ Papelera
+        </button>
+        
+        <button onclick="showHelpModal()" style="
+          background: #0ea5e9;
+          color: white;
+          border: none;
+          padding: 8px 12px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+        " title="Ayuda">
+          ❓ Ayuda
+        </button>
+      </div>
+      
+      <!-- Información del Usuario (lado derecho) -->
       <div class="user-info" id="userInfo" style="display: none; margin-left: 10px;">
         <div class="user-avatar" id="userAvatar">U</div>
         <div class="user-details">
@@ -1399,12 +1431,34 @@
         <button class="stage-btn" id="btn-problems" onclick="setStage('problems')">🚨 Problemas</button>
       </div>
 
-      <!-- Resumen Semanal Mejorado -->
+      <!-- Resumen Semanal Mejorado con Navegación -->
       <div class="weekly-summary" id="weeklySummary" style="display: block !important; margin-bottom: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
           <h3 style="margin: 0; color: #374151;">📊 Resumen Semanal</h3>
-          <button onclick="forceUpdateWeeklySummary()" style="padding: 6px 12px; font-size: 0.8em; background: #22c55e; color: white; border: none; border-radius: 6px; cursor: pointer;">
-            🔄 Actualizar
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <button onclick="forceUpdateWeeklySummary()" style="padding: 6px 12px; font-size: 0.8em; background: #22c55e; color: white; border: none; border-radius: 6px; cursor: pointer;">
+              🔄 Actualizar
+            </button>
+          </div>
+        </div>
+        
+        <!-- Navegación de Semanas -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: white; border-radius: 8px; padding: 10px; border: 1px solid #e5e7eb;">
+          <button onclick="changeWeek(-1)" style="padding: 8px 12px; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 0.9em;">
+            ⬅️ Anterior
+          </button>
+          
+          <div style="text-align: center; flex: 1; margin: 0 10px;">
+            <div id="currentWeekDisplay" style="font-weight: 600; color: #374151; font-size: 0.95em;">
+              Semana Actual
+            </div>
+            <div id="currentWeekDates" style="font-size: 0.8em; color: #6b7280; margin-top: 2px;">
+              <!-- Las fechas se generarán aquí -->
+            </div>
+          </div>
+          
+          <button onclick="changeWeek(1)" id="nextWeekBtn" style="padding: 8px 12px; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 0.9em;">
+            Siguiente ➡️
           </button>
         </div>
         
@@ -1844,6 +1898,10 @@
     let luces = [];
     let extractores = [];
     let cepas = [];                 // ✅ MOVIDA A GLOBAL DESDE FUNCIÓN
+    
+    // 📅 VARIABLES PARA NAVEGACIÓN DE SEMANAS
+    let currentWeekOffset = 0;      // 0 = semana actual, -1 = semana anterior, etc.
+    let viewingDate = new Date();   // Fecha que estamos viendo actualmente
 
     const moodStates = [
       { value: 1, icon: '😞', label: 'Mal día', color: '#f87171' },
@@ -1997,6 +2055,7 @@
       const userAvatar = document.getElementById('userAvatar');
       const userName = document.getElementById('userName');
       const userEmail = document.getElementById('userEmail');
+      const trashButton = document.getElementById('trashButton');
 
       // Mostrar información del usuario
       userInfo.style.display = 'flex';
@@ -2008,10 +2067,26 @@
       // Nombre y email
       userName.textContent = displayName;
       userEmail.textContent = user.email;
+      
+      // Mostrar botón de papelera para usuarios autenticados
+      if (trashButton) {
+        trashButton.style.display = 'flex';
+      }
+      
+      // Inicializar limpieza automática de papelera
+      initializeTrashCleanup();
     }
 
     function hideUserInfo() {
-      document.getElementById('userInfo').style.display = 'none';
+      const userInfo = document.getElementById('userInfo');
+      const trashButton = document.getElementById('trashButton');
+      
+      userInfo.style.display = 'none';
+      
+      // Ocultar botón de papelera para usuarios no autenticados
+      if (trashButton) {
+        trashButton.style.display = 'none';
+      }
     }
 
     function showLogin() {
@@ -2447,20 +2522,29 @@
       return selectedBitacora.entries[selectedStage] || [];
     }
 
-    // 🚀 FUNCIÓN COMPLETAMENTE MEJORADA: updateWeeklySummary con debug y gráficos
-    function updateWeeklySummary() {
+    // 🚀 FUNCIÓN COMPLETAMENTE MEJORADA: updateWeeklySummary con navegación de semanas
+    function updateWeeklySummary(targetDate = null) {
       console.log('🔄 INICIANDO updateWeeklySummary()...');
       console.log('selectedBitacora:', !!selectedBitacora);
       console.log('selectedStage:', selectedStage);
+      console.log('currentWeekOffset:', currentWeekOffset);
       
       if (!selectedBitacora) {
         console.log('❌ No hay bitácora seleccionada');
         return;
       }
 
-      const today = new Date();
-      const weekStart = new Date(today);
-      weekStart.setDate(today.getDate() - today.getDay());
+      // 📅 CALCULAR FECHAS DE LA SEMANA (actual o seleccionada)
+      const baseDate = targetDate || new Date();
+      baseDate.setDate(baseDate.getDate() + (currentWeekOffset * 7));
+      
+      const weekStart = new Date(baseDate);
+      weekStart.setDate(baseDate.getDate() - baseDate.getDay());
+      
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 6);
+      
+      console.log('📅 Semana:', weekStart.toDateString(), 'hasta', weekEnd.toDateString());
 
       let weekEntries = [];
       
@@ -2495,11 +2579,11 @@
         
         console.log('🔗 Entradas únicas después de eliminar duplicados:', uniqueEntries.size);
         
-        // Filtrar por semana actual
+        // Filtrar por semana seleccionada
         weekEntries = Array.from(uniqueEntries.values()).filter(entry => {
           const entryDate = new Date(entry.date);
-          const inWeek = entryDate >= weekStart && entryDate <= today;
-          if (inWeek) console.log('📅 Entrada en semana actual:', entry.date);
+          const inWeek = entryDate >= weekStart && entryDate <= weekEnd;
+          if (inWeek) console.log('📅 Entrada en semana:', entry.date);
           return inWeek;
         });
       } else {
@@ -2509,8 +2593,8 @@
         
         weekEntries = allEntriesStage.filter(entry => {
           const entryDate = new Date(entry.date);
-          const inWeek = entryDate >= weekStart && entryDate <= today;
-          if (inWeek) console.log('📅 Entrada en semana actual:', entry.date);
+          const inWeek = entryDate >= weekStart && entryDate <= weekEnd;
+          if (inWeek) console.log('📅 Entrada en semana:', entry.date);
           return inWeek;
         });
       }
@@ -2983,6 +3067,7 @@
       
       // Actualizar después de un pequeño delay para mostrar el loading
       setTimeout(() => {
+        updateWeekDisplay(); // Actualizar display de fechas
         updateWeeklySummary();
       }, 200);
     }
@@ -2995,6 +3080,78 @@
         weeklySummary.style.visibility = 'visible';
         weeklySummary.style.opacity = '1';
         console.log('✅ Resumen semanal forzado a visible');
+      }
+    }
+
+    // 📅 FUNCIONES DE NAVEGACIÓN DE SEMANAS
+    function changeWeek(direction) {
+      console.log('📅 Cambiando semana:', direction > 0 ? 'siguiente' : 'anterior');
+      
+      if (direction > 0) {
+        // No permitir ir al futuro más allá de la semana actual
+        if (currentWeekOffset >= 0) {
+          console.log('❌ No se puede ir más al futuro de la semana actual');
+          return;
+        }
+        currentWeekOffset++;
+      } else {
+        currentWeekOffset--;
+      }
+      
+      console.log('📅 Nuevo offset:', currentWeekOffset);
+      updateWeekDisplay();
+      updateWeeklySummary();
+    }
+
+    function updateWeekDisplay() {
+      const today = new Date();
+      const viewingDate = new Date(today);
+      viewingDate.setDate(today.getDate() + (currentWeekOffset * 7));
+      
+      const weekStart = new Date(viewingDate);
+      weekStart.setDate(viewingDate.getDate() - viewingDate.getDay());
+      
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 6);
+      
+      // Formatear fechas
+      const formatDate = (date) => {
+        return date.toLocaleDateString('es-ES', { 
+          month: 'short', 
+          day: 'numeric' 
+        });
+      };
+      
+      // Actualizar display
+      const displayEl = document.getElementById('currentWeekDisplay');
+      const datesEl = document.getElementById('currentWeekDates');
+      const nextBtn = document.getElementById('nextWeekBtn');
+      
+      if (displayEl) {
+        if (currentWeekOffset === 0) {
+          displayEl.textContent = 'Semana Actual';
+        } else if (currentWeekOffset === -1) {
+          displayEl.textContent = 'Semana Pasada';
+        } else {
+          displayEl.textContent = `${Math.abs(currentWeekOffset)} semanas atrás`;
+        }
+      }
+      
+      if (datesEl) {
+        datesEl.textContent = `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
+      }
+      
+      // Habilitar/deshabilitar botón siguiente
+      if (nextBtn) {
+        if (currentWeekOffset >= 0) {
+          nextBtn.style.opacity = '0.5';
+          nextBtn.style.cursor = 'not-allowed';
+          nextBtn.disabled = true;
+        } else {
+          nextBtn.style.opacity = '1';
+          nextBtn.style.cursor = 'pointer';
+          nextBtn.disabled = false;
+        }
       }
     }
 
@@ -3318,6 +3475,9 @@
         luces = selectedBitacora.luces || [];
         tipoLuz = selectedBitacora.tipoLuz || '';
         
+        // Resetear navegación de semanas a la semana actual
+        currentWeekOffset = 0;
+        
         document.getElementById('mainContent').style.display = 'block';
         renderBitacoraSelector();
         setStage('vege');
@@ -3328,6 +3488,7 @@
         // 🎯 ASEGURAR QUE EL RESUMEN SEMANAL SEA VISIBLE
         setTimeout(() => {
           ensureWeeklySummaryVisible();
+          updateWeekDisplay(); // Inicializar display de navegación de semanas
           updateWeeklySummary();
           console.log('✅ Bitácora cargada, resumen semanal actualizado');
         }, 300);
@@ -3387,6 +3548,11 @@
       
       // 🎯 SIEMPRE ACTUALIZAR RESUMEN SEMANAL
       console.log('🔄 Actualizando resumen semanal...');
+      // Resetear a semana actual cuando se cambia de etapa
+      if (currentWeekOffset !== 0) {
+        currentWeekOffset = 0;
+        updateWeekDisplay();
+      }
       updateWeeklySummary();
     }
 
@@ -5065,6 +5231,602 @@
     }
 
     // ========== FIN SISTEMA DE GESTIÓN DE PROBLEMAS ==========
+
+    // ========== SISTEMA DE PAPELERA PARA BITÁCORAS ==========
+    
+    // Mover bitácora a papelera en lugar de eliminar permanentemente
+    async function moveToBitacoraTrash(id) {
+      if (!currentUser) return;
+      
+      try {
+        // Encontrar la bitácora a eliminar
+        const bitacoraToDelete = userBitacoras.find(b => b.id === id);
+        if (!bitacoraToDelete) {
+          alert('Bitácora no encontrada');
+          return;
+        }
+        
+        console.log('🗑️ Moviendo bitácora a papelera:', bitacoraToDelete.name);
+        
+        // Crear objeto para la papelera
+        const trashedBitacora = {
+          ...bitacoraToDelete,
+          deletedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          deletedTimestamp: new Date().toISOString(), // Para cálculos locales
+          originalId: bitacoraToDelete.id
+        };
+        
+        // Mover a la colección 'trash' en Firebase
+        await db.collection('users').doc(currentUser.uid)
+          .collection('trash').doc(bitacoraToDelete.id).set(trashedBitacora);
+        
+        // Eliminar de la colección principal
+        await db.collection('users').doc(currentUser.uid)
+          .collection('bitacoras').doc(id).delete();
+        
+        // Eliminar de memoria
+        userBitacoras = userBitacoras.filter(b => b.id !== id);
+        
+        // Si era la bitácora seleccionada, desseleccionar
+        if (selectedBitacora?.id === id) {
+          selectedBitacora = null;
+          document.getElementById('mainContent').style.display = 'none';
+        }
+        
+        renderBitacoraSelector();
+        
+        // Mostrar mensaje con opción de deshacer
+        showUndoDeleteMessage(bitacoraToDelete.name, id);
+        
+        console.log('✅ Bitácora movida a papelera exitosamente');
+        
+      } catch (error) {
+        console.error('Error al mover bitácora a papelera:', error);
+        alert('Error al eliminar la bitácora. Inténtalo de nuevo.');
+      }
+    }
+    
+    // Mostrar mensaje de deshacer eliminación
+    function showUndoDeleteMessage(bitacoraName, bitacoraId) {
+      const messageDiv = document.createElement('div');
+      messageDiv.id = 'undoDeleteMessage';
+      messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #f87171;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        z-index: 2000;
+        max-width: 350px;
+        font-size: 14px;
+        line-height: 1.4;
+      `;
+      
+      messageDiv.innerHTML = `
+        <div style="margin-bottom: 10px;">
+          <strong>📂 Bitácora "${bitacoraName}" movida a papelera</strong>
+        </div>
+        <div style="margin-bottom: 10px;">
+          Se eliminará permanentemente en 7 días
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button onclick="undoDeleteBitacora('${bitacoraId}')" style="
+            background: white;
+            color: #f87171;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+          ">↩️ Deshacer</button>
+          <button onclick="showTrashManager()" style="
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid white;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+          ">🗑️ Ver Papelera</button>
+          <button onclick="closeUndoMessage()" style="
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 16px;
+          ">✕</button>
+        </div>
+      `;
+      
+      document.body.appendChild(messageDiv);
+      
+      // Auto-ocultar después de 10 segundos
+      setTimeout(() => {
+        closeUndoMessage();
+      }, 10000);
+    }
+    
+    // Cerrar mensaje de deshacer
+    function closeUndoMessage() {
+      const message = document.getElementById('undoDeleteMessage');
+      if (message) {
+        message.remove();
+      }
+    }
+    
+    // Deshacer eliminación - restaurar bitácora inmediatamente
+    async function undoDeleteBitacora(bitacoraId) {
+      if (!currentUser) return;
+      
+      try {
+        console.log('↩️ Deshaciendo eliminación de bitácora:', bitacoraId);
+        
+        // Obtener bitácora de la papelera
+        const trashedDoc = await db.collection('users').doc(currentUser.uid)
+          .collection('trash').doc(bitacoraId).get();
+        
+        if (!trashedDoc.exists) {
+          alert('La bitácora ya no está disponible para restaurar');
+          return;
+        }
+        
+        const trashedData = trashedDoc.data();
+        
+        // Crear bitácora restaurada (remover campos de papelera)
+        const restoredBitacora = { ...trashedData };
+        delete restoredBitacora.deletedAt;
+        delete restoredBitacora.deletedTimestamp;
+        delete restoredBitacora.originalId;
+        
+        // Restaurar a la colección principal
+        await db.collection('users').doc(currentUser.uid)
+          .collection('bitacoras').doc(bitacoraId).set(restoredBitacora);
+        
+        // Eliminar de papelera
+        await db.collection('users').doc(currentUser.uid)
+          .collection('trash').doc(bitacoraId).delete();
+        
+        // Recargar bitácoras del usuario
+        await loadUserBitacoras();
+        
+        closeUndoMessage();
+        
+        alert(`✅ Bitácora "${trashedData.name}" restaurada exitosamente`);
+        console.log('✅ Bitácora restaurada exitosamente');
+        
+      } catch (error) {
+        console.error('Error al restaurar bitácora:', error);
+        alert('Error al restaurar la bitácora. Inténtalo de nuevo.');
+      }
+    }
+    
+    // Gestor de papelera - mostrar bitácoras eliminadas
+    async function showTrashManager() {
+      if (!currentUser) {
+        alert('Debes iniciar sesión para ver la papelera');
+        return;
+      }
+      
+      try {
+        console.log('🗑️ Cargando gestor de papelera...');
+        
+        // Obtener bitácoras de la papelera
+        const trashSnapshot = await db.collection('users').doc(currentUser.uid)
+          .collection('trash').get();
+        
+        const trashedBitacoras = [];
+        trashSnapshot.forEach(doc => {
+          const data = doc.data();
+          trashedBitacoras.push({
+            id: doc.id,
+            ...data,
+            // Calcular días restantes
+            deletedDate: data.deletedTimestamp ? new Date(data.deletedTimestamp) : new Date(),
+            daysLeft: data.deletedTimestamp ? 
+              Math.max(0, 7 - Math.floor((new Date() - new Date(data.deletedTimestamp)) / (1000 * 60 * 60 * 24))) : 7
+          });
+        });
+        
+        // Limpiar bitácoras que ya expiraron (más de 7 días)
+        const expiredBitacoras = trashedBitacoras.filter(b => b.daysLeft <= 0);
+        for (const expired of expiredBitacoras) {
+          await permanentlyDeleteBitacora(expired.id, false); // false = no mostrar confirmación
+        }
+        
+        // Filtrar solo las que aún están válidas
+        const validTrashedBitacoras = trashedBitacoras.filter(b => b.daysLeft > 0);
+        
+        renderTrashManagerModal(validTrashedBitacoras);
+        
+      } catch (error) {
+        console.error('Error al cargar papelera:', error);
+        alert('Error al cargar la papelera');
+      }
+    }
+    
+    // Renderizar modal del gestor de papelera
+    function renderTrashManagerModal(trashedBitacoras) {
+      // Crear modal si no existe
+      let modal = document.getElementById('trashManagerModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'trashManagerModal';
+        modal.style.cssText = `
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.7);
+          z-index: 1500;
+          overflow-y: auto;
+        `;
+        document.body.appendChild(modal);
+      }
+      
+      modal.innerHTML = `
+        <div style="
+          background: white;
+          margin: 40px auto;
+          padding: 30px;
+          border-radius: 12px;
+          max-width: 700px;
+          position: relative;
+        ">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h2 style="margin: 0; color: #374151; display: flex; align-items: center; gap: 10px;">
+              🗑️ Papelera de Bitácoras
+            </h2>
+            <button onclick="closeTrashManager()" style="
+              background: none;
+              border: none;
+              font-size: 24px;
+              cursor: pointer;
+              color: #6b7280;
+            ">✕</button>
+          </div>
+          
+          <div style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+            <div style="color: #92400e; font-weight: bold; margin-bottom: 5px;">
+              ⚠️ Sistema de Protección Activado
+            </div>
+            <div style="color: #92400e; font-size: 14px;">
+              Las bitácoras eliminadas se conservan por 7 días antes de eliminarse permanentemente.
+              Puedes restaurarlas en cualquier momento durante este período.
+            </div>
+          </div>
+          
+          <div id="trashContent">
+            ${trashedBitacoras.length === 0 ? `
+              <div style="text-align: center; padding: 40px; color: #6b7280;">
+                <div style="font-size: 48px; margin-bottom: 15px;">🗑️</div>
+                <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Papelera vacía</div>
+                <div>No hay bitácoras eliminadas</div>
+              </div>
+            ` : `
+              <div style="margin-bottom: 20px; color: #6b7280; font-size: 14px;">
+                Total: ${trashedBitacoras.length} bitácora${trashedBitacoras.length !== 1 ? 's' : ''} en papelera
+              </div>
+              
+              ${trashedBitacoras.map(bitacora => `
+                <div style="
+                  border: 1px solid #e5e7eb;
+                  border-radius: 8px;
+                  padding: 20px;
+                  margin-bottom: 15px;
+                  background: #f9fafb;
+                ">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                    <div>
+                      <div style="
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 4px;
+                        background-color: ${bitacora.color || '#6b7280'};
+                        margin-right: 10px;
+                        vertical-align: middle;
+                      "></div>
+                      <strong style="font-size: 16px; color: #374151;">${bitacora.name}</strong>
+                    </div>
+                    <div style="text-align: right; font-size: 12px; color: #6b7280;">
+                      ${bitacora.daysLeft > 1 ? 
+                        `⏰ ${bitacora.daysLeft} días restantes` : 
+                        bitacora.daysLeft === 1 ? 
+                        '⚠️ Último día' : 
+                        '🔥 Expira hoy'
+                      }
+                    </div>
+                  </div>
+                  
+                  <div style="color: #6b7280; font-size: 14px; margin-bottom: 15px;">
+                    Eliminada: ${bitacora.deletedDate.toLocaleDateString('es-ES', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </div>
+                  
+                  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button onclick="restoreBitacoraFromTrash('${bitacora.id}')" style="
+                      background: #10b981;
+                      color: white;
+                      border: none;
+                      padding: 8px 16px;
+                      border-radius: 6px;
+                      cursor: pointer;
+                      font-size: 14px;
+                      font-weight: bold;
+                    ">↩️ Restaurar</button>
+                    
+                    <button onclick="permanentlyDeleteBitacora('${bitacora.id}', true)" style="
+                      background: #ef4444;
+                      color: white;
+                      border: none;
+                      padding: 8px 16px;
+                      border-radius: 6px;
+                      cursor: pointer;
+                      font-size: 14px;
+                    ">🔥 Eliminar Permanentemente</button>
+                    
+                    <button onclick="previewTrashedBitacora('${bitacora.id}')" style="
+                      background: #6b7280;
+                      color: white;
+                      border: none;
+                      padding: 8px 16px;
+                      border-radius: 6px;
+                      cursor: pointer;
+                      font-size: 14px;
+                    ">👁️ Vista Previa</button>
+                  </div>
+                </div>
+              `).join('')}
+              
+              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                <button onclick="emptyTrash()" style="
+                  background: #dc2626;
+                  color: white;
+                  border: none;
+                  padding: 12px 20px;
+                  border-radius: 8px;
+                  cursor: pointer;
+                  font-weight: bold;
+                  width: 100%;
+                ">🔥 Vaciar Papelera Completamente</button>
+              </div>
+            `}
+          </div>
+        </div>
+      `;
+      
+      modal.style.display = 'block';
+    }
+    
+    // Cerrar gestor de papelera
+    function closeTrashManager() {
+      const modal = document.getElementById('trashManagerModal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
+    }
+    
+    // Restaurar bitácora desde papelera
+    async function restoreBitacoraFromTrash(bitacoraId) {
+      if (!currentUser) return;
+      
+      try {
+        console.log('↩️ Restaurando bitácora desde papelera:', bitacoraId);
+        
+        const trashedDoc = await db.collection('users').doc(currentUser.uid)
+          .collection('trash').doc(bitacoraId).get();
+        
+        if (!trashedDoc.exists) {
+          alert('La bitácora ya no está disponible');
+          return;
+        }
+        
+        const trashedData = trashedDoc.data();
+        
+        // Crear bitácora restaurada
+        const restoredBitacora = { ...trashedData };
+        delete restoredBitacora.deletedAt;
+        delete restoredBitacora.deletedTimestamp;
+        delete restoredBitacora.originalId;
+        
+        // Restaurar a colección principal
+        await db.collection('users').doc(currentUser.uid)
+          .collection('bitacoras').doc(bitacoraId).set(restoredBitacora);
+        
+        // Eliminar de papelera
+        await db.collection('users').doc(currentUser.uid)
+          .collection('trash').doc(bitacoraId).delete();
+        
+        // Recargar datos
+        await loadUserBitacoras();
+        
+        alert(`✅ Bitácora "${trashedData.name}" restaurada exitosamente`);
+        
+        // Recargar gestor de papelera
+        showTrashManager();
+        
+      } catch (error) {
+        console.error('Error al restaurar bitácora:', error);
+        alert('Error al restaurar la bitácora');
+      }
+    }
+    
+    // Eliminar bitácora permanentemente
+    async function permanentlyDeleteBitacora(bitacoraId, showConfirmation = true) {
+      if (!currentUser) return;
+      
+      if (showConfirmation) {
+        const confirmed = confirm(
+          '⚠️ ATENCIÓN: Esta acción eliminará la bitácora PERMANENTEMENTE.\n\n' +
+          'No podrá ser recuperada después de esta acción.\n\n' +
+          '¿Estás completamente seguro?'
+        );
+        
+        if (!confirmed) return;
+      }
+      
+      try {
+        console.log('🔥 Eliminando bitácora permanentemente:', bitacoraId);
+        
+        // Eliminar de papelera
+        await db.collection('users').doc(currentUser.uid)
+          .collection('trash').doc(bitacoraId).delete();
+        
+        if (showConfirmation) {
+          alert('✅ Bitácora eliminada permanentemente');
+          // Recargar gestor de papelera
+          showTrashManager();
+        }
+        
+      } catch (error) {
+        console.error('Error al eliminar bitácora permanentemente:', error);
+        if (showConfirmation) {
+          alert('Error al eliminar la bitácora permanentemente');
+        }
+      }
+    }
+    
+    // Vaciar papelera completamente
+    async function emptyTrash() {
+      if (!currentUser) return;
+      
+      const confirmed = confirm(
+        '🔥 ATENCIÓN: Esto eliminará TODAS las bitácoras de la papelera PERMANENTEMENTE.\n\n' +
+        'Esta acción no se puede deshacer.\n\n' +
+        '¿Estás completamente seguro?'
+      );
+      
+      if (!confirmed) return;
+      
+      try {
+        console.log('🔥 Vaciando papelera completamente...');
+        
+        const trashSnapshot = await db.collection('users').doc(currentUser.uid)
+          .collection('trash').get();
+        
+        const batch = db.batch();
+        trashSnapshot.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+        
+        await batch.commit();
+        
+        alert(`✅ Papelera vaciada: ${trashSnapshot.size} bitácoras eliminadas permanentemente`);
+        
+        // Recargar gestor de papelera
+        showTrashManager();
+        
+      } catch (error) {
+        console.error('Error al vaciar papelera:', error);
+        alert('Error al vaciar la papelera');
+      }
+    }
+    
+    // Vista previa de bitácora eliminada
+    async function previewTrashedBitacora(bitacoraId) {
+      if (!currentUser) return;
+      
+      try {
+        const trashedDoc = await db.collection('users').doc(currentUser.uid)
+          .collection('trash').doc(bitacoraId).get();
+        
+        if (!trashedDoc.exists) {
+          alert('Bitácora no disponible');
+          return;
+        }
+        
+        const bitacora = trashedDoc.data();
+        
+        // Calcular estadísticas básicas
+        const totalEntries = Object.values(bitacora.entries || {}).reduce((total, stageEntries) => {
+          return total + (Array.isArray(stageEntries) ? stageEntries.length : 0);
+        }, 0);
+        
+        const lastEntryDate = Object.values(bitacora.entries || {}).flat()
+          .sort((a, b) => new Date(b.date) - new Date(a.date))[0]?.date || 'Sin entradas';
+        
+        alert(
+          `📋 Vista Previa: ${bitacora.name}\n\n` +
+          `🎨 Color: ${bitacora.color}\n` +
+          `📝 Total de entradas: ${totalEntries}\n` +
+          `📅 Última entrada: ${lastEntryDate}\n` +
+          `🌱 Cepas: ${bitacora.cepas?.length || 0}\n` +
+          `🏠 Tipo: ${bitacora.tipoCultivo || 'No especificado'}\n\n` +
+          `¿Quieres restaurar esta bitácora?`
+        ) && restoreBitacoraFromTrash(bitacoraId);
+        
+      } catch (error) {
+        console.error('Error al obtener vista previa:', error);
+        alert('Error al obtener vista previa');
+      }
+    }
+    
+    // Limpieza automática de papelera (ejecutar periódicamente)
+    async function cleanupExpiredTrash() {
+      if (!currentUser) return;
+      
+      try {
+        const trashSnapshot = await db.collection('users').doc(currentUser.uid)
+          .collection('trash').get();
+        
+        const now = new Date();
+        let expiredCount = 0;
+        
+        const batch = db.batch();
+        
+        trashSnapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.deletedTimestamp) {
+            const deletedDate = new Date(data.deletedTimestamp);
+            const daysSinceDeleted = (now - deletedDate) / (1000 * 60 * 60 * 24);
+            
+            if (daysSinceDeleted >= 7) {
+              batch.delete(doc.ref);
+              expiredCount++;
+            }
+          }
+        });
+        
+        if (expiredCount > 0) {
+          await batch.commit();
+          console.log(`🧹 Limpieza automática: ${expiredCount} bitácoras expiradas eliminadas`);
+        }
+        
+      } catch (error) {
+        console.error('Error en limpieza automática:', error);
+      }
+    }
+
+    // Inicializar sistema de limpieza automática de papelera
+    function initializeTrashCleanup() {
+      // Ejecutar limpieza inmediata al inicializar
+      cleanupExpiredTrash();
+      
+      // Programar limpieza automática cada 24 horas (86400000 ms)
+      setInterval(() => {
+        console.log('🧹 Ejecutando limpieza automática programada...');
+        cleanupExpiredTrash();
+      }, 24 * 60 * 60 * 1000);
+      
+      console.log('✅ Sistema de limpieza automática de papelera inicializado');
+    }
+
+    // Función legacy que ahora usa el sistema de papelera
+    async function deleteBitacora(id) {
+      return await moveToBitacoraTrash(id);
+    }
   </script>
 </body>
 </html>

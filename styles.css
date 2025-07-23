@@ -619,4 +619,114 @@ body {
   min-height: 100px !important;
 }
 
+/* ========== ESTILOS NAVEGACIÓN DE SEMANAS ========== */
+
+/* Navegación de semanas */
+.week-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.week-nav-btn {
+  padding: 8px 12px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+}
+
+.week-nav-btn:hover:not(:disabled) {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.week-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.week-display {
+  text-align: center;
+  flex: 1;
+  margin: 0 10px;
+}
+
+.week-title {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95em;
+  margin: 0;
+}
+
+.week-dates {
+  font-size: 0.8em;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+/* 📱 RESPONSIVE PARA NAVEGACIÓN DE SEMANAS */
+@media (max-width: 768px) {
+  .week-navigation {
+    padding: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .week-nav-btn {
+    padding: 6px 10px;
+    font-size: 0.8em;
+    gap: 2px;
+  }
+  
+  .week-display {
+    margin: 0 8px;
+  }
+  
+  .week-title {
+    font-size: 0.85em;
+  }
+  
+  .week-dates {
+    font-size: 0.75em;
+  }
+}
+
+@media (max-width: 480px) {
+  .week-navigation {
+    padding: 6px;
+    flex-wrap: wrap;
+  }
+  
+  .week-nav-btn {
+    padding: 5px 8px;
+    font-size: 0.75em;
+  }
+  
+  .week-display {
+    order: -1;
+    width: 100%;
+    margin: 0 0 8px 0;
+  }
+  
+  .week-title {
+    font-size: 0.8em;
+  }
+  
+  .week-dates {
+    font-size: 0.7em;
+  }
+}
+
+/* ========== FIN ESTILOS NAVEGACIÓN DE SEMANAS ========== */
+
 /* ========== FIN ESTILOS SISTEMA DE IA ========== */
