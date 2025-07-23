@@ -945,9 +945,6 @@
     }
 
     .user-info {
-      position: fixed;
-      top: 20px;
-      left: 20px;
       background: white;
       padding: 10px 15px;
       border-radius: 25px;
@@ -955,8 +952,8 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      z-index: 100;
       font-family: 'Quicksand', sans-serif;
+      margin-left: 0;
     }
 
     .user-avatar {
@@ -1045,10 +1042,18 @@
       }
       
       .user-info {
-        top: 10px;
-        left: 10px;
-        right: 10px;
         padding: 8px 12px;
+        font-size: 14px;
+      }
+      
+      .header-bar {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+      }
+      
+      .header-bar > div {
+        justify-content: center;
       }
     }
 
@@ -1280,7 +1285,7 @@
       </div>
       
       <!-- Información del Usuario (lado derecho) -->
-      <div class="user-info" id="userInfo" style="display: none; margin-left: 10px;">
+      <div class="user-info" id="userInfo" style="display: none;">
         <div class="user-avatar" id="userAvatar">U</div>
         <div class="user-details">
           <div class="user-name" id="userName">Usuario</div>
