@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bitacora-cache-v1';
+const CACHE_NAME = 'bitacora-cache-v2';
 const urlsToCache = [
   '/',
   '/indexPVZ.html',
@@ -11,6 +11,25 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
   );
+  // Forzar activación inmediata
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('🗑️ Eliminando cache antiguo:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+  // Tomar control inmediato de todas las pestañas
+  return self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
