@@ -1271,6 +1271,24 @@
           🗑️ Papelera
         </button>
         
+        <button id="emergencyButton" onclick="mostrarMenuEmergencia()" style="
+          background: linear-gradient(145deg, #f59e0b, #d97706);
+          color: white;
+          border: none;
+          padding: 8px 12px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          transition: all 0.2s;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        " title="Herramientas de Recuperación y Solución de Problemas">
+          🆘 Recuperación
+        </button>
+        
         <button onclick="showHelpModal()" style="
           background: #0ea5e9;
           color: white;
@@ -2010,6 +2028,56 @@
     };
 
     console.log("✅ PROTECCIONES INTEGRADAS ACTIVADAS");
+
+    // ===== CARGAR SCRIPTS DE SOLUCIÓN AUTOMÁTICAMENTE =====
+    // Esto hace que las funciones de recuperación estén siempre disponibles
+    try {
+      // Cargar script de solución completa
+      const solucionScript = document.createElement('script');
+      solucionScript.src = './SOLUCION_COMPLETA.js';
+      solucionScript.onerror = () => console.log('Script de solución no disponible en esta versión');
+      document.head.appendChild(solucionScript);
+      
+      // Cargar script de fix de iconos
+      const iconScript = document.createElement('script');
+      iconScript.src = './FIX_ICON_PROBLEM.js';
+      iconScript.onerror = () => console.log('Script de iconos no disponible en esta versión');
+      document.head.appendChild(iconScript);
+      
+      console.log("🛠️ Scripts de solución cargados automáticamente");
+      
+      // Mostrar funciones disponibles en consola
+      setTimeout(() => {
+        console.log("=".repeat(60));
+        console.log("🆘 HERRAMIENTAS DE RECUPERACIÓN INTEGRADAS");
+        console.log("=".repeat(60));
+        console.log("✅ Todas las herramientas de solución están cargadas:");
+        console.log("   🔄 solucionarTodosLosProblemas() - Solución completa");
+        console.log("   📥 recuperarBitacoraPerdida() - Solo recuperar datos");
+        console.log("   🗑️ verificarPapelera() - Revisar bitácoras eliminadas");
+        console.log("   🆘 emergencyRestore() - Restauración de emergencia");
+        console.log("   🎨 solucionarProblemaIcono() - Arreglar iconos");
+        console.log("   💾 Crear respaldos manuales disponible");
+        console.log("");
+        console.log("🔘 También puedes usar el botón '🆘 Recuperación' en la interfaz");
+        console.log("=".repeat(60));
+        
+        // Mostrar notificación visual breve
+        if (document.getElementById('emergencyButton')) {
+          const btn = document.getElementById('emergencyButton');
+          const originalText = btn.innerHTML;
+          btn.innerHTML = '✅ ¡Listo!';
+          btn.style.background = 'linear-gradient(145deg, #22c55e, #16a34a)';
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = 'linear-gradient(145deg, #f59e0b, #d97706)';
+          }, 2000);
+        }
+      }, 3000);
+      
+    } catch (error) {
+      console.log("Scripts de solución no disponibles:", error);
+    }
 
     // ===== FUNCIÓN DE GUARDADO AUTOMÁTICO =====
     async function autoSave() {
@@ -4151,6 +4219,196 @@
 
     function closeHelpModal() {
       document.getElementById('helpModal').style.display = 'none';
+    }
+
+    // ===== MENÚ DE EMERGENCIA Y RECUPERACIÓN =====
+    function mostrarMenuEmergencia() {
+      const opciones = `
+🆘 HERRAMIENTAS DE RECUPERACIÓN
+
+Selecciona una opción:
+
+1. 🔄 RECUPERACIÓN COMPLETA - Soluciona todos los problemas
+2. 📥 RECUPERAR BITÁCORA - Solo recuperar datos perdidos  
+3. 🗑️ VERIFICAR PAPELERA - Revisar bitácoras eliminadas
+4. ⚠️ RESTAURAR EMERGENCIA - Usar respaldos automáticos
+5. 💾 CREAR RESPALDO - Descargar copia de seguridad
+6. 🎨 ARREGLAR ICONOS - Solucionar problemas de manifest
+7. 🔐 AYUDA FIREBASE - Ver solución de permisos
+8. ❌ Cancelar
+
+Escribe el NÚMERO de la opción que quieres:`;
+
+      const opcion = prompt(opciones);
+      
+      switch(opcion) {
+        case '1':
+          ejecutarRecuperacionCompleta();
+          break;
+        case '2':
+          ejecutarRecuperacionBitacora();
+          break;
+        case '3':
+          ejecutarVerificarPapelera();
+          break;
+        case '4':
+          ejecutarRestauracionEmergencia();
+          break;
+        case '5':
+          ejecutarCrearRespaldo();
+          break;
+        case '6':
+          ejecutarArreglarIconos();
+          break;
+        case '7':
+          mostrarAyudaFirebase();
+          break;
+        case '8':
+        case null:
+          return;
+        default:
+          alert('❌ Opción no válida. Intenta de nuevo.');
+          mostrarMenuEmergencia();
+      }
+    }
+
+    // Funciones de recuperación individuales
+    async function ejecutarRecuperacionCompleta() {
+      try {
+        if (typeof solucionarTodosLosProblemas === 'function') {
+          alert('🔄 Iniciando recuperación completa...\n\nRevisa la consola (F12) para ver el progreso.');
+          await solucionarTodosLosProblemas();
+        } else {
+          throw new Error('Función no disponible');
+        }
+      } catch (error) {
+        console.error('Error en recuperación completa:', error);
+        alert('❌ Error en recuperación completa.\n\nAbre la consola (F12) y ejecuta:\nsolucionarTodosLosProblemas()');
+      }
+    }
+
+    async function ejecutarRecuperacionBitacora() {
+      try {
+        if (typeof recuperarBitacoraPerdida === 'function') {
+          alert('📥 Iniciando recuperación de bitácora...\n\nRevisa la consola (F12) para ver el progreso.');
+          await recuperarBitacoraPerdida();
+        } else {
+          throw new Error('Función no disponible');
+        }
+      } catch (error) {
+        console.error('Error en recuperación de bitácora:', error);
+        alert('❌ Error en recuperación de bitácora.\n\nAbre la consola (F12) y ejecuta:\nrecuperarBitacoraPerdida()');
+      }
+    }
+
+    async function ejecutarVerificarPapelera() {
+      try {
+        if (typeof verificarPapelera === 'function') {
+          alert('🗑️ Verificando papelera...\n\nRevisa la consola (F12) para ver el resultado.');
+          await verificarPapelera();
+        } else if (typeof showTrashManager === 'function') {
+          showTrashManager();
+        } else {
+          throw new Error('Función no disponible');
+        }
+      } catch (error) {
+        console.error('Error verificando papelera:', error);
+        alert('❌ Error verificando papelera.\n\nAbre la consola (F12) y ejecuta:\nverificarPapelera()');
+      }
+    }
+
+    function ejecutarRestauracionEmergencia() {
+      try {
+        if (typeof emergencyRestore === 'function') {
+          alert('⚠️ Iniciando restauración de emergencia...\n\nRevisa la consola (F12) para ver el progreso.');
+          emergencyRestore();
+        } else {
+          throw new Error('Función no disponible');
+        }
+      } catch (error) {
+        console.error('Error en restauración de emergencia:', error);
+        alert('❌ Error en restauración de emergencia.\n\nAbre la consola (F12) y ejecuta:\nemergencyRestore()');
+      }
+    }
+
+    function ejecutarCrearRespaldo() {
+      try {
+        if (userBitacoras && userBitacoras.length > 0) {
+          const backup = JSON.stringify({
+            timestamp: new Date().toISOString(),
+            userBitacoras: userBitacoras,
+            version: "manual-backup"
+          }, null, 2);
+          
+          const blob = new Blob([backup], {type: 'application/json'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `bitacora-respaldo-${new Date().toISOString().split('T')[0]}.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+          
+          alert(`✅ RESPALDO CREADO EXITOSAMENTE\n\nSe descargó un archivo JSON con ${userBitacoras.length} bitácoras.\n\nGuarda este archivo en un lugar seguro.`);
+        } else {
+          alert('❌ No hay datos para respaldar.\n\nIntenta primero recuperar tu bitácora usando las otras opciones.');
+        }
+      } catch (error) {
+        console.error('Error creando respaldo:', error);
+        alert('❌ Error creando respaldo. Revisa la consola para más detalles.');
+      }
+    }
+
+    function ejecutarArreglarIconos() {
+      try {
+        if (typeof solucionarProblemaIcono === 'function') {
+          alert('🎨 Iniciando solución de iconos...\n\nRevisa la consola (F12) para ver las instrucciones.');
+          solucionarProblemaIcono();
+        } else {
+          throw new Error('Función no disponible');
+        }
+      } catch (error) {
+        console.error('Error arreglando iconos:', error);
+        alert('❌ Error arreglando iconos.\n\nAbre la consola (F12) y ejecuta:\nsolucionarProblemaIcono()');
+      }
+    }
+
+    function mostrarAyudaFirebase() {
+      const ayuda = `🔐 SOLUCIÓN PARA ERRORES DE FIREBASE
+
+PROBLEMA: "Missing or insufficient permissions"
+
+SOLUCIÓN:
+
+1. Ve a Firebase Console:
+   https://console.firebase.google.com/project/bitacora-high-stakes/firestore/rules
+
+2. Reemplaza las reglas existentes con estas:
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      match /bitacoras/{bitacoraId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+      
+      match /trash/{trashId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}
+
+3. Haz clic en "Publicar"
+4. Recarga esta página
+
+¿Quieres abrir Firebase Console ahora?`;
+
+      if (confirm(ayuda)) {
+        window.open('https://console.firebase.google.com/project/bitacora-high-stakes/firestore/rules', '_blank');
+      }
     }
 
     // Lógica para tipo de luz

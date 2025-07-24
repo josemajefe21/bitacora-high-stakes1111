@@ -26,6 +26,7 @@ Aplicación web profesional para seguimiento de cultivos, con sistema de usuario
 - **Características detalladas** de cada cultivo
 - **Calendario emocional** y estadísticas
 - **Sistema de respaldos** automático
+- **🆘 Herramientas de recuperación integradas** - Botón de emergencia visible
 
 ### 🌱 Características de Cultivo
 - **Cepas y cantidades**
@@ -113,6 +114,31 @@ BITACORA HIGH STAKES/
 - ✅ **Reglas de seguridad** por usuario
 - ✅ **HTTPS obligatorio**
 - ✅ **Respaldo automático**
+
+## 🆘 Herramientas de Recuperación Integradas
+
+### Botón de Emergencia
+- **🆘 Recuperación** - Botón visible en la interfaz principal
+- **Menú intuitivo** con opciones de recuperación
+- **No necesitas consola** - Todo desde la interfaz
+
+### Opciones Disponibles
+1. **🔄 Recuperación Completa** - Soluciona todos los problemas automáticamente
+2. **📥 Recuperar Bitácora** - Solo recupera datos perdidos
+3. **🗑️ Verificar Papelera** - Revisa bitácoras eliminadas
+4. **⚠️ Restaurar Emergencia** - Usa respaldos automáticos
+5. **💾 Crear Respaldo** - Descarga copia de seguridad
+6. **🎨 Arreglar Iconos** - Soluciona problemas del manifest
+7. **🔐 Ayuda Firebase** - Instrucciones para permisos
+
+### Funciones de Consola (Avanzado)
+```javascript
+// Para usuarios técnicos
+solucionarTodosLosProblemas()    // Solución completa
+recuperarBitacoraPerdida()       // Solo recuperar datos
+verificarPapelera()              // Revisar eliminadas
+emergencyRestore()               // Restauración de emergencia
+```
 
 ## 📱 Uso Offline
 
