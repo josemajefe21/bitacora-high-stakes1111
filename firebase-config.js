@@ -18,17 +18,28 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Configuración de Firestore
-db.settings({
-  cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
-});
+// Configuración de Firestore (simplificada para evitar warnings)
+try {
+  db.settings({
+    cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED,
+    ignoreUndefinedProperties: true,
+    merge: true
+  });
+} catch (error) {
+  // Los settings ya fueron aplicados, ignorar error
+}
 
 // Habilitar persistencia offline
-db.enablePersistence()
+db.enablePersistence({ synchronizeTabs: true })
+  .then(() => {
+    console.log('✅ Persistencia offline habilitada');
+  })
   .catch((err) => {
     if (err.code == 'failed-precondition') {
-      console.log('Persistencia falló - múltiples pestañas abiertas');
+      console.log('⚠️ Persistencia falló - múltiples pestañas abiertas');
     } else if (err.code == 'unimplemented') {
-      console.log('Persistencia no soportada por el navegador');
+      console.log('⚠️ Persistencia no soportada por el navegador');
+    } else {
+      console.log('⚠️ Error en persistencia:', err);
     }
   }); 
