@@ -1041,6 +1041,32 @@
       }
     }
 
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+        max-height: 0;
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 200px;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 200px;
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-10px);
+        max-height: 0;
+      }
+    }
+
     .error-message {
       background: #fef2f2;
       color: #dc2626;
@@ -1079,38 +1105,37 @@
         align-items: stretch;
       }
       
-      /* Estilos responsive para la sección informativa */
-      .info-section {
-        margin: 10px !important;
-        padding: 16px !important;
-        max-width: none !important;
+            /* Estilos responsive para el botón de información */
+      #infoButton {
+        width: 40px !important;
+        height: 40px !important;
       }
       
-      .info-section h3 {
-        font-size: 1.2em !important;
+      #infoButton span:first-child {
+        font-size: 14px !important;
       }
       
-      .info-section .features-grid {
+      #infoButton span:last-child {
+        width: 14px !important;
+        height: 14px !important;
+        font-size: 8px !important;
+      }
+      
+      #infoPanel {
+        padding: 12px !important;
+        margin-bottom: 15px !important;
+      }
+      
+      #infoPanel h4 {
+        font-size: 1em !important;
+        margin-bottom: 10px !important;
+      }
+      
+      #infoPanel > div {
         grid-template-columns: 1fr !important;
-        gap: 8px !important;
-        font-size: 0.85em !important;
-      }
-      
-      .info-section .plant-question {
-        font-size: 40px !important;
         gap: 6px !important;
+        font-size: 0.8em !important;
       }
-      
-             .info-section .plant-question span:last-child {
-         width: 32px !important;
-         height: 32px !important;
-         font-size: 20px !important;
-       }
-       
-       .info-section button {
-         padding: 8px 16px !important;
-         font-size: 0.8em !important;
-       }
       
       .header-bar > div {
         justify-content: center;
@@ -1271,156 +1296,102 @@
   </style>
 </head>
 <body>
-  <!-- Sistema de Autenticación -->
+    <!-- Sistema de Autenticación -->
   <div class="auth-container" id="authContainer">
     
-    <!-- Sección Informativa -->
-    <div class="info-section" style="
+    <!-- Botón pequeño de información -->
+    <div style="text-align: center; margin-bottom: 15px;">
+      <button id="infoButton" onclick="toggleInfoPanel()" style="
+        background: linear-gradient(135deg, #4ade80, #22c55e);
+        border: none;
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+      " onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 16px rgba(74, 222, 128, 0.6)'" 
+         onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(74, 222, 128, 0.4)'">
+        <span style="
+          font-size: 16px;
+          animation: bounce 2s infinite;
+        ">🌱</span>
+        <span style="
+          position: absolute;
+          top: -2px;
+          right: -1px;
+          background: rgba(255,255,255,0.9);
+          border-radius: 50%;
+          width: 16px;
+          height: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 10px;
+          animation: pulse 2s infinite;
+        ">❓</span>
+      </button>
+    </div>
+    
+    <!-- Panel desplegable de información -->
+    <div id="infoPanel" style="
+      display: none;
       background: linear-gradient(135deg, #4ade80, #22c55e);
-      border-radius: 16px;
-      padding: 20px;
+      border-radius: 12px;
+      padding: 16px;
       margin-bottom: 20px;
-      text-align: center;
       color: white;
-      box-shadow: 0 8px 32px rgba(74, 222, 128, 0.3);
-      position: relative;
-      overflow: hidden;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
+      box-shadow: 0 8px 25px rgba(74, 222, 128, 0.3);
+      animation: slideDown 0.3s ease-out;
     ">
-      <!-- Decoración de fondo -->
-      <div style="
-        position: absolute;
-        top: -20px;
-        right: -20px;
-        width: 80px;
-        height: 80px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 50%;
-        opacity: 0.5;
-      "></div>
-      <div style="
-        position: absolute;
-        bottom: -30px;
-        left: -30px;
-        width: 100px;
-        height: 100px;
-        background: rgba(255,255,255,0.05);
-        border-radius: 50%;
-        opacity: 0.8;
-      "></div>
+      <h4 style="
+        margin: 0 0 12px 0;
+        font-size: 1.1em;
+        text-align: center;
+        font-family: 'Luckiest Guy', cursive;
+      ">¿Qué puede hacer este software?</h4>
       
-      <!-- Contenido principal -->
-      <div style="position: relative; z-index: 1;">
-                 <!-- Plantita con signo de pregunta -->
-         <div class="plant-question" style="
-           font-size: 48px;
-           margin-bottom: 10px;
-           display: flex;
-           justify-content: center;
-           align-items: center;
-           gap: 8px;
-         ">
-          <span style="
-            animation: bounce 2s infinite;
-            display: inline-block;
-          ">🌱</span>
-          <span style="
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            animation: pulse 2s infinite;
-          ">❓</span>
+      <div style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        font-size: 0.85em;
+        margin-bottom: 12px;
+      ">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span>📊</span><span>Seguimiento de cultivos</span>
         </div>
-        
-        <!-- Título principal -->
-        <h3 style="
-          margin: 0 0 12px 0;
-          font-family: 'Luckiest Guy', cursive;
-          font-size: 1.4em;
-          text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        ">¿Qué puede hacer este software?</h3>
-        
-        <!-- Lista de características -->
-        <div style="
-          background: rgba(255,255,255,0.15);
-          border-radius: 12px;
-          padding: 16px;
-          margin-bottom: 16px;
-          backdrop-filter: blur(10px);
-        ">
-                     <div class="features-grid" style="
-             display: grid;
-             grid-template-columns: 1fr 1fr;
-             gap: 12px;
-             text-align: left;
-             font-size: 0.9em;
-           ">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 1.2em;">📊</span>
-              <span style="font-weight: 500;">Seguimiento de cultivos</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 1.2em;">📅</span>
-              <span style="font-weight: 500;">Calendario emocional</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 1.2em;">💧</span>
-              <span style="font-weight: 500;">Control de riego</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 1.2em;">📈</span>
-              <span style="font-weight: 500;">Análisis de datos</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 1.2em;">🔄</span>
-              <span style="font-weight: 500;">Sync en la nube</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 1.2em;">📱</span>
-              <span style="font-weight: 500;">Funciona offline</span>
-            </div>
-          </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span>📅</span><span>Calendario emocional</span>
         </div>
-        
-                 <!-- Mensaje motivacional -->
-         <p style="
-           margin: 0 0 16px 0;
-           font-size: 0.95em;
-           opacity: 0.95;
-           font-weight: 500;
-           text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-         ">
-           🌿 <strong>Tu cultivo, tu historia, tu control total</strong> 🌿<br/>
-           <span style="font-size: 0.85em; opacity: 0.8;">
-             Registra cada día, analiza el progreso y optimiza tus resultados
-           </span>
-         </p>
-         
-         <!-- Botón de Call to Action -->
-         <button onclick="focusLoginForm()" style="
-           background: rgba(255,255,255,0.25);
-           border: 2px solid rgba(255,255,255,0.4);
-           color: white;
-           padding: 10px 20px;
-           border-radius: 25px;
-           font-weight: bold;
-           cursor: pointer;
-           transition: all 0.3s ease;
-           backdrop-filter: blur(10px);
-           font-size: 0.9em;
-           text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-         " onmouseover="this.style.background='rgba(255,255,255,0.35)'; this.style.transform='translateY(-2px)'" 
-            onmouseout="this.style.background='rgba(255,255,255,0.25)'; this.style.transform='translateY(0)'">
-           ✨ ¡Comenzar mi bitácora ahora!
-         </button>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span>💧</span><span>Control de riego</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span>📈</span><span>Análisis de datos</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span>🔄</span><span>Sync en la nube</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span>📱</span><span>Funciona offline</span>
+        </div>
       </div>
+      
+      <p style="
+        margin: 0;
+        text-align: center;
+        font-size: 0.8em;
+        opacity: 0.9;
+      ">
+        🌿 <strong>Tu cultivo, tu historia, tu control total</strong> 🌿
+      </p>
     </div>
 
     <!-- Login Form -->
@@ -2392,34 +2363,32 @@
       document.getElementById('registerError').style.display = 'none';
     }
 
-    // Función para enfocar el formulario de login desde la sección informativa
-    function focusLoginForm() {
-      // Asegurar que estamos en la vista de login
-      showLogin();
+    // Función para alternar el panel de información
+    function toggleInfoPanel() {
+      const panel = document.getElementById('infoPanel');
+      const button = document.getElementById('infoButton');
       
-      // Hacer scroll suave hacia el formulario de login
-      const loginCard = document.getElementById('loginCard');
-      if (loginCard) {
-        loginCard.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center' 
-        });
+      if (panel.style.display === 'none' || panel.style.display === '') {
+        // Mostrar panel
+        panel.style.display = 'block';
+        panel.style.animation = 'slideDown 0.3s ease-out';
         
-        // Enfocar el campo de email después del scroll
+        // Cambiar apariencia del botón
+        button.style.transform = 'scale(1.1) rotate(180deg)';
+        button.style.boxShadow = '0 6px 20px rgba(74, 222, 128, 0.6)';
+        
+      } else {
+        // Ocultar panel con animación
+        panel.style.animation = 'slideUp 0.3s ease-out';
+        
+        // Esperar a que termine la animación antes de ocultar
         setTimeout(() => {
-          const emailField = document.getElementById('loginEmail');
-          if (emailField) {
-            emailField.focus();
-            
-            // Efecto visual en el formulario
-            loginCard.style.transform = 'scale(1.02)';
-            loginCard.style.boxShadow = '0 20px 60px rgba(74, 222, 128, 0.3)';
-            setTimeout(() => {
-              loginCard.style.transform = 'scale(1)';
-              loginCard.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
-            }, 300);
-          }
-        }, 500);
+          panel.style.display = 'none';
+        }, 300);
+        
+        // Restaurar apariencia del botón
+        button.style.transform = 'scale(1) rotate(0deg)';
+        button.style.boxShadow = '0 4px 12px rgba(74, 222, 128, 0.4)';
       }
     }
 
