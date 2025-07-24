@@ -1462,6 +1462,9 @@
             <button onclick="forceUpdateWeeklySummary()" style="padding: 6px 12px; font-size: 0.8em; background: #22c55e; color: white; border: none; border-radius: 6px; cursor: pointer;">
               🔄 Actualizar
             </button>
+            <button id="currentWeekBtn" onclick="goToCurrentWeek()" style="padding: 6px 12px; font-size: 0.8em; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; display: none;">
+              📅 Semana Actual
+            </button>
           </div>
         </div>
         
@@ -3131,6 +3134,8 @@
     // 🔄 FUNCIÓN PARA FORZAR ACTUALIZACIÓN DEL RESUMEN SEMANAL
     function forceUpdateWeeklySummary() {
       console.log('🔄 FORZANDO actualización del resumen semanal...');
+      console.log(`   📊 Etapa actual: ${selectedStage}`);
+      console.log(`   📅 Offset de semana: ${currentWeekOffset}`);
       
       // Mostrar indicador de carga
       const timelineEl = document.getElementById('emotionTimeline');
@@ -3142,6 +3147,7 @@
       setTimeout(() => {
         updateWeekDisplay(); // Actualizar display de fechas
         updateWeeklySummary();
+        console.log('✅ Actualización forzada completada');
       }, 200);
     }
     
@@ -3158,12 +3164,20 @@
 
     // 📅 FUNCIONES DE NAVEGACIÓN DE SEMANAS
     function changeWeek(direction) {
-      console.log('📅 Cambiando semana:', direction > 0 ? 'siguiente' : 'anterior');
+      console.log(`📅 Navegando semana: ${direction > 0 ? 'siguiente' : 'anterior'} (desde offset ${currentWeekOffset})`);
       
       if (direction > 0) {
         // No permitir ir al futuro más allá de la semana actual
         if (currentWeekOffset >= 0) {
           console.log('❌ No se puede ir más al futuro de la semana actual');
+          // Feedback visual para el usuario
+          const nextBtn = document.getElementById('nextWeekBtn');
+          if (nextBtn) {
+            nextBtn.style.background = '#fecaca';
+            setTimeout(() => {
+              nextBtn.style.background = '#f3f4f6';
+            }, 300);
+          }
           return;
         }
         currentWeekOffset++;
@@ -3171,9 +3185,20 @@
         currentWeekOffset--;
       }
       
-      console.log('📅 Nuevo offset:', currentWeekOffset);
+      console.log(`📅 Nuevo offset: ${currentWeekOffset} (etapa: ${selectedStage})`);
+      
+      // Actualizar display y datos
       updateWeekDisplay();
       updateWeeklySummary();
+      
+      // Feedback visual de éxito
+      const buttons = document.querySelectorAll('[onclick*="changeWeek"]');
+      buttons.forEach(btn => {
+        btn.style.background = '#dcfce7';
+        setTimeout(() => {
+          btn.style.background = '#f3f4f6';
+        }, 200);
+      });
     }
 
     function updateWeekDisplay() {
@@ -3199,6 +3224,7 @@
       const displayEl = document.getElementById('currentWeekDisplay');
       const datesEl = document.getElementById('currentWeekDates');
       const nextBtn = document.getElementById('nextWeekBtn');
+      const currentWeekBtn = document.getElementById('currentWeekBtn');
       
       if (displayEl) {
         if (currentWeekOffset === 0) {
@@ -3225,6 +3251,34 @@
           nextBtn.style.cursor = 'pointer';
           nextBtn.disabled = false;
         }
+      }
+      
+      // Mostrar/ocultar botón "Semana Actual"
+      if (currentWeekBtn) {
+        if (currentWeekOffset === 0) {
+          currentWeekBtn.style.display = 'none';
+        } else {
+          currentWeekBtn.style.display = 'inline-block';
+        }
+      }
+    }
+
+    // 📅 FUNCIÓN PARA VOLVER A LA SEMANA ACTUAL
+    function goToCurrentWeek() {
+      console.log('📅 Volviendo a la semana actual');
+      currentWeekOffset = 0;
+      updateWeekDisplay();
+      updateWeeklySummary();
+      
+      // Feedback visual
+      const currentWeekBtn = document.getElementById('currentWeekBtn');
+      if (currentWeekBtn) {
+        currentWeekBtn.style.background = '#22c55e';
+        currentWeekBtn.innerHTML = '✅ ¡Listo!';
+        setTimeout(() => {
+          currentWeekBtn.style.background = '#3b82f6';
+          currentWeekBtn.innerHTML = '📅 Semana Actual';
+        }, 1000);
       }
     }
 
@@ -3621,11 +3675,8 @@
       
       // 🎯 SIEMPRE ACTUALIZAR RESUMEN SEMANAL
       console.log('🔄 Actualizando resumen semanal...');
-      // Resetear a semana actual cuando se cambia de etapa
-      if (currentWeekOffset !== 0) {
-        currentWeekOffset = 0;
-        updateWeekDisplay();
-      }
+      // Mantener la navegación de semanas del usuario - NO resetear automáticamente
+      updateWeekDisplay(); // Asegurar que el display esté actualizado
       updateWeeklySummary();
     }
 
