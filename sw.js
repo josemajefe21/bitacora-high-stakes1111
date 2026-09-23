@@ -1,9 +1,10 @@
-const CACHE_NAME = 'bitacora-cache-v2';
+const CACHE_NAME = 'bitacora-cache-v3';
 const urlsToCache = [
   '/',
   '/indexPVZ.html',
+  '/design-system.css',
   '/manifest.json',
-  'https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Quicksand:wght@400;700&display=swap'
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=DM+Serif+Display&display=swap'
 ];
 
 self.addEventListener('install', event => {

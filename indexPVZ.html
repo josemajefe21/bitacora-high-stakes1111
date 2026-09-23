@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#4ade80">
+  <meta name="theme-color" content="#103B2A">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Bitácora">
-  <title>Bitácora High Stakes v3.0 - Cloud Only</title>
+  <title>Bitácora High Stakes</title>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -22,7 +22,7 @@
   <!-- Configuración de Firebase -->
   <script src="firebase-config.js"></script>
   <!-- Fuente divertida tipo cartoon -->
-  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary-color: #4ade80;
@@ -1294,109 +1294,145 @@
       color: #a7f3d0 !important;
     }
   </style>
+  <link rel="stylesheet" href="design-system.css">
 </head>
-<body>
+<body data-app-view="inicio">
+  <!-- Iconos Lucide v0.544.0 (ISC) -->
+<svg xmlns="http://www.w3.org/2000/svg" class="icon-sprite" aria-hidden="true" focusable="false">
+<symbol id="i-sprout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3" />
+  <path d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4" />
+  <path d="M5 21h14" /></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+  <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" /></symbol>
+<symbol id="i-droplets" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" />
+  <path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97" /></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4" />
+  <path d="M16 2v4" />
+  <rect width="18" height="18" x="3" y="4" rx="2" />
+  <path d="M3 10h18" /></symbol>
+<symbol id="i-bar-chart-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16" />
+  <path d="M18 17V9" />
+  <path d="M13 17V5" />
+  <path d="M8 17v-3" /></symbol>
+<symbol id="i-triangle-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+  <path d="M12 9v4" />
+  <path d="M12 17h.01" /></symbol>
+<symbol id="i-book-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14" />
+  <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
+  <circle cx="12" cy="12" r="3" /></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" />
+  <path d="M12 5v14" /></symbol>
+<symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+  <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
+  <path d="M7 3v4a1 1 0 0 0 1 1h7" /></symbol>
+<symbol id="i-clipboard-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+  <path d="M12 11h4" />
+  <path d="M12 16h4" />
+  <path d="M8 11h.01" />
+  <path d="M8 16h.01" /></symbol>
+<symbol id="i-house" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+  <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></symbol>
+<symbol id="i-log-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 17 5-5-5-5" />
+  <path d="M21 12H9" />
+  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16" />
+  <path d="M4 12h16" />
+  <path d="M4 19h16" /></symbol>
+<symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" />
+  <path d="m6 6 12 12" /></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0" />
+  <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" /></symbol>
+<symbol id="i-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></symbol>
+<symbol id="i-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></symbol>
+<symbol id="i-panel-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" />
+  <path d="M9 3v18" /></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+  <path d="m15 5 4 4" /></symbol>
+<symbol id="i-trash-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 11v6" />
+  <path d="M14 11v6" />
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+  <path d="M3 6h18" />
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></symbol>
+<symbol id="i-share-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3" />
+  <circle cx="6" cy="12" r="3" />
+  <circle cx="18" cy="19" r="3" />
+  <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+  <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" /></symbol>
+<symbol id="i-ellipsis" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1" />
+  <circle cx="19" cy="12" r="1" />
+  <circle cx="5" cy="12" r="1" /></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+  <path d="M7 11V7a5 5 0 0 1 10 0v4" /></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" />
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+  <path d="M2 12h20" /></symbol>
+<symbol id="i-flower-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1" />
+  <circle cx="12" cy="8" r="2" />
+  <path d="M12 10v12" />
+  <path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z" />
+  <path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z" /></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" />
+  <path d="M12 2v2" />
+  <path d="M12 20v2" />
+  <path d="m4.93 4.93 1.41 1.41" />
+  <path d="m17.66 17.66 1.41 1.41" />
+  <path d="M2 12h2" />
+  <path d="M20 12h2" />
+  <path d="m6.34 17.66-1.41 1.41" />
+  <path d="m19.07 4.93-1.41 1.41" /></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>
+<symbol id="i-circle-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" />
+  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+  <path d="M12 17h.01" /></symbol>
+<symbol id="i-life-buoy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" />
+  <path d="m4.93 4.93 4.24 4.24" />
+  <path d="m14.83 9.17 4.24-4.24" />
+  <path d="m14.83 14.83 4.24 4.24" />
+  <path d="m9.17 14.83-4.24 4.24" />
+  <circle cx="12" cy="12" r="4" /></symbol>
+<symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3" />
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+  <path d="m7 10 5 5 5-5" /></symbol>
+<symbol id="i-layout-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1" />
+  <rect width="7" height="7" x="3" y="14" rx="1" />
+  <path d="M14 4h7" />
+  <path d="M14 9h7" />
+  <path d="M14 15h7" />
+  <path d="M14 20h7" /></symbol>
+<symbol id="i-smile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" />
+  <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+  <line x1="9" x2="9.01" y1="9" y2="9" />
+  <line x1="15" x2="15.01" y1="9" y2="9" /></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></symbol>
+</svg>
+
     <!-- Sistema de Autenticación -->
   <div class="auth-container" id="authContainer">
     
     <!-- Botón pequeño de información -->
     <div style="text-align: center; margin-bottom: 15px;">
-      <button id="infoButton" onclick="toggleInfoPanel()" style="
-        background: linear-gradient(135deg, #4ade80, #22c55e);
-        border: none;
-        border-radius: 50%;
-        width: 45px;
-        height: 45px;
-        cursor: pointer;
-        box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        position: relative;
-        overflow: hidden;
-      " onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 16px rgba(74, 222, 128, 0.6)'" 
-         onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(74, 222, 128, 0.4)'">
-        <span style="
-          font-size: 16px;
-          animation: bounce 2s infinite;
-        ">🌱</span>
-        <span style="
-          position: absolute;
-          top: -2px;
-          right: -1px;
-          background: rgba(255,255,255,0.9);
-          border-radius: 50%;
-          width: 16px;
-          height: 16px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 10px;
-          animation: pulse 2s infinite;
-        ">❓</span>
-      </button>
+      <button type="button" id="infoButton" onclick="toggleInfoPanel()" aria-expanded="false">Acerca de la herramienta</button>
     </div>
     
     <!-- Panel desplegable de información -->
-    <div id="infoPanel" style="
-      display: none;
-      background: linear-gradient(135deg, #4ade80, #22c55e);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 20px;
-      color: white;
-      box-shadow: 0 8px 25px rgba(74, 222, 128, 0.3);
-      animation: slideDown 0.3s ease-out;
-    ">
-      <h4 style="
-        margin: 0 0 12px 0;
-        font-size: 1.1em;
-        text-align: center;
-        font-family: 'Luckiest Guy', cursive;
-      ">¿Qué puede hacer este software?</h4>
-      
-      <div style="
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        font-size: 0.85em;
-        margin-bottom: 12px;
-      ">
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span>📊</span><span>Seguimiento de cultivos</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span>📅</span><span>Calendario emocional</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span>💧</span><span>Control de riego</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span>📈</span><span>Análisis de datos</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span>🔄</span><span>Sync en la nube</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span>📱</span><span>Funciona offline</span>
-        </div>
+    <div id="infoPanel" style="display: none;">
+      <h4>Qué puede hacer este software</h4>
+      <div class="info-features">
+        <div><svg class="icon" aria-hidden="true"><use href="#i-sprout"></use></svg><span>Seguimiento de cultivos</span></div>
+        <div><svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg><span>Calendario emocional</span></div>
+        <div><svg class="icon" aria-hidden="true"><use href="#i-droplets"></use></svg><span>Control de riego</span></div>
+        <div><svg class="icon" aria-hidden="true"><use href="#i-bar-chart-3"></use></svg><span>Análisis de datos</span></div>
+        <div><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg><span>Sync en la nube</span></div>
+        <div><svg class="icon" aria-hidden="true"><use href="#i-book-open"></use></svg><span>Funciona offline</span></div>
       </div>
-      
-      <p style="
-        margin: 0;
-        text-align: center;
-        font-size: 0.8em;
-        opacity: 0.9;
-      ">
-        🌿 <strong>Tu cultivo, tu historia, tu control total</strong> 🌿
-      </p>
+      <p class="info-tagline"><strong>Tu cultivo, tu historia, tu control total</strong></p>
     </div>
 
     <!-- Login Form -->
     <div class="auth-card" id="loginCard">
-      <h2>🌱 Iniciar Sesión</h2>
+      <div class="auth-brand"><svg class="icon"><use href="#i-sprout"></use></svg><div><h2>Iniciar sesión</h2><small>Cultivo consciente. Mejores resultados.</small></div></div>
       <form class="auth-form" id="loginForm">
         <div id="loginError" class="error-message" style="display: none;"></div>
         <input type="email" id="loginEmail" placeholder="Email" required>
@@ -1413,7 +1449,7 @@
 
     <!-- Register Form -->
     <div class="auth-card" id="registerCard" style="display: none;">
-      <h2>🌱 Crear Cuenta</h2>
+      <div class="auth-brand"><svg class="icon"><use href="#i-sprout"></use></svg><div><h2>Crear cuenta</h2><small>Registro, análisis y evolución de tu cultivo.</small></div></div>
       <form class="auth-form" id="registerForm">
         <div id="registerError" class="error-message" style="display: none;"></div>
         <input type="text" id="registerName" placeholder="Nombre completo" required>
@@ -1431,76 +1467,179 @@
     </div>
   </div>
 
-  <div class="container">
-    <div class="header-bar" style="display: flex; align-items: center; gap: 16px; justify-content: space-between; flex-wrap: wrap;">
-      <!-- Controles de Papelera y Ayuda (lado izquierdo) -->
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <button id="trashButton" onclick="showTrashManager()" style="
-          background: #f87171;
-          color: white;
-          border: none;
-          padding: 8px 12px;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: 14px;
-          font-weight: bold;
-          display: none;
-          align-items: center;
-          gap: 5px;
-          transition: all 0.2s;
-        " title="Ver bitácoras eliminadas (se conservan 7 días)">
-          🗑️ Papelera
-        </button>
-        
-        <button id="emergencyButton" onclick="mostrarMenuEmergencia()" style="
-          background: linear-gradient(145deg, #f59e0b, #d97706);
-          color: white;
-          border: none;
-          padding: 8px 12px;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: 14px;
-          font-weight: bold;
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          transition: all 0.2s;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        " title="Herramientas de Recuperación y Solución de Problemas">
-          🆘 Recuperación
-        </button>
-        
-        <button onclick="showHelpModal()" style="
-          background: #0ea5e9;
-          color: white;
-          border: none;
-          padding: 8px 12px;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: 14px;
-        " title="Ayuda">
-          ❓ Ayuda
-        </button>
+  <div class="container app-shell">
+    <aside class="app-sidebar" id="appSidebar" aria-label="Navegación principal">
+      <div class="sidebar-brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg class="icon"><use href="#i-sprout"></use></svg>
+        </span>
+        <span class="brand-text">
+          <span class="brand-kicker">Bitácora</span>
+          <span class="brand-name">High Stakes</span>
+        </span>
+        <span class="sidebar-tools">
+          <button type="button" class="sidebar-icon-btn" id="sidebarCollapse" onclick="toggleSidebarCompact()" aria-label="Compactar menú">
+            <svg class="icon"><use href="#i-panel-left"></use></svg>
+          </button>
+          <button type="button" class="sidebar-icon-btn mobile-only" id="sidebarClose" onclick="toggleSidebar(false)" aria-label="Cerrar menú">
+            <svg class="icon"><use href="#i-x"></use></svg>
+          </button>
+        </span>
       </div>
-      
-      <!-- Información del Usuario (lado derecho) -->
-      <div class="user-info" id="userInfo" style="display: none;">
-        <div class="user-avatar" id="userAvatar">U</div>
-        <div class="user-details">
-          <div class="user-name" id="userName">Usuario</div>
-          <div class="user-email" id="userEmail">usuario@email.com</div>
+      <nav class="sidebar-nav">
+        <button type="button" class="nav-item is-active" data-nav="inicio" onclick="setAppView('inicio')" aria-current="page">
+          <svg class="icon"><use href="#i-house"></use></svg><span class="nav-label">Inicio</span>
+        </button>
+        <button type="button" class="nav-item" data-nav="bitacora" onclick="setAppView('bitacora')">
+          <svg class="icon"><use href="#i-clipboard-list"></use></svg><span class="nav-label">Bitácora</span>
+        </button>
+        <button type="button" class="nav-item" data-nav="cultivos" onclick="setAppView('cultivos')">
+          <svg class="icon"><use href="#i-sprout"></use></svg><span class="nav-label">Mis cultivos</span>
+        </button>
+        <button type="button" class="nav-item" data-nav="calendario" onclick="setAppView('calendario')">
+          <svg class="icon"><use href="#i-calendar"></use></svg><span class="nav-label">Calendario</span>
+        </button>
+        <button type="button" class="nav-item" data-nav="estadisticas" onclick="setAppView('estadisticas')">
+          <svg class="icon"><use href="#i-bar-chart-3"></use></svg><span class="nav-label">Estadísticas</span>
+        </button>
+        <button type="button" class="nav-item" data-nav="recursos" onclick="setAppView('recursos')">
+          <svg class="icon"><use href="#i-book-open"></use></svg><span class="nav-label">Recursos</span>
+        </button>
+      </nav>
+      <div class="sidebar-foot">
+        <button type="button" class="nav-item" data-nav="configuracion" onclick="setAppView('configuracion')">
+          <svg class="icon"><use href="#i-settings"></use></svg><span class="nav-label">Configuración</span>
+        </button>
+        <div class="sidebar-user" id="sidebarUser" hidden>
+          <div class="user-avatar" id="sidebarUserAvatar" aria-hidden="true">U</div>
+          <div class="sidebar-user-copy">
+            <strong id="sidebarUserName">Usuario</strong>
+            <span id="sidebarUserEmail"></span>
+          </div>
         </div>
-        <button class="logout-btn" onclick="logout()">Cerrar</button>
+        <button type="button" class="sidebar-logout" onclick="logout()">
+          <svg class="icon"><use href="#i-log-out"></use></svg><span class="nav-label">Cerrar sesión</span>
+        </button>
+        <div class="sidebar-credit">Smart Honey Selections</div>
       </div>
-    </div>
-    
-    <h1>Bitácora High Stakes 🌱</h1>
-    <div class="credits">Creada por Smart Honey Selections</div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar(false)"></div>
 
-    <!-- Selector de Bitácoras -->
-    <div class="bitacora-selector" id="bitacoraSelector">
-      <!-- Las bitácoras se generarán dinámicamente -->
-    </div>
+    <div class="app-frame">
+      <div class="app-content" id="appTop">
+        <header class="app-header">
+          <button type="button" class="icon-btn mobile-only" id="openSidebar" onclick="toggleSidebar(true)" aria-label="Abrir menú">
+            <svg class="icon"><use href="#i-menu"></use></svg>
+          </button>
+          <div class="header-titles">
+            <h1>Bitácora High Stakes</h1>
+            <p class="header-kicker">Registro, análisis y evolución de tu cultivo</p>
+          </div>
+          <div class="header-actions">
+            <div class="notice-wrap">
+              <button type="button" class="icon-btn" id="noticeButton" onclick="toggleNotices()" aria-label="Notificaciones" aria-expanded="false" aria-controls="noticePanel">
+                <svg class="icon"><use href="#i-bell"></use></svg>
+              </button>
+              <div id="noticePanel" class="notice-panel" hidden>
+                <strong>Notificaciones</strong>
+                <p>No hay notificaciones nuevas.</p>
+              </div>
+            </div>
+            <button type="button" class="icon-btn" onclick="showHelpModal()" aria-label="Ayuda">
+              <svg class="icon"><use href="#i-circle-help"></use></svg>
+            </button>
+            <button type="button" class="icon-btn" onclick="setAppView('configuracion')" aria-label="Configuración">
+              <svg class="icon"><use href="#i-settings"></use></svg>
+            </button>
+            <div class="user-info" id="userInfo" style="display: none;">
+              <div class="user-avatar" id="userAvatar">U</div>
+              <div class="user-details">
+                <div class="user-name" id="userName">Usuario</div>
+                <div class="user-email" id="userEmail">usuario@email.com</div>
+              </div>
+              <button type="button" class="logout-btn" onclick="logout()">Cerrar</button>
+            </div>
+          </div>
+        </header>
+
+        <div id="recursosPanel">
+          <section class="panel-card">
+            <h2>Recursos</h2>
+            <p class="panel-lead">Lo que ya puedes hacer con tu bitácora.</p>
+            <ul class="resource-list">
+              <li>
+                <svg class="icon"><use href="#i-sprout"></use></svg>
+                <span><strong>Varios cultivos</strong><p>Gestiona varios cultivos en un solo lugar.</p></span>
+              </li>
+              <li>
+                <svg class="icon"><use href="#i-bar-chart-3"></use></svg>
+                <span><strong>Progreso</strong><p>Visualiza tu progreso con el resumen semanal, el estado del día y los parámetros del agua.</p></span>
+              </li>
+              <li>
+                <svg class="icon"><use href="#i-lock"></use></svg>
+                <span><strong>Privacidad</strong><p>Comparte tus bitácoras o mantenlas privadas según prefieras.</p></span>
+              </li>
+              <li>
+                <svg class="icon"><use href="#i-download"></use></svg>
+                <span><strong>Exportación</strong><p>Exporta tus registros para llevar un control fuera de la app.</p></span>
+              </li>
+            </ul>
+            <div class="form-actions" style="justify-content:flex-start; margin-top:16px;">
+              <button type="button" class="btn btn-secondary" onclick="showHelpModal()">Abrir ayuda</button>
+            </div>
+          </section>
+        </div>
+
+        <div id="settingsPanel">
+          <section class="panel-card">
+            <h2>Configuración</h2>
+            <p class="panel-lead">Cuenta, apariencia y herramientas que ya usas.</p>
+            <div class="settings-list">
+              <div class="settings-row">
+                <div class="settings-copy">
+                  <strong>Apariencia</strong>
+                  <p>Tema claro u oscuro de la interfaz.</p>
+                </div>
+                <button type="button" class="btn btn-secondary" id="toggleDarkMode" onclick="toggleDarkMode()" aria-pressed="false">
+                  <span class="theme-label">Tema oscuro</span>
+                </button>
+              </div>
+              <div class="settings-row">
+                <div class="settings-copy">
+                  <strong>Exportar</strong>
+                  <p>Descarga el JSON de la bitácora activa.</p>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="exportData()">
+                  <svg class="icon"><use href="#i-download"></use></svg>
+                  Exportar JSON
+                </button>
+              </div>
+              <div class="settings-row">
+                <div class="settings-copy">
+                  <strong>Papelera</strong>
+                  <p>Bitácoras eliminadas. Se conservan 7 días.</p>
+                </div>
+                <button type="button" id="trashButton" onclick="showTrashManager()" class="btn btn-secondary" style="display:none;" title="Ver bitácoras eliminadas (se conservan 7 días)">
+                  <svg class="icon"><use href="#i-trash-2"></use></svg>
+                  Papelera
+                </button>
+              </div>
+              <div class="settings-row">
+                <div class="settings-copy">
+                  <strong>Recuperación</strong>
+                  <p>Herramientas de recuperación y solución de problemas.</p>
+                </div>
+                <button type="button" id="emergencyButton" onclick="mostrarMenuEmergencia()" class="btn btn-secondary" title="Herramientas de Recuperación y Solución de Problemas">
+                  <svg class="icon"><use href="#i-life-buoy"></use></svg>
+                  Recuperación
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <p class="section-label" id="cultivosLabel">Bitácoras</p>
+        <div class="bitacora-selector" id="bitacoraSelector"></div>
 
     <!-- Formulario para nueva bitácora -->
     <div class="new-bitacora" id="newBitacoraForm" style="display:none; position:relative;">
@@ -1605,11 +1744,11 @@
       <div class="bitacora-form-group">
         <label>Tipo de luz:</label>
         <div id="luzOptions" style="display: flex; gap: 12px; margin-bottom: 8px;">
-          <button type="button" class="luz-btn" id="luzSolBtn" onclick="selectLuz('sol')">☀️ Sol</button>
-          <button type="button" class="luz-btn" id="luzArtificialBtn" onclick="selectLuz('luz')">💡 Luz</button>
-          <button type="button" class="luz-btn" id="luzMixtoBtn" onclick="selectLuz('mixto')">🔄 Mixto</button>
+          <button type="button" class="luz-btn" id="luzSolBtn" onclick="selectLuz('sol')">Sol</button>
+          <button type="button" class="luz-btn" id="luzArtificialBtn" onclick="selectLuz('luz')">Artificial</button>
+          <button type="button" class="luz-btn" id="luzMixtoBtn" onclick="selectLuz('mixto')">Mixto</button>
         </div>
-        <div id="luzSolIcon" style="display:none; font-size:2rem; margin-bottom:8px;">☀️</div>
+        <div id="luzSolIcon" style="display:none;" aria-hidden="true"><svg class="icon"><use href="#i-sun"></use></svg></div>
         <div id="luzArtificialFields" style="display:none;">
           <label>Agregar luces:</label>
           <div id="lucesList"></div>
@@ -1624,208 +1763,248 @@
       <button onclick="createNewBitacora()">Crear Bitácora</button>
     </div>
 
-    <!-- Contenido principal (se mostrará solo cuando haya una bitácora seleccionada) -->
-    <div id="mainContent" style="display: none;">
-      <!-- Etapas -->
-      <label>Etapa:</label><br/>
-      <div>
-        <button class="stage-btn" id="btn-vege" onclick="setStage('vege')">🟢 Vegetativo</button>
-        <button class="stage-btn" id="btn-flora" onclick="setStage('flora')">🌺 Floración</button>
-        <button class="stage-btn" id="btn-general" onclick="setStage('general')">📖 General</button>
-        <button class="stage-btn" id="btn-problems" onclick="setStage('problems')">🚨 Problemas</button>
-      </div>
+        <div id="mainContent" style="display: none;">
+          <div class="workspace" id="workspaceGrid">
+            <div id="registroColumn">
+              <section class="registro-card" id="registroCard" aria-labelledby="registroTitle">
+                <div class="registro-head">
+                  <h2 id="registroTitle">Registro diario</h2>
+                  <p class="registro-lead">Completa la información de hoy. Cada dato cuenta.</p>
+                </div>
+                <div class="registro-date field">
+                  <label for="date">Fecha del registro</label>
+                  <input type="date" id="date" onfocus="this.showPicker()" />
+                </div>
 
-      <!-- Resumen Semanal Mejorado con Navegación -->
-      <div class="weekly-summary" id="weeklySummary" style="display: block !important; margin-bottom: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
-          <h3 style="margin: 0; color: #374151;">📊 Resumen Semanal</h3>
-          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <button onclick="forceUpdateWeeklySummary()" style="padding: 6px 12px; font-size: 0.8em; background: #22c55e; color: white; border: none; border-radius: 6px; cursor: pointer;">
-              🔄 Actualizar
-            </button>
-            <button id="currentWeekBtn" onclick="goToCurrentWeek()" style="padding: 6px 12px; font-size: 0.8em; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; display: none;">
-              📅 Semana Actual
-            </button>
-          </div>
-        </div>
-        
-        <!-- Navegación de Semanas -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: white; border-radius: 8px; padding: 10px; border: 1px solid #e5e7eb;">
-          <button onclick="changeWeek(-1)" style="padding: 8px 12px; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 0.9em;">
-            ⬅️ Anterior
-          </button>
-          
-          <div style="text-align: center; flex: 1; margin: 0 10px;">
-            <div id="currentWeekDisplay" style="font-weight: 600; color: #374151; font-size: 0.95em;">
-              Semana Actual
+                <div class="stage-bar" id="stageBar" role="group" aria-label="Etapa de cultivo">
+                  <button type="button" class="stage-btn stage-selected" id="btn-vege" onclick="setStage('vege')" aria-pressed="true">
+                    <svg class="icon"><use href="#i-sprout"></use></svg> Vegetativo
+                  </button>
+                  <button type="button" class="stage-btn" id="btn-flora" onclick="setStage('flora')" aria-pressed="false">
+                    <svg class="icon"><use href="#i-flower-2"></use></svg> Floración
+                  </button>
+                  <button type="button" class="stage-btn" id="btn-general" onclick="setStage('general')" aria-pressed="false">
+                    <svg class="icon"><use href="#i-book-open"></use></svg> General
+                  </button>
+                  <button type="button" class="stage-btn" id="btn-problems" onclick="setStage('problems')" aria-pressed="false">
+                    <svg class="icon"><use href="#i-triangle-alert"></use></svg> Problemas
+                  </button>
+                </div>
+
+                <div id="floraStartContainer" style="display:none;">
+                  <label for="floraStart">Inicio de floración</label>
+                  <input type="date" id="floraStart" onchange="setFloraStart()" />
+                </div>
+
+                <div id="entryForm" class="daily-form">
+                  <div class="field">
+                    <label>¿Cómo estuvo el día?</label>
+                    <div id="moodOptions" class="mood-options"></div>
+                  </div>
+
+                  <div class="field">
+                    <label for="tasks">Tareas realizadas</label>
+                    <textarea id="tasks"></textarea>
+                  </div>
+
+                  <div class="field">
+                    <label>¿Regaste hoy?</label>
+                    <div class="water-toggle" role="group" aria-label="Riego de hoy">
+                      <button type="button" id="waterYesBtn" class="water-choice water-yes" onclick="setWater(true)">
+                        <svg class="icon"><use href="#i-droplets"></use></svg> Sí
+                      </button>
+                      <button type="button" id="waterNoBtn" class="water-choice water-no" onclick="setWater(false)">
+                        <svg class="icon"><use href="#i-x"></use></svg> No
+                      </button>
+                    </div>
+                  </div>
+
+                  <div id="waterDetails" class="water-details" style="display:none;">
+                    <input type="text" id="waterAmount" placeholder="Cantidad de agua (L o ml)" />
+                    <input type="text" id="nutrients" placeholder="Nutrientes utilizados" />
+                    <input type="text" id="ph" placeholder="pH del agua" />
+                    <input type="text" id="ec" placeholder="EC del agua" />
+                  </div>
+
+                  <div class="field">
+                    <label for="issues">Problemas o anomalías</label>
+                    <textarea id="issues"></textarea>
+                  </div>
+
+                  <div class="field">
+                    <label for="notes">Notas o reflexiones</label>
+                    <textarea id="notes"></textarea>
+                  </div>
+
+                  <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="exportData()">
+                      <svg class="icon"><use href="#i-download"></use></svg> Exportar JSON
+                    </button>
+                    <button type="button" id="saveEntryBtn" class="btn btn-primary" onclick="saveEntry()">
+                      <svg class="icon"><use href="#i-save"></use></svg>
+                      <span id="saveEntryLabel">Guardar registro</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="bitacora-info" id="bitacoraInfo" style="display: none;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px;">
+                    <h3>Características de la bitácora</h3>
+                    <button type="button" onclick="editCurrentBitacora()" class="btn btn-secondary btn-sm">Editar bitácora</button>
+                  </div>
+                  <div id="bitacoraInfoContent"></div>
+                </div>
+
+                <div class="problems-section" id="problemsSection" style="display: none;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+                    <h3>Gestión de problemas</h3>
+                    <button type="button" onclick="addNewProblemFromSection()" class="btn btn-primary btn-sm">Nuevo problema</button>
+                  </div>
+                  <div class="problems-stats-section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 16px;">
+                    <div class="stat-card" style="padding: 12px; text-align: left;">
+                      <div style="font-size: 12px; color: #647067;">Activos</div>
+                      <div style="font-size: 1.5em; font-weight: 700;" id="problemsActiveSection">0</div>
+                    </div>
+                    <div class="stat-card" style="padding: 12px; text-align: left;">
+                      <div style="font-size: 12px; color: #647067;">Críticos</div>
+                      <div style="font-size: 1.5em; font-weight: 700;" id="problemsCriticalSection">0</div>
+                    </div>
+                    <div class="stat-card" style="padding: 12px; text-align: left;">
+                      <div style="font-size: 12px; color: #647067;">Resueltos</div>
+                      <div style="font-size: 1.5em; font-weight: 700;" id="problemsResolvedSection">0</div>
+                    </div>
+                    <div class="stat-card" style="padding: 12px; text-align: left;">
+                      <div style="font-size: 12px; color: #647067;">Tiempo promedio</div>
+                      <div style="font-size: 1.5em; font-weight: 700;" id="avgResolutionTimeSection">0h</div>
+                    </div>
+                  </div>
+                  <div class="problems-filters-section" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <select id="filterStatusSection" onchange="filterProblemsSection()">
+                      <option value="all">Todos los estados</option>
+                      <option value="reported">Reportados</option>
+                      <option value="in-progress">En proceso</option>
+                      <option value="resolved">Resueltos</option>
+                      <option value="unresolved">No resueltos</option>
+                    </select>
+                    <select id="filterSeveritySection" onchange="filterProblemsSection()">
+                      <option value="all">Todas las gravedades</option>
+                      <option value="high">Críticos</option>
+                      <option value="moderate">Moderados</option>
+                      <option value="low">Leves</option>
+                      <option value="info">Informativos</option>
+                    </select>
+                    <select id="filterCategorySection" onchange="filterProblemsSection()">
+                      <option value="all">Todas las categorías</option>
+                      <option value="pest">Plagas</option>
+                      <option value="nutrition">Nutrición</option>
+                      <option value="watering">Riego</option>
+                      <option value="environment">Ambiente</option>
+                      <option value="growth">Crecimiento</option>
+                      <option value="other">Otro</option>
+                    </select>
+                  </div>
+                  <div class="problems-list-section" id="problemsListSection" style="max-height: 500px; overflow-y: auto; padding-right: 5px;"></div>
+                </div>
+              </section>
             </div>
-            <div id="currentWeekDates" style="font-size: 0.8em; color: #6b7280; margin-top: 2px;">
-              <!-- Las fechas se generarán aquí -->
-            </div>
+
+            <aside class="weekly-summary" id="weeklySummary" aria-labelledby="summaryTitle">
+              <div class="summary-head">
+                <div>
+                  <h3 id="summaryTitle">Resumen semanal</h3>
+                  <p class="summary-sub">Visión rápida de tu cultivo</p>
+                </div>
+                <div class="summary-actions">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="forceUpdateWeeklySummary()">Actualizar</button>
+                  <button type="button" id="currentWeekBtn" class="btn btn-secondary btn-sm" onclick="goToCurrentWeek()" style="display: none;">Semana actual</button>
+                </div>
+              </div>
+              <div class="week-nav">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="changeWeek(-1)" aria-label="Semana anterior">
+                  <svg class="icon"><use href="#i-chevron-left"></use></svg>
+                </button>
+                <div class="week-nav-label">
+                  <div id="currentWeekDisplay">Semana actual</div>
+                  <div id="currentWeekDates"></div>
+                </div>
+                <button type="button" id="nextWeekBtn" class="btn btn-secondary btn-sm" onclick="changeWeek(1)" aria-label="Semana siguiente">
+                  <svg class="icon"><use href="#i-chevron-right"></use></svg>
+                </button>
+              </div>
+              <div class="summary-metrics">
+                <div class="metric">
+                  <span class="metric-icon" aria-hidden="true"><svg class="icon"><use href="#i-layout-list"></use></svg></span>
+                  <div>
+                    <span class="metric-label">Total entradas</span>
+                    <div id="totalEntries" class="metric-value">0</div>
+                  </div>
+                </div>
+                <div class="metric">
+                  <span class="metric-icon" aria-hidden="true"><svg class="icon"><use href="#i-smile"></use></svg></span>
+                  <div>
+                    <span class="metric-label">Promedio emocional</span>
+                    <div id="averageMood" class="metric-value">-</div>
+                  </div>
+                </div>
+                <div class="metric">
+                  <span class="metric-icon" aria-hidden="true"><svg class="icon"><use href="#i-droplets"></use></svg></span>
+                  <div>
+                    <span class="metric-label">Días con riego</span>
+                    <div id="wateredDays" class="metric-value">0</div>
+                  </div>
+                </div>
+              </div>
+              <div class="emotion-timeline" id="emotionTimeline">
+                <div style="text-align: center; color: #647067; padding: 28px 12px;">Cargando gráfico semanal…</div>
+              </div>
+              <div class="ai-summary" id="aiSummary" style="display: none;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                  <h4 style="margin: 0;">Análisis semanal</h4>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="regenerateAISummary()" style="margin-left: auto;">Regenerar</button>
+                </div>
+                <div id="aiSummaryContent"></div>
+              </div>
+            </aside>
           </div>
-          
-          <button onclick="changeWeek(1)" id="nextWeekBtn" style="padding: 8px 12px; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 0.9em;">
-            Siguiente ➡️
-          </button>
-        </div>
-        
-        <div class="summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin-bottom: 15px;">
-          <div class="summary-item" style="text-align: center; padding: 12px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-            <h4 style="margin: 0 0 8px 0; font-size: 0.85em; color: #6b7280; font-weight: 600;">📝 Total Entradas</h4>
-            <div id="totalEntries" style="font-size: 1.8em; font-weight: bold; color: #22c55e;">0</div>
-          </div>
-          <div class="summary-item" style="text-align: center; padding: 12px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-            <h4 style="margin: 0 0 8px 0; font-size: 0.85em; color: #6b7280; font-weight: 600;">😊 Promedio</h4>
-            <div id="averageMood" style="font-size: 1.1em; font-weight: bold; color: #3b82f6; line-height: 1.2;">-</div>
-          </div>
-          <div class="summary-item" style="text-align: center; padding: 12px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-            <h4 style="margin: 0 0 8px 0; font-size: 0.85em; color: #6b7280; font-weight: 600;">💧 Días Riego</h4>
-            <div id="wateredDays" style="font-size: 1.8em; font-weight: bold; color: #0ea5e9;">0</div>
-          </div>
-        </div>
-        
-        <div class="emotion-timeline" id="emotionTimeline" style="margin-bottom: 15px; min-height: 120px; background: #f8fafc; border-radius: 8px; padding: 10px; border: 1px solid #e2e8f0;">
-          <div style="text-align: center; color: #6b7280; padding: 40px 20px;">🔄 Cargando gráfico semanal...</div>
-        </div>
-        
-        <!-- Resumen IA -->
-        <div class="ai-summary" id="aiSummary" style="display: none; margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 12px; border-left: 4px solid #0ea5e9;">
-          <div style="display: flex; align-items: center; margin-bottom: 10px;">
-            <span style="font-size: 1.2em;">🤖</span>
-            <h4 style="margin: 0 0 0 8px; color: #0369a1;">Análisis Semanal IA</h4>
-            <button onclick="regenerateAISummary()" style="margin-left: auto; padding: 4px 8px; font-size: 0.8em; background: #0ea5e9; color: white; border: none; border-radius: 6px; cursor: pointer;">🔄 Regenerar</button>
-          </div>
-          <div id="aiSummaryContent" style="color: #1e40af; line-height: 1.6;">
-            <!-- El contenido se generará automáticamente -->
-          </div>
+
+          <section class="history-card" id="historySection">
+            <h2>Historial</h2>
+            <div id="calendarVisual"></div>
+            <div id="history"></div>
+          </section>
         </div>
       </div>
-
-      <!-- Características de la Bitácora (se mostrará solo en la sección general) -->
-      <div class="bitacora-info" id="bitacoraInfo" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-          <h3>📋 Características de la Bitácora</h3>
-          <button onclick="editCurrentBitacora()" class="button-small" style="background: #3b82f6; color: white; border-color: #3b82f6;">
-            ✏️ Editar Bitácora
-          </button>
-        </div>
-        <div id="bitacoraInfoContent">
-          <!-- El contenido se generará dinámicamente -->
-        </div>
-      </div>
-
-      <!-- Sección de Gestión de Problemas (se mostrará solo en la sección problemas) -->
-      <div class="problems-section" id="problemsSection" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <h3>🚨 Gestión de Problemas</h3>
-          <button onclick="addNewProblemFromSection()" class="button-small" style="background: #ef4444; color: white; border-color: #ef4444;">
-            ➕ Nuevo Problema
-          </button>
-        </div>
-        
-        <!-- Estadísticas rápidas -->
-        <div class="problems-stats-section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px;">
-          <div class="stat-card" style="background: #f0fdf4; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb;">
-            <div style="font-size: 1.5em; font-weight: bold; color: #22c55e;" id="problemsActiveSection">0</div>
-            <div style="font-size: 0.9em; color: #16a34a;">Activos</div>
-          </div>
-          <div class="stat-card" style="background: #fef2f2; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb;">
-            <div style="font-size: 1.5em; font-weight: bold; color: #ef4444;" id="problemsCriticalSection">0</div>
-            <div style="font-size: 0.9em; color: #dc2626;">Críticos</div>
-          </div>
-          <div class="stat-card" style="background: #f0f9ff; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb;">
-            <div style="font-size: 1.5em; font-weight: bold; color: #0ea5e9;" id="problemsResolvedSection">0</div>
-            <div style="font-size: 0.9em; color: #0284c7;">Resueltos</div>
-          </div>
-          <div class="stat-card" style="background: #fffbeb; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb;">
-            <div style="font-size: 1.5em; font-weight: bold; color: #f59e0b;" id="avgResolutionTimeSection">0h</div>
-            <div style="font-size: 0.9em; color: #d97706;">Tiempo Promedio</div>
-          </div>
-        </div>
-
-        <!-- Filtros -->
-        <div class="problems-filters-section" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
-          <select id="filterStatusSection" onchange="filterProblemsSection()" style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 6px; background: white; color: #374151; font-size: 0.9em;">
-            <option value="all">Todos los estados</option>
-            <option value="reported">📝 Reportados</option>
-            <option value="in-progress">⏳ En Proceso</option>
-            <option value="resolved">✅ Resueltos</option>
-            <option value="unresolved">❌ No Resueltos</option>
-          </select>
-          <select id="filterSeveritySection" onchange="filterProblemsSection()" style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 6px; background: white; color: #374151; font-size: 0.9em;">
-            <option value="all">Todas las gravedades</option>
-            <option value="high">🔴 Críticos</option>
-            <option value="moderate">🟠 Moderados</option>
-            <option value="low">🟡 Leves</option>
-            <option value="info">🟢 Informativos</option>
-          </select>
-          <select id="filterCategorySection" onchange="filterProblemsSection()" style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 6px; background: white; color: #374151; font-size: 0.9em;">
-            <option value="all">Todas las categorías</option>
-            <option value="pest">🐛 Plagas</option>
-            <option value="nutrition">🌱 Nutrición</option>
-            <option value="watering">💧 Riego</option>
-            <option value="environment">🌡️ Ambiente</option>
-            <option value="growth">📏 Crecimiento</option>
-            <option value="other">❓ Otro</option>
-          </select>
-        </div>
-
-        <!-- Lista de problemas -->
-        <div class="problems-list-section" id="problemsListSection" style="max-height: 500px; overflow-y: auto; padding-right: 5px;">
-          <!-- Los problemas se generarán dinámicamente -->
-        </div>
-      </div>
-
-      <div id="floraStartContainer" style="display:none;">
-        <label>Inicio de floración:</label>
-        <input type="date" id="floraStart" onchange="setFloraStart()" />
-      </div>
-
-      <!-- Formulario de entrada -->
-      <div id="entryForm">
-        <label>Fecha del registro:</label>
-        <input type="date" id="date" onfocus="this.showPicker()" />
-
-        <label>¿Cómo estuvo el día?</label><br/>
-        <div id="moodOptions"></div>
-
-        <label>Tareas realizadas:</label>
-        <textarea id="tasks"></textarea>
-
-        <label>¿Regaste hoy?</label><br/>
-        <button onclick="setWater(true)">💧 Sí</button>
-        <button onclick="setWater(false)">❌ No</button><br/>
-
-        <div id="waterDetails" style="display:none;">
-          <input type="text" id="waterAmount" placeholder="Cantidad de agua (L o ml)" />
-          <input type="text" id="nutrients" placeholder="Nutrientes utilizados" />
-          <input type="text" id="ph" placeholder="pH del agua" />
-          <input type="text" id="ec" placeholder="EC del agua" />
-        </div>
-
-        <label>Problemas o anomalías:</label>
-        <textarea id="issues"></textarea>
-
-        <label>Notas o reflexiones:</label>
-        <textarea id="notes"></textarea>
-
-        <button onclick="saveEntry()">Guardar entrada</button>
-        <button class="button-small" onclick="exportData()">📤 Exportar JSON</button>
-      </div>
-
-      <!-- Historial -->
-      <h2>Historial</h2>
-      <div id="calendarVisual"></div>
-      <div id="history"></div>
     </div>
 
+    <nav class="mobile-tabbar" aria-label="Navegación móvil">
+      <button type="button" class="tab-item is-active" data-nav="inicio" onclick="setAppView('inicio')">
+        <svg class="icon"><use href="#i-house"></use></svg>Inicio
+      </button>
+      <button type="button" class="tab-item" data-nav="bitacora" onclick="setAppView('bitacora')">
+        <svg class="icon"><use href="#i-clipboard-list"></use></svg>Bitácora
+      </button>
+      <button type="button" class="tab-item" data-nav="cultivos" onclick="setAppView('cultivos')">
+        <svg class="icon"><use href="#i-sprout"></use></svg>Cultivos
+      </button>
+      <button type="button" class="tab-item" data-nav="calendario" onclick="setAppView('calendario')">
+        <svg class="icon"><use href="#i-calendar"></use></svg>Calendario
+      </button>
+      <button type="button" class="tab-item" onclick="toggleSidebar(true)">
+        <svg class="icon"><use href="#i-menu"></use></svg>Más
+      </button>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
     <!-- Modal de edición -->
+
     <div class="modal" id="editModal">
       <div class="modal-content">
         <span class="close-modal" onclick="closeEditModal()">&times;</span>
         <h3>Editar Entrada</h3>
         <input type="password" id="editPassword" placeholder="Contraseña" onkeypress="if(event.key==='Enter') verifyEditPassword()" />
-        <button onclick="verifyEditPassword()" style="margin: 10px 0; background: #22c55e;">Verificar Contraseña</button>
+        <button type="button" class="btn btn-primary" onclick="verifyEditPassword()" style="margin: 10px 0;">Verificar contraseña</button>
         <div id="editForm" style="display: none;">
           <!-- El formulario de edición se generará dinámicamente -->
         </div>
@@ -1930,51 +2109,51 @@
     <div class="modal" id="problemsModal" style="display:none;">
       <div class="modal-content" style="max-width: 800px; margin: 20px auto;">
         <span class="close-modal" onclick="closeProblemsModal()">&times;</span>
-        <h2 style="font-family: 'Luckiest Guy', cursive; color: #388e3c;">🚨 Gestión de Problemas</h2>
+        <h2 style="font-family: Inter, sans-serif; color: #18231D;">Gestión de problemas</h2>
         
         <!-- Estadísticas rápidas -->
         <div class="problems-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px;">
-          <div class="stat-card" style="background: #f0fdf4; padding: 10px; border-radius: 8px; text-align: center;">
-            <div style="font-size: 1.5em; font-weight: bold; color: #22c55e;" id="problemsActive">0</div>
-            <div style="font-size: 0.9em; color: #16a34a;">Activos</div>
+          <div class="stat-card" style="background: #EAF4EC; padding: 10px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #14532D;" id="problemsActive">0</div>
+            <div style="font-size: 0.9em; color: #647067;">Activos</div>
           </div>
-          <div class="stat-card" style="background: #fef2f2; padding: 10px; border-radius: 8px; text-align: center;">
-            <div style="font-size: 1.5em; font-weight: bold; color: #ef4444;" id="problemsCritical">0</div>
-            <div style="font-size: 0.9em; color: #dc2626;">Críticos</div>
+          <div class="stat-card" style="background: #F8F1F1; padding: 10px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #B54747;" id="problemsCritical">0</div>
+            <div style="font-size: 0.9em; color: #647067;">Críticos</div>
           </div>
-          <div class="stat-card" style="background: #f0f9ff; padding: 10px; border-radius: 8px; text-align: center;">
-            <div style="font-size: 1.5em; font-weight: bold; color: #0ea5e9;" id="problemsResolved">0</div>
-            <div style="font-size: 0.9em; color: #0284c7;">Resueltos</div>
+          <div class="stat-card" style="background: #F1F4EF; padding: 10px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #1F6B43;" id="problemsResolved">0</div>
+            <div style="font-size: 0.9em; color: #647067;">Resueltos</div>
           </div>
-          <div class="stat-card" style="background: #fffbeb; padding: 10px; border-radius: 8px; text-align: center;">
-            <div style="font-size: 1.5em; font-weight: bold; color: #f59e0b;" id="avgResolutionTime">0h</div>
-            <div style="font-size: 0.9em; color: #d97706;">Tiempo Promedio</div>
+          <div class="stat-card" style="background: #F8F3E8; padding: 10px; border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.5em; font-weight: bold; color: #B7791F;" id="avgResolutionTime">0h</div>
+            <div style="font-size: 0.9em; color: #647067;">Tiempo promedio</div>
           </div>
         </div>
 
         <!-- Formulario para nuevo problema -->
-        <div class="new-problem-form" style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-          <h3>➕ Reportar Nuevo Problema</h3>
+        <div class="new-problem-form" style="background: #F4F6F4; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #DDE4DE;">
+          <h3>Reportar nuevo problema</h3>
           <div style="display: grid; grid-template-columns: 1fr 150px 150px; gap: 10px; margin-bottom: 10px;">
             <input type="text" id="newProblemTitle" placeholder="Describe el problema..." style="padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb;">
             <select id="newProblemSeverity" style="padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb;">
-              <option value="low">🟡 Leve</option>
-              <option value="moderate">🟠 Moderado</option>
-              <option value="high">🔴 Crítico</option>
-              <option value="info">🟢 Informativo</option>
+              <option value="low">Leve</option>
+              <option value="moderate">Moderado</option>
+              <option value="high">Crítico</option>
+              <option value="info">Informativo</option>
             </select>
             <select id="newProblemCategory" style="padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb;">
-              <option value="pest">🐛 Plagas</option>
-              <option value="nutrition">🌱 Nutrición</option>
-              <option value="watering">💧 Riego</option>
-              <option value="environment">🌡️ Ambiente</option>
-              <option value="growth">📏 Crecimiento</option>
-              <option value="other">❓ Otro</option>
+              <option value="pest">Plagas</option>
+              <option value="nutrition">Nutrición</option>
+              <option value="watering">Riego</option>
+              <option value="environment">Ambiente</option>
+              <option value="growth">Crecimiento</option>
+              <option value="other">Otro</option>
             </select>
           </div>
           <div style="display: flex; gap: 10px;">
             <textarea id="newProblemDescription" placeholder="Descripción detallada (opcional)..." style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb; min-height: 60px;"></textarea>
-            <button onclick="addNewProblem()" style="background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer;">
+            <button type="button" class="btn btn-primary" onclick="addNewProblem()">
               Reportar
             </button>
           </div>
@@ -1984,26 +2163,26 @@
         <div class="problems-filters" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
           <select id="filterStatus" onchange="filterProblems()" style="padding: 6px; border-radius: 4px; border: 1px solid #e5e7eb;">
             <option value="all">Todos los estados</option>
-            <option value="reported">📝 Reportados</option>
-            <option value="in-progress">⏳ En Proceso</option>
-            <option value="resolved">✅ Resueltos</option>
-            <option value="unresolved">❌ No Resueltos</option>
+            <option value="reported">Reportados</option>
+            <option value="in-progress">En proceso</option>
+            <option value="resolved">Resueltos</option>
+            <option value="unresolved">No resueltos</option>
           </select>
           <select id="filterSeverity" onchange="filterProblems()" style="padding: 6px; border-radius: 4px; border: 1px solid #e5e7eb;">
             <option value="all">Todas las gravedades</option>
-            <option value="high">🔴 Críticos</option>
-            <option value="moderate">🟠 Moderados</option>
-            <option value="low">🟡 Leves</option>
-            <option value="info">🟢 Informativos</option>
+            <option value="high">Críticos</option>
+            <option value="moderate">Moderados</option>
+            <option value="low">Leves</option>
+            <option value="info">Informativos</option>
           </select>
           <select id="filterCategory" onchange="filterProblems()" style="padding: 6px; border-radius: 4px; border: 1px solid #e5e7eb;">
             <option value="all">Todas las categorías</option>
-            <option value="pest">🐛 Plagas</option>
-            <option value="nutrition">🌱 Nutrición</option>
-            <option value="watering">💧 Riego</option>
-            <option value="environment">🌡️ Ambiente</option>
-            <option value="growth">📏 Crecimiento</option>
-            <option value="other">❓ Otro</option>
+            <option value="pest">Plagas</option>
+            <option value="nutrition">Nutrición</option>
+            <option value="watering">Riego</option>
+            <option value="environment">Ambiente</option>
+            <option value="growth">Crecimiento</option>
+            <option value="other">Otro</option>
           </select>
         </div>
 
@@ -2018,23 +2197,23 @@
     <div class="modal" id="editProblemModal" style="display:none;">
       <div class="modal-content" style="max-width: 500px; margin: 50px auto;">
         <span class="close-modal" onclick="closeEditProblemModal()">&times;</span>
-        <h3>✏️ Editar Problema</h3>
+        <h3>Editar problema</h3>
         <div style="margin-bottom: 15px;">
           <label>Estado:</label>
           <select id="editProblemStatus" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb; margin-top: 5px;">
-            <option value="reported">📝 Reportado</option>
-            <option value="in-progress">⏳ En Proceso</option>
-            <option value="resolved">✅ Resuelto</option>
-            <option value="unresolved">❌ No Resuelto</option>
+            <option value="reported">Reportado</option>
+            <option value="in-progress">En proceso</option>
+            <option value="resolved">Resuelto</option>
+            <option value="unresolved">No resuelto</option>
           </select>
         </div>
         <div style="margin-bottom: 15px;">
           <label>Gravedad:</label>
           <select id="editProblemSeverity" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb; margin-top: 5px;">
-            <option value="low">🟡 Leve</option>
-            <option value="moderate">🟠 Moderado</option>
-            <option value="high">🔴 Crítico</option>
-            <option value="info">🟢 Informativo</option>
+            <option value="low">Leve</option>
+            <option value="moderate">Moderado</option>
+            <option value="high">Crítico</option>
+            <option value="info">Informativo</option>
           </select>
         </div>
         <div style="margin-bottom: 15px;">
@@ -2042,10 +2221,10 @@
           <textarea id="editProblemSolution" placeholder="Describe la solución aplicada..." style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb; margin-top: 5px; min-height: 80px;"></textarea>
         </div>
         <div style="display: flex; gap: 10px; justify-content: flex-end;">
-          <button onclick="closeEditProblemModal()" style="background: #6b7280; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer;">
+          <button type="button" class="btn btn-secondary" onclick="closeEditProblemModal()">
             Cancelar
           </button>
-          <button onclick="saveProblemEdit()" style="background: #22c55e; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer;">
+          <button type="button" class="btn btn-primary" onclick="saveProblemEdit()">
             Guardar
           </button>
         </div>
@@ -2056,16 +2235,15 @@
     <div class="modal" id="helpModal" style="display:none;">
       <div class="modal-content" style="max-width: 400px; margin: 50px auto; background: #fff; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: relative;">
         <span class="close-modal" onclick="closeHelpModal()" style="position: absolute; right: 1rem; top: 1rem; cursor: pointer; font-size: 1.5rem;">&times;</span>
-        <h2 style="font-family: 'Luckiest Guy', cursive; color: #388e3c;">¿Qué puede hacer Bitácora High Stakes?</h2>
-        <ul style="font-size: 1.1rem; color: #374151; margin-top: 1rem; list-style: none; padding-left: 0;">
-          <li><span style='font-size:1.3em; margin-right:6px;'>🌱</span>Gestiona varios cultivos en un solo lugar.</li>
-          <li><span style='font-size:1.3em; margin-right:6px;'>📊</span>Visualiza tu progreso con gráficos automáticos de emociones, riego y parámetros del agua.</li>
-  
-          <li><span style='font-size:1.3em; margin-right:6px;'>🔒</span>Comparte tus bitácoras o mantenlas privadas según prefieras.</li>
-          <li><span style='font-size:1.3em; margin-right:6px;'>📱</span>Accede desde cualquier dispositivo, incluso sin conexión (PWA).</li>
-          <li><span style='font-size:1.3em; margin-right:6px;'>📤</span>Exporta tus registros para llevar un control fuera de la app.</li>
+        <h2 style="font-family: Inter, sans-serif; color: #18231D; font-size: 22px;">¿Qué puede hacer Bitácora High Stakes?</h2>
+        <ul style="font-size: 15px; color: #18231D; margin-top: 1rem; padding-left: 18px; line-height: 1.55;">
+          <li>Gestiona varios cultivos en un solo lugar.</li>
+          <li>Visualiza tu progreso con gráficos automáticos de emociones, riego y parámetros del agua.</li>
+          <li>Comparte tus bitácoras o mantenlas privadas según prefieras.</li>
+          <li>Accede desde cualquier dispositivo, incluso sin conexión (PWA).</li>
+          <li>Exporta tus registros para llevar un control fuera de la app.</li>
         </ul>
-        <div style="margin-top: 1.5rem; text-align: center; color: #4ade80; font-family: 'Luckiest Guy', cursive;">¡Tu cultivo, tu historia! 🌿</div>
+        <div style="margin-top: 1.5rem; text-align: center; color: #647067; font-size: 14px;">Tu cultivo, tu historia.</div>
       </div>
     </div>
   </div>
@@ -2111,16 +2289,130 @@
     let viewingDate = new Date();   // Fecha que estamos viendo actualmente
 
     const moodStates = [
-      { value: 1, icon: '😞', label: 'Mal día', color: '#f87171' },
-      { value: 2, icon: '⚠️', label: 'Regular', color: '#facc15' },
-      { value: 3, icon: '🌿', label: 'Bueno', color: '#4ade80' },
-      { value: 4, icon: '🌞', label: 'Muy bueno', color: '#22c55e' }
+      { value: 1, icon: '😞', label: 'Mal día', color: '#C98989' },
+      { value: 2, icon: '⚠', label: 'Regular', color: '#C4A36A' },
+      { value: 3, icon: '🌿', label: 'Bueno', color: '#7D9B86' },
+      { value: 4, icon: '☀', label: 'Muy bueno', color: '#2E7D4F' }
     ];
 
     const availableColors = [
       '#4ade80', '#0ea5e9', '#f87171', '#facc15',
       '#a78bfa', '#f472b6', '#60a5fa', '#34d399'
     ];
+
+    function normalizeCssColor(color) {
+      if (!color) return '';
+      return String(color).trim().toLowerCase().replace(/\s+/g, '');
+    }
+
+    function hexToRgbCss(hex) {
+      const h = String(hex).replace('#', '');
+      if (h.length !== 6) return normalizeCssColor(hex);
+      const n = parseInt(h, 16);
+      return `rgb(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255})`;
+    }
+
+    function colorsEqual(a, b) {
+      const na = normalizeCssColor(a);
+      const nb = normalizeCssColor(b);
+      if (!na || !nb) return false;
+      if (na === nb) return true;
+      const ra = na.startsWith('#') ? hexToRgbCss(na) : na;
+      const rb = nb.startsWith('#') ? hexToRgbCss(nb) : nb;
+      return ra === rb;
+    }
+
+    const SOFT_COLORS = {
+      '#4ade80': '#9CB5A4',
+      '#0ea5e9': '#8EADC0',
+      '#f87171': '#C99A9A',
+      '#facc15': '#C9BE96',
+      '#a78bfa': '#B7A9C9',
+      '#f472b6': '#C9A3B4',
+      '#60a5fa': '#9BB0C9',
+      '#34d399': '#8FB5A0'
+    };
+
+    function softenColor(color) {
+      const key = normalizeCssColor(color);
+      if (SOFT_COLORS[key]) return SOFT_COLORS[key];
+      const hex = Object.keys(SOFT_COLORS).find(item => colorsEqual(item, color));
+      return hex ? SOFT_COLORS[hex] : '#C5D0C8';
+    }
+
+    function colorValue(el) {
+      return (el && (el.dataset.color || el.style.backgroundColor)) || '';
+    }
+
+    function bitacoraSubtitle(bitacora) {
+      const parts = [];
+      const tipos = { interior: 'Interior', exterior: 'Exterior', invernadero: 'Invernadero' };
+      if (bitacora.tipoCultivo && tipos[bitacora.tipoCultivo]) parts.push(tipos[bitacora.tipoCultivo]);
+      if (Array.isArray(bitacora.cepas) && bitacora.cepas.length) {
+        const names = bitacora.cepas.map(cepa => cepa.nombre).filter(Boolean);
+        if (names.length) parts.push(names.slice(0, 2).join(', '));
+      }
+      return parts.join(' · ');
+    }
+
+    function setAppView(view) {
+      const allowed = ['inicio', 'bitacora', 'cultivos', 'calendario', 'estadisticas', 'recursos', 'configuracion'];
+      if (!allowed.includes(view)) view = 'inicio';
+      document.body.dataset.appView = view;
+      document.querySelectorAll('[data-nav]').forEach(el => {
+        const on = el.dataset.nav === view;
+        el.classList.toggle('is-active', on);
+        if (el.classList.contains('nav-item')) el.setAttribute('aria-current', on ? 'page' : 'false');
+      });
+      toggleSidebar(false);
+      const notice = document.getElementById('noticePanel');
+      if (notice) notice.hidden = true;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleSidebar(force) {
+      const sidebar = document.getElementById('appSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      if (!sidebar) return;
+      const open = typeof force === 'boolean' ? force : !sidebar.classList.contains('is-open');
+      sidebar.classList.toggle('is-open', open);
+      if (backdrop) backdrop.classList.toggle('is-open', open);
+    }
+
+    function toggleSidebarCompact() {
+      document.getElementById('appSidebar')?.classList.toggle('is-compact');
+    }
+
+    function toggleNotices() {
+      const panel = document.getElementById('noticePanel');
+      const btn = document.getElementById('noticeButton');
+      if (!panel) return;
+      panel.hidden = !panel.hidden;
+      if (btn) btn.setAttribute('aria-expanded', panel.hidden ? 'false' : 'true');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span></span>';
+      toast.querySelector('span').textContent = message;
+      toast.hidden = false;
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => { toast.hidden = true; }, 2800);
+    }
+
+    document.addEventListener('click', (event) => {
+      const notice = document.getElementById('noticePanel');
+      const noticeBtn = document.getElementById('noticeButton');
+      if (notice && !notice.hidden && noticeBtn && !notice.contains(event.target) && !noticeBtn.contains(event.target)) {
+        notice.hidden = true;
+        noticeBtn.setAttribute('aria-expanded', 'false');
+      }
+      if (!event.target.closest('.bitacora-card')) {
+        document.querySelectorAll('.bitacora-actions.is-open').forEach(el => el.classList.remove('is-open'));
+      }
+    });
+
 
     // ===== SISTEMA DE PROTECCIÓN DE DATOS INTEGRADO =====
     console.log("🛡️ Activando protecciones integradas...");
@@ -2250,11 +2542,11 @@
         if (document.getElementById('emergencyButton')) {
           const btn = document.getElementById('emergencyButton');
           const originalText = btn.innerHTML;
-          btn.innerHTML = '✅ ¡Listo!';
-          btn.style.background = 'linear-gradient(145deg, #22c55e, #16a34a)';
+          btn.classList.add('is-success');
+          btn.textContent = 'Listo';
           setTimeout(() => {
+            btn.classList.remove('is-success');
             btn.innerHTML = originalText;
-            btn.style.background = 'linear-gradient(145deg, #f59e0b, #d97706)';
           }, 2000);
         }
       }, 3000);
@@ -2324,6 +2616,14 @@
       // Nombre y email
       userName.textContent = displayName;
       userEmail.textContent = user.email;
+      const sideUser = document.getElementById('sidebarUser');
+      const sideAvatar = document.getElementById('sidebarUserAvatar');
+      const sideName = document.getElementById('sidebarUserName');
+      const sideEmail = document.getElementById('sidebarUserEmail');
+      if (sideUser) sideUser.hidden = false;
+      if (sideAvatar) sideAvatar.textContent = displayName.charAt(0).toUpperCase();
+      if (sideName) sideName.textContent = displayName;
+      if (sideEmail) sideEmail.textContent = user.email;
       
       // Mostrar botón de papelera para usuarios autenticados
       if (trashButton) {
@@ -2339,6 +2639,8 @@
       const trashButton = document.getElementById('trashButton');
       
       userInfo.style.display = 'none';
+      const sideUser = document.getElementById('sidebarUser');
+      if (sideUser) sideUser.hidden = true;
       
       // Ocultar botón de papelera para usuarios no autenticados
       if (trashButton) {
@@ -2372,11 +2674,7 @@
         // Mostrar panel
         panel.style.display = 'block';
         panel.style.animation = 'slideDown 0.3s ease-out';
-        
-        // Cambiar apariencia del botón
-        button.style.transform = 'scale(1.1) rotate(180deg)';
-        button.style.boxShadow = '0 6px 20px rgba(74, 222, 128, 0.6)';
-        
+        if (button) button.setAttribute('aria-expanded', 'true');
       } else {
         // Ocultar panel con animación
         panel.style.animation = 'slideUp 0.3s ease-out';
@@ -2386,9 +2684,7 @@
           panel.style.display = 'none';
         }, 300);
         
-        // Restaurar apariencia del botón
-        button.style.transform = 'scale(1) rotate(0deg)';
-        button.style.boxShadow = '0 4px 12px rgba(74, 222, 128, 0.4)';
+        if (button) button.setAttribute('aria-expanded', 'false');
       }
     }
 
@@ -2634,7 +2930,7 @@
       }
 
       const name = document.getElementById('newBitacoraName').value.trim();
-      const selectedColor = document.querySelector('.color-option.selected');
+      const selectedColor = document.querySelector('#colorPicker .color-option.selected');
       
       if (!name) {
         alert('Por favor, ingresa un nombre para la bitácora.');
@@ -2646,7 +2942,7 @@
         return;
       }
 
-      const color = selectedColor.style.backgroundColor;
+      const color = colorValue(selectedColor);
       
       // Verificar si ya existe una bitácora con ese nombre
       if (userBitacoras.some(b => b.name.toLowerCase() === name.toLowerCase())) {
@@ -2752,6 +3048,8 @@
 
     // Modificar saveEntry para usar Firestore
     async function saveEntry() {
+      const saveBtn = document.getElementById('saveEntryBtn');
+      const saveLabel = document.getElementById('saveEntryLabel');
       if (!selectedBitacora || !currentUser) {
         alert('Por favor, selecciona una bitácora primero.');
         return;
@@ -2777,6 +3075,9 @@
         createdAt: new Date().toISOString()
       };
 
+      if (saveBtn) saveBtn.disabled = true;
+      if (saveLabel) saveLabel.textContent = 'Guardando…';
+
       try {
         // Actualizar en memoria
         const bitacoraIndex = userBitacoras.findIndex(b => b.id === selectedBitacora.id);
@@ -2795,10 +3096,14 @@
           renderHistory();
           renderCalendar();
           updateWeeklySummary();
+          showToast('Registro guardado correctamente');
         }
       } catch (error) {
         console.error('Error al guardar entrada:', error);
         alert('Error al guardar la entrada. Intenta de nuevo.');
+      } finally {
+        if (saveBtn) saveBtn.disabled = false;
+        if (saveLabel) saveLabel.textContent = 'Guardar registro';
       }
     }
 
@@ -2922,7 +3227,7 @@
       let avgMoodDisplay = '-';
       if (moods.length > 0) {
         const avgMood = moods.reduce((a, b) => a + b, 0) / moods.length;
-        const moodLabels = ['😔', '😐', '😊', '🤩'];
+        const moodLabels = ['😞', '⚠', '🌿', '☀'];
         const moodTexts = ['Difícil', 'Regular', 'Bueno', 'Excelente'];
         const moodIndex = Math.max(0, Math.min(3, Math.round(avgMood) - 1));
         avgMoodDisplay = `${moodLabels[moodIndex]} ${moodTexts[moodIndex]} (${avgMood.toFixed(1)})`;
@@ -2957,7 +3262,7 @@
         } else {
           // 🎨 CREAR GRÁFICO VISUAL MEJORADO
           timelineEl.innerHTML = `
-            <div style="margin-bottom: 10px; font-weight: 600; color: #374151;">📈 Timeline Semanal:</div>
+            <div style="margin-bottom: 10px; font-weight: 600; color: #18231D; font-size: 13px;">Semana</div>
             <div style="display: flex; gap: 3px; align-items: end; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
               ${sortedEntries.map((entry, index) => {
                 const mood = moodStates.find(m => m.value === entry.mood);
@@ -2976,9 +3281,8 @@
                       margin-bottom: 4px;
                       position: relative;
                       transition: all 0.2s;
-                      border: 2px solid ${entry.didWater ? '#22c55e' : 'transparent'};
+                      border: 2px solid ${entry.didWater ? '#2E7D4F' : 'transparent'};
                     " title="${entry.date} - ${mood?.label || 'Sin estado'} - ${entry.didWater ? 'Con riego' : 'Sin riego'} - ${entry.tasks?.substring(0, 30) || 'Sin tareas'}...">
-                      ${entry.didWater ? '<div style="position: absolute; top: -8px; left: 50%; transform: translateX(-50%); font-size: 12px;">💧</div>' : ''}
                     </div>
                     <div style="font-size: 10px; color: #6b7280; text-align: center; line-height: 1.2;">
                       ${dayName}<br/>
@@ -2989,8 +3293,8 @@
               }).join('')}
             </div>
             <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.8em; color: #6b7280;">
-              <span>📊 Altura = Estado emocional</span>
-              <span>💧 Borde verde = Riego</span>
+              <span>Altura = estado emocional</span>
+              <span>Borde = día con riego</span>
             </div>
           `;
         }
@@ -3084,12 +3388,12 @@
       
       return `
         <div style="margin-bottom: 15px;">
-          <strong>📊 Análisis de la Semana:</strong><br/>
+          <strong>Análisis de la semana</strong><br/>
           ${narrative}
         </div>
         
         <div style="margin-bottom: 15px;">
-          <strong>🎯 Puntos Clave:</strong>
+          <strong>Puntos clave</strong>
           <ul style="margin: 8px 0; padding-left: 20px;">
             ${moodAnalysis.insights.map(insight => `<li>${insight}</li>`).join('')}
             ${taskAnalysis.insights.map(insight => `<li>${insight}</li>`).join('')}
@@ -3098,8 +3402,8 @@
           </ul>
         </div>
         
-        <div style="background: #f0fdf4; padding: 10px; border-radius: 8px; border-left: 3px solid #22c55e;">
-          <strong>💡 Recomendaciones IA:</strong><br/>
+        <div style="background: #EAF4EC; padding: 10px; border-radius: 8px; border-left: 3px solid #2E7D4F;">
+          <strong>Recomendaciones</strong><br/>
           ${recommendations.join('<br/>• ')}
         </div>
       `;
@@ -3114,8 +3418,8 @@
       const insights = [];
       
       if (avg >= 3.5) insights.push('Estado emocional excelente esta semana 😊');
-      else if (avg >= 2.5) insights.push('Estado emocional positivo en general 🌿');
-      else if (avg >= 2) insights.push('Estado emocional variable, con altibajos ⚠️');
+      else if (avg >= 2.5) insights.push('Estado emocional positivo en general');
+      else if (avg >= 2) insights.push('Estado emocional variable, con altibajos');
       else insights.push('Semana challenging emocionalmente 😔');
       
       if (trend === 'improving') insights.push('Tendencia emocional al alza 📈');
@@ -3224,21 +3528,21 @@
       const insights = [];
       
       if (wateringDays === 0) {
-        insights.push('No se registraron riegos esta semana 🏜️');
+        insights.push('No se registraron riegos esta semana');
       } else if (wateringRatio >= 0.8) {
-        insights.push('Excelente consistencia en el riego 💧');
+        insights.push('Excelente consistencia en el riego');
       } else if (wateringRatio >= 0.5) {
-        insights.push('Buen patrón de riego en general 🌊');
+        insights.push('Buen patrón de riego en general');
       } else if (wateringRatio >= 0.3) {
-        insights.push('Riego moderado esta semana 💧');
+        insights.push('Riego moderado esta semana');
       } else {
-        insights.push('Pocos días de riego registrados 🏜️');
+        insights.push('Pocos días de riego registrados');
       }
       
       // Analizar nutrientes si están disponibles
       const withNutrients = wateringEntries.filter(w => w.nutrients && w.nutrients.trim()).length;
       if (withNutrients > 0) {
-        insights.push(`Uso de nutrientes en ${withNutrients} de ${wateringDays} riegos 🧪`);
+        insights.push(`Uso de nutrientes en ${withNutrients} de ${wateringDays} riegos`);
       }
       
       // Analizar pH si está disponible
@@ -3248,11 +3552,11 @@
         if (phValues.length > 0) {
           const avgPh = phValues.reduce((a, b) => a + b, 0) / phValues.length;
           if (avgPh >= 6.0 && avgPh <= 7.0) {
-            insights.push(`pH promedio excelente: ${avgPh.toFixed(1)} 🎯`);
+            insights.push(`pH promedio excelente: ${avgPh.toFixed(1)}`);
           } else if (avgPh >= 5.5 && avgPh <= 7.5) {
-            insights.push(`pH promedio aceptable: ${avgPh.toFixed(1)} ⚠️`);
+            insights.push(`pH promedio aceptable: ${avgPh.toFixed(1)}`);
           } else {
-            insights.push(`pH promedio fuera de rango: ${avgPh.toFixed(1)} 🚨`);
+            insights.push(`pH promedio fuera de rango: ${avgPh.toFixed(1)}`);
           }
         }
       }
@@ -3265,37 +3569,37 @@
       
       // Recomendaciones basadas en el estado emocional
       if (moodAnalysis.avg < 2.5) {
-        recommendations.push('💆‍♀️ Considera tomarte más tiempo para disfrutar el proceso de cultivo');
-        recommendations.push('📚 Quizás revisar técnicas que puedan simplificar tu rutina');
+        recommendations.push('Considera tomarte más tiempo para disfrutar el proceso de cultivo');
+        recommendations.push('Quizás revisar técnicas que puedan simplificar tu rutina');
       } else if (moodAnalysis.avg >= 3.5) {
-        recommendations.push('🎉 ¡Excelente semana! Mantén esta energía positiva');
-        recommendations.push('📈 Considera documentar qué estrategias están funcionando mejor');
+        recommendations.push('Excelente semana. Mantén esta energía positiva');
+        recommendations.push('Considera documentar qué estrategias están funcionando mejor');
       }
       
       // Recomendaciones de riego
       if (wateringAnalysis.wateringRatio < 0.3) {
-        recommendations.push('💧 Considera establecer un cronograma de riego más consistente');
+        recommendations.push('Considera establecer un cronograma de riego más consistente');
       } else if (wateringAnalysis.wateringRatio > 0.8) {
-        recommendations.push('✅ Excelente disciplina de riego, sigue así');
+        recommendations.push('Excelente disciplina de riego, sigue así');
       }
       
       // Recomendaciones de tareas
       if (taskAnalysis.taskFrequency && taskAnalysis.taskFrequency.observacion > 0) {
-        recommendations.push('👀 Tu atención al detalle es excelente, sigue observando');
+        recommendations.push('Tu atención al detalle es excelente, sigue observando');
       } else {
-        recommendations.push('🔍 Intenta dedicar más tiempo a observar detalles de las plantas');
+        recommendations.push('Intenta dedicar más tiempo a observar detalles de las plantas');
       }
       
       // Recomendaciones de problemas
       if (issueAnalysis.problemCount && Object.keys(issueAnalysis.problemCount).length > 0) {
-        recommendations.push('🛡️ Considera medidas preventivas para los problemas detectados');
-        recommendations.push('📖 Investigar sobre el manejo específico de estos problemas');
+        recommendations.push('Considera medidas preventivas para los problemas detectados');
+        recommendations.push('Investigar sobre el manejo específico de estos problemas');
       } else {
-        recommendations.push('🌟 ¡Sin problemas reportados! Excelente manejo preventivo');
+        recommendations.push('Sin problemas reportados. Excelente manejo preventivo');
       }
       
       // Recomendación general
-      recommendations.push('📊 Sigue registrando datos para análisis más precisos');
+      recommendations.push('Sigue registrando datos para análisis más precisos');
       
       return recommendations;
     }
@@ -3483,11 +3787,11 @@
       // Feedback visual
       const currentWeekBtn = document.getElementById('currentWeekBtn');
       if (currentWeekBtn) {
-        currentWeekBtn.style.background = '#22c55e';
-        currentWeekBtn.innerHTML = '✅ ¡Listo!';
+        currentWeekBtn.classList.add('is-success');
+        currentWeekBtn.textContent = 'Listo';
         setTimeout(() => {
-          currentWeekBtn.style.background = '#3b82f6';
-          currentWeekBtn.innerHTML = '📅 Semana Actual';
+          currentWeekBtn.classList.remove('is-success');
+          currentWeekBtn.textContent = 'Semana actual';
         }, 1000);
       }
     }
@@ -3510,14 +3814,25 @@
         const moodEmoji = moodStates.find(m => m.value === e.mood)?.icon || '';
         const div = document.createElement('div');
         div.className = 'entry';
+        const moodLabel = moodStates.find(m => m.value === e.mood)?.label || '';
+        const waterLine = e.didWater
+          ? `Sí${e.waterAmount ? ' · ' + e.waterAmount : ''}${e.nutrients ? ' · ' + e.nutrients : ''}${e.ph ? ' · pH ' + e.ph : ''}${e.ec ? ' · EC ' + e.ec : ''}`
+          : 'No';
         div.innerHTML = `
-          <button class="edit-button" onclick="editEntry('${e.date}')">✏️</button>
-          <strong>${e.date}</strong> — ${moodEmoji} ${diaFlora}<br/>
-          <b>Tareas:</b> ${e.tasks}<br/>
-          <b>Riego:</b> ${e.didWater ? 'Sí' : 'No'} ${e.didWater ? `
-            <br/>💧 ${e.waterAmount} | 🧴 ${e.nutrients} | ⚗️ pH: ${e.ph} | 📈 EC: ${e.ec}` : ''}
-          <br/><b>Problemas:</b> ${e.issues}
-          <br/><b>Notas:</b> ${e.notes}`;
+          <div class="entry-top">
+            <div>
+              <strong class="entry-date">${e.date}</strong>
+              <span class="entry-mood">${moodEmoji} ${moodLabel}</span>
+              ${diaFlora ? `<span class="entry-flora">${diaFlora}</span>` : ''}
+            </div>
+            <button type="button" class="edit-button" onclick="editEntry('${e.date}')">Editar</button>
+          </div>
+          <dl class="entry-grid">
+            <div><dt>Tareas</dt><dd>${e.tasks || '—'}</dd></div>
+            <div><dt>Riego</dt><dd>${waterLine}</dd></div>
+            <div><dt>Problemas</dt><dd>${e.issues || '—'}</dd></div>
+            <div><dt>Notas</dt><dd>${e.notes || '—'}</dd></div>
+          </dl>`;
         container.appendChild(div);
       });
     }
@@ -3549,10 +3864,9 @@
       container.innerHTML = '';
       
       const newButton = document.createElement('button');
-      newButton.className = 'bitacora-card';
-      newButton.style.backgroundColor = '#e5e7eb';
-      newButton.style.color = '#374151';
-      newButton.innerHTML = '+ Nueva Bitácora';
+      newButton.type = 'button';
+      newButton.className = 'bitacora-card bitacora-card-new';
+      newButton.innerHTML = '<span class="bitacora-icon"><svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg></span><span class="bitacora-copy"><span class="bitacora-name">Nueva bitácora</span></span>';
       newButton.id = 'btnNuevaBitacora';
       newButton.onclick = toggleNewBitacoraForm;
       container.appendChild(newButton);
@@ -3560,17 +3874,26 @@
       userBitacoras.forEach(bitacora => {
         const div = document.createElement('div');
         div.className = `bitacora-card ${bitacora.id === selectedBitacora?.id ? 'active' : ''}`;
-        div.style.backgroundColor = bitacora.color;
-        div.style.color = '#fff';
-        
-        // Contenedor para el nombre y estado de visibilidad
+        div.style.setProperty('--accent', softenColor(bitacora.color));
+        const subtitle = bitacoraSubtitle(bitacora);
+        const icon = bitacora.isPublic ? 'globe' : 'lock';
+        const iconTitle = bitacora.isPublic
+          ? 'Pública: Cualquiera con el enlace puede ver y compartir esta bitácora.'
+          : 'Privada: Solo tú puedes ver esta bitácora.';
         const nameDiv = document.createElement('div');
+        nameDiv.className = 'bitacora-copy';
         nameDiv.innerHTML = `
-          ${bitacora.name}
-          <span class="visibility-indicator" title="${bitacora.isPublic ? 'Pública: Cualquiera con el enlace puede ver y compartir esta bitácora.' : 'Privada: Solo tú puedes ver esta bitácora.'}">
-            ${bitacora.isPublic ? '🌐' : '🔒'}
+          <span class="bitacora-name">${bitacora.name}
+            <span class="visibility-indicator" title="${iconTitle}">
+              <svg class="icon" aria-hidden="true"><use href="#i-${icon}"></use></svg>
+            </span>
           </span>
+          ${subtitle ? `<span class="bitacora-sub">${subtitle}</span>` : ''}
         `;
+        const iconWrap = document.createElement('span');
+        iconWrap.className = 'bitacora-icon';
+        iconWrap.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-sprout"></use></svg>';
+        div.appendChild(iconWrap);
         div.appendChild(nameDiv);
         
         // Contenedor para los botones de acción
@@ -3580,7 +3903,9 @@
         // Botón de editar
         const editBtn = document.createElement('button');
         editBtn.className = 'action-btn edit-btn';
-        editBtn.innerHTML = '✏️';
+        editBtn.type = 'button';
+        editBtn.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-pencil"></use></svg> Editar';
+        editBtn.setAttribute('aria-label', 'Editar bitácora');
         editBtn.onclick = (e) => {
           e.stopPropagation();
           showEditBitacoraModal(bitacora);
@@ -3589,7 +3914,9 @@
         // Botón de eliminar
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'action-btn delete-btn';
-        deleteBtn.innerHTML = '🗑️';
+        deleteBtn.type = 'button';
+        deleteBtn.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-trash-2"></use></svg> Eliminar';
+        deleteBtn.setAttribute('aria-label', 'Eliminar bitácora');
         deleteBtn.onclick = (e) => {
           e.stopPropagation();
           if (confirm('¿Estás seguro de que quieres eliminar esta bitácora?')) {
@@ -3600,7 +3927,9 @@
         // Botón de compartir
         const shareBtn = document.createElement('button');
         shareBtn.className = 'action-btn share-btn';
-        shareBtn.innerHTML = '📤';
+        shareBtn.type = 'button';
+        shareBtn.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-share-2"></use></svg> Compartir';
+        shareBtn.setAttribute('aria-label', 'Compartir bitácora');
         shareBtn.onclick = (e) => {
           e.stopPropagation();
           if (!bitacora.isPublic) {
@@ -3610,9 +3939,21 @@
           shareBitacora(bitacora);
         };
         
+        const menuBtn = document.createElement('button');
+        menuBtn.type = 'button';
+        menuBtn.className = 'bitacora-menu';
+        menuBtn.setAttribute('aria-label', 'Acciones de la bitácora');
+        menuBtn.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-ellipsis"></use></svg>';
+        menuBtn.onclick = (e) => {
+          e.stopPropagation();
+          const open = actionsDiv.classList.contains('is-open');
+          document.querySelectorAll('.bitacora-actions.is-open').forEach(el => el.classList.remove('is-open'));
+          if (!open) actionsDiv.classList.add('is-open');
+        };
         actionsDiv.appendChild(editBtn);
         actionsDiv.appendChild(deleteBtn);
         actionsDiv.appendChild(shareBtn);
+        div.appendChild(menuBtn);
         div.appendChild(actionsDiv);
         
         div.onclick = () => selectBitacora(bitacora.id);
@@ -3684,12 +4025,12 @@
     function renderColorPicker() {
       const colorPicker = document.getElementById('colorPicker');
       colorPicker.innerHTML = availableColors.map(color => `
-        <div class="color-option" style="background-color: ${color}" onclick="selectColor(this)"></div>
+        <div class="color-option" data-color="${color}" style="background-color: ${softenColor(color)}" onclick="selectColor(this)"></div>
       `).join('');
     }
 
     function selectColor(element) {
-      document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+      document.querySelectorAll('#colorPicker .color-option').forEach(opt => opt.classList.remove('selected'));
       element.classList.add('selected');
     }
 
@@ -3749,7 +4090,7 @@
         if (cepa.germinacion) {
           info += ` - Germinación: ${cepa.germinacion}`;
         }
-        div.innerHTML = `<span>${info}</span> <button class='cepa-remove' onclick='removeCepa(${idx})'>🗑️</button>`;
+        div.innerHTML = `<span>${info}</span> <button class='cepa-remove' onclick='removeCepa(${idx})'>Quitar</button>`;
         list.appendChild(div);
       });
     }
@@ -3795,7 +4136,7 @@
       extractores.forEach((extractor, idx) => {
         const div = document.createElement('div');
         div.className = 'extractor-item';
-        div.innerHTML = `<span>x${extractor.cantidad} de ${extractor.pulgadas}"</span> <button class='extractor-remove' onclick='removeExtractor(${idx})'>🗑️</button>`;
+        div.innerHTML = `<span>x${extractor.cantidad} de ${extractor.pulgadas}"</span> <button class='extractor-remove' onclick='removeExtractor(${idx})'>Quitar</button>`;
         list.appendChild(div);
       });
     }
@@ -3839,8 +4180,14 @@
     // Funciones de estado y renderizado
     function setStage(stage) {
       selectedStage = stage;
-      document.querySelectorAll('.stage-btn').forEach(btn => btn.classList.remove('stage-selected'));
-      document.getElementById('btn-' + stage).classList.add('stage-selected');
+      document.querySelectorAll('.stage-btn').forEach(btn => {
+        btn.classList.remove('stage-selected');
+        btn.setAttribute('aria-pressed', 'false');
+      });
+      const stageBtn = document.getElementById('btn-' + stage);
+      stageBtn.classList.add('stage-selected');
+      stageBtn.setAttribute('aria-pressed', 'true');
+      document.getElementById('registroCard')?.classList.toggle('is-entry', stage === 'vege' || stage === 'flora');
       
       
       // Mostrar/ocultar elementos según la etapa
@@ -3877,7 +4224,7 @@
         console.log('📝 Cambiando a etapa:', stage);
         bitacoraInfo.style.display = 'none';
         problemsSection.style.display = 'none';
-        if (entryForm) entryForm.style.display = 'block';
+        if (entryForm) entryForm.style.display = '';
       }
       
       renderHistory();
@@ -3901,15 +4248,26 @@
       moodStates.forEach(state => {
         const span = document.createElement('span');
         span.className = 'mood-btn' + (selectedMood === state.value ? ' mood-selected' : '');
+        span.dataset.mood = state.value;
         span.innerText = `${state.icon} ${state.label}`;
+        span.setAttribute('role', 'button');
+        span.tabIndex = 0;
         span.onclick = () => setMood(state.value);
+        span.onkeydown = (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            setMood(state.value);
+          }
+        };
         div.appendChild(span);
       });
     }
 
     function setWater(val) {
       didWater = val;
-      document.getElementById('waterDetails').style.display = val ? 'block' : 'none';
+      document.getElementById('waterDetails').style.display = val ? 'grid' : 'none';
+      document.getElementById('waterYesBtn')?.classList.toggle('is-selected', val === true);
+      document.getElementById('waterNoBtn')?.classList.toggle('is-selected', val === false);
     }
 
     async function setFloraStart() {
@@ -3995,14 +4353,8 @@
         
         <div style="margin-bottom: 10px;">
           <label>¿Regaste hoy?</label><br/>
-          <button type="button" onclick="setEditWater(true)" 
-                  style="background: ${entry.didWater ? '#22c55e' : '#e5e7eb'}; color: ${entry.didWater ? 'white' : 'black'};">
-            💧 Sí
-          </button>
-          <button type="button" onclick="setEditWater(false)" 
-                  style="background: ${!entry.didWater ? '#ef4444' : '#e5e7eb'}; color: ${!entry.didWater ? 'white' : 'black'};">
-            ❌ No
-          </button>
+          <button type="button" class="water-choice water-yes ${entry.didWater ? 'is-selected' : ''}" onclick="setEditWater(true)">Sí</button>
+          <button type="button" class="water-choice water-no ${!entry.didWater ? 'is-selected' : ''}" onclick="setEditWater(false)">No</button>
         </div>
         
         <div id="editWaterDetails" style="display: ${entry.didWater ? 'block' : 'none'}; margin-bottom: 10px;">
@@ -4050,17 +4402,12 @@
       const siBtn = document.querySelector('[onclick="setEditWater(true)"]');
       const noBtn = document.querySelector('[onclick="setEditWater(false)"]');
       
-      if (val) {
-        siBtn.style.background = '#22c55e';
-        siBtn.style.color = 'white';
-        noBtn.style.background = '#e5e7eb';
-        noBtn.style.color = 'black';
-      } else {
-        siBtn.style.background = '#e5e7eb';
-        siBtn.style.color = 'black';
-        noBtn.style.background = '#ef4444';
-        noBtn.style.color = 'white';
-      }
+      siBtn.classList.toggle('is-selected', !!val);
+      noBtn.classList.toggle('is-selected', !val);
+      siBtn.style.background = '';
+      siBtn.style.color = '';
+      noBtn.style.background = '';
+      noBtn.style.color = '';
     }
 
     async function saveEditedEntry() {
@@ -4290,8 +4637,9 @@
       
       nameInput.value = bitacora.name;
       colorPicker.innerHTML = availableColors.map(color => `
-        <div class="color-option ${color === bitacora.color ? 'selected' : ''}" 
-             style="background-color: ${color}" 
+        <div class="color-option ${colorsEqual(color, bitacora.color) ? 'selected' : ''}" 
+             data-color="${color}"
+             style="background-color: ${softenColor(color)}" 
              onclick="selectEditColor(this)"></div>
       `).join('');
 
@@ -4360,7 +4708,7 @@
         }
         
         userBitacoras[index].name = newName;
-        userBitacoras[index].color = selectedColor.style.backgroundColor;
+        userBitacoras[index].color = colorValue(selectedColor);
         userBitacoras[index].isPublic = isPublic;
         
         if (selectedBitacora?.id === bitacoraId) {
@@ -4565,7 +4913,7 @@ Escribe el NÚMERO de la opción que quieres:`;
     async function ejecutarVerificarPapelera() {
       try {
         if (typeof verificarPapelera === 'function') {
-          alert('🗑️ Verificando papelera...\n\nRevisa la consola (F12) para ver el resultado.');
+          alert('Verificando papelera.\n\nRevisa la consola (F12) para ver el resultado.');
           await verificarPapelera();
         } else if (typeof showTrashManager === 'function') {
           showTrashManager();
@@ -4581,7 +4929,7 @@ Escribe el NÚMERO de la opción que quieres:`;
     function ejecutarRestauracionEmergencia() {
       try {
         if (typeof emergencyRestore === 'function') {
-          alert('⚠️ Iniciando restauración de emergencia...\n\nRevisa la consola (F12) para ver el progreso.');
+          alert('Iniciando restauración de emergencia.\n\nRevisa la consola (F12) para ver el progreso.');
           emergencyRestore();
         } else {
           throw new Error('Función no disponible');
@@ -4751,7 +5099,7 @@ service cloud.firestore {
       luces.forEach((luz, idx) => {
         const div = document.createElement('div');
         div.className = 'luz-item';
-        div.innerHTML = `<span>${luz.nombre}</span> <span>x${luz.cantidad}</span> <span>${luz.watts}W</span> <button class='luz-remove' onclick='removeLuz(${idx})'>🗑️</button>`;
+        div.innerHTML = `<span>${luz.nombre}</span> <span>x${luz.cantidad}</span> <span>${luz.watts}W</span> <button class='luz-remove' onclick='removeLuz(${idx})'>Quitar</button>`;
         list.appendChild(div);
       });
     }
@@ -4775,7 +5123,7 @@ service cloud.firestore {
       if (selectedBitacora.cepas && selectedBitacora.cepas.length > 0) {
         const cepasSection = document.createElement('div');
         cepasSection.className = 'info-section';
-        cepasSection.innerHTML = '<h4>🌱 Cepas</h4>';
+        cepasSection.innerHTML = '<h4>Cepas</h4>';
         selectedBitacora.cepas.forEach(cepa => {
           const item = document.createElement('div');
           item.className = 'info-item';
@@ -4794,7 +5142,7 @@ service cloud.firestore {
       if (selectedBitacora.tipoCultivo) {
         const cultivoSection = document.createElement('div');
         cultivoSection.className = 'info-section';
-        cultivoSection.innerHTML = '<h4>🏠 Tipo de Cultivo</h4>';
+        cultivoSection.innerHTML = '<h4>Tipo de cultivo</h4>';
         const cultivoItem = document.createElement('div');
         cultivoItem.className = 'info-item';
         const cultivoText = selectedBitacora.tipoCultivo.charAt(0).toUpperCase() + selectedBitacora.tipoCultivo.slice(1);
@@ -4838,7 +5186,7 @@ service cloud.firestore {
       if (selectedBitacora.extractores && selectedBitacora.extractores.length > 0) {
         const extSection = document.createElement('div');
         extSection.className = 'info-section';
-        extSection.innerHTML = '<h4>💨 Extractores</h4>';
+        extSection.innerHTML = '<h4>Extractores</h4>';
         selectedBitacora.extractores.forEach((ext, idx) => {
           const extItem = document.createElement('div');
           extItem.className = 'info-item';
@@ -4852,16 +5200,16 @@ service cloud.firestore {
       if (selectedBitacora.tipoLuz || (selectedBitacora.luces && selectedBitacora.luces.length > 0)) {
         const luzSection = document.createElement('div');
         luzSection.className = 'info-section';
-        luzSection.innerHTML = '<h4>💡 Iluminación</h4>';
+        luzSection.innerHTML = '<h4>Iluminación</h4>';
         
         if (selectedBitacora.tipoLuz) {
           const tipoLuzItem = document.createElement('div');
           tipoLuzItem.className = 'info-item';
           let tipoLuzText = '';
           switch (selectedBitacora.tipoLuz) {
-            case 'sol': tipoLuzText = '☀️ Sol'; break;
-            case 'luz': tipoLuzText = '💡 Artificial'; break;
-            case 'mixto': tipoLuzText = '🔄 Mixto'; break;
+            case 'sol': tipoLuzText = 'Sol'; break;
+            case 'luz': tipoLuzText = 'Artificial'; break;
+            case 'mixto': tipoLuzText = 'Mixto'; break;
           }
           tipoLuzItem.innerHTML = `
             <span class="info-label">Tipo</span>
@@ -4912,16 +5260,16 @@ service cloud.firestore {
       if (selectedBitacora.riegoOptions && selectedBitacora.riegoOptions.length > 0) {
         const riegoSection = document.createElement('div');
         riegoSection.className = 'info-section';
-        riegoSection.innerHTML = '<h4>💧 Riego</h4>';
+        riegoSection.innerHTML = '<h4>Riego</h4>';
         
         selectedBitacora.riegoOptions.forEach(riego => {
           const riegoItem = document.createElement('div');
           riegoItem.className = 'info-item';
           let riegoText = '';
           switch (riego) {
-            case 'manual': riegoText = '👋 Manual'; break;
-            case 'goteo': riegoText = '💧 Goteo'; break;
-            case 'hidroponica': riegoText = '🌊 Hidropónica'; break;
+            case 'manual': riegoText = 'Manual'; break;
+            case 'goteo': riegoText = 'Goteo'; break;
+            case 'hidroponica': riegoText = 'Hidropónica'; break;
           }
           riegoItem.innerHTML = `
             <span class="info-label">Tipo</span>
@@ -4947,7 +5295,7 @@ service cloud.firestore {
       if (selectedBitacora.sustrato) {
         const sustratoSection = document.createElement('div');
         sustratoSection.className = 'info-section';
-        sustratoSection.innerHTML = '<h4>🌱 Sustrato</h4>';
+        sustratoSection.innerHTML = '<h4>Sustrato</h4>';
         
         const sustratoItem = document.createElement('div');
         sustratoItem.className = 'info-item';
@@ -4964,7 +5312,7 @@ service cloud.firestore {
       if (selectedBitacora.tipoCultivo === 'interior') {
         const equipamientoSection = document.createElement('div');
         equipamientoSection.className = 'info-section';
-        equipamientoSection.innerHTML = '<h4>⚙️ Equipamiento</h4>';
+        equipamientoSection.innerHTML = '<h4>Equipamiento</h4>';
         
         if (selectedBitacora.ventiladores > 0) {
           const ventiladoresItem = document.createElement('div');
@@ -5027,7 +5375,7 @@ service cloud.firestore {
           div.innerHTML = `
             <span>Carpa ${i}</span>
             <input type="number" placeholder="Metros cuadrados (ej: 1x1 = 1)" min="0" step="0.1" />
-            <button class='carpa-remove' onclick='this.parentElement.remove()'>🗑️</button>
+            <button class='carpa-remove' onclick='this.parentElement.remove()'>Quitar</button>
           `;
           carpasList.appendChild(div);
         }
@@ -5037,7 +5385,7 @@ service cloud.firestore {
         div.innerHTML = `
           <span>Sala única</span>
           <input type="number" placeholder="Metros cuadrados (ej: 2x3 = 6)" min="0" step="0.1" />
-          <button class='carpa-remove' onclick='this.parentElement.remove()'>🗑️</button>
+          <button class='carpa-remove' onclick='this.parentElement.remove()'>Quitar</button>
         `;
         carpasList.appendChild(div);
       }
@@ -5070,7 +5418,7 @@ service cloud.firestore {
           div.innerHTML = `
             <span>Carpa ${i}</span>
             <input type="number" placeholder="Metros cuadrados (ej: 1x1 = 1)" min="0" step="0.1" />
-            <button class='carpa-remove' onclick='this.parentElement.remove()'>🗑️</button>
+            <button class='carpa-remove' onclick='this.parentElement.remove()'>Quitar</button>
           `;
           carpasList.appendChild(div);
         }
@@ -5080,7 +5428,7 @@ service cloud.firestore {
         div.innerHTML = `
           <span>Sala única</span>
           <input type="number" placeholder="Metros cuadrados (ej: 2x3 = 6)" min="0" step="0.1" />
-          <button class='carpa-remove' onclick='this.parentElement.remove()'>🗑️</button>
+          <button class='carpa-remove' onclick='this.parentElement.remove()'>Quitar</button>
         `;
         carpasList.appendChild(div);
       }
@@ -5127,7 +5475,7 @@ service cloud.firestore {
           info += `, germinación: ${cepa.germinacion}`;
         }
         info += ")";
-        div.innerHTML = `<span>${info}</span> <button class='cepa-remove' onclick='removeEditCepa(${idx})'>🗑️</button>`;
+        div.innerHTML = `<span>${info}</span> <button class='cepa-remove' onclick='removeEditCepa(${idx})'>Quitar</button>`;
         list.appendChild(div);
       });
     }
@@ -5157,29 +5505,30 @@ service cloud.firestore {
       editExtractores.forEach((ext, idx) => {
         const div = document.createElement('div');
         div.className = 'extractor-item';
-        div.innerHTML = `<span>x${ext.cantidad} de ${ext.pulgadas}"</span> <button class='extractor-remove' onclick='removeEditExtractor(${idx})'>🗑️</button>`;
+        div.innerHTML = `<span>x${ext.cantidad} de ${ext.pulgadas}"</span> <button class='extractor-remove' onclick='removeEditExtractor(${idx})'>Quitar</button>`;
         list.appendChild(div);
       });
     }
 
     // Modo nocturno
-    function toggleDarkMode() {
-      const body = document.body;
-      body.classList.toggle('dark-mode');
+    function syncThemeButton() {
       const btn = document.getElementById('toggleDarkMode');
-      if (body.classList.contains('dark-mode')) {
-        btn.textContent = '☀️';
-        localStorage.setItem('darkMode', '1');
-      } else {
-        btn.textContent = '🌙';
-        localStorage.setItem('darkMode', '0');
-      }
+      if (!btn) return;
+      const isDark = document.body.classList.contains('dark-mode');
+      btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+      const label = btn.querySelector('.theme-label');
+      if (label) label.textContent = isDark ? 'Tema claro' : 'Tema oscuro';
     }
-    // Al cargar, aplicar modo guardado
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? '1' : '0');
+      syncThemeButton();
+    }
     if (localStorage.getItem('darkMode') === '1') {
       document.body.classList.add('dark-mode');
-      document.getElementById('toggleDarkMode').textContent = '☀️';
     }
+    syncThemeButton();
 
     // Alternar formulario de nueva bitácora
     function toggleNewBitacoraForm() {
@@ -5188,11 +5537,11 @@ service cloud.firestore {
       if (form.style.display === 'block' || form.classList.contains('active')) {
         form.style.display = 'none';
         form.classList.remove('active');
-        if (btn) btn.textContent = '+ Nueva Bitácora';
+        if (btn) btn.innerHTML = '<span class="bitacora-icon"><svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg></span><span class="bitacora-copy"><span class="bitacora-name">Nueva bitácora</span></span>';
       } else {
         form.style.display = 'block';
         form.classList.add('active');
-        if (btn) btn.textContent = 'Cerrar';
+        if (btn) btn.innerHTML = '<span class="bitacora-copy"><span class="bitacora-name">Cerrar</span></span>';
         showNewBitacoraForm();
       }
     }
@@ -5447,7 +5796,7 @@ service cloud.firestore {
       container.innerHTML = '';
       
       if (allProblems.length === 0) {
-        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #6b7280;">No hay problemas reportados 🎉</div>';
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #647067;">No hay problemas reportados</div>';
         return;
       }
       
@@ -5507,28 +5856,24 @@ service cloud.firestore {
       
       // Colores según gravedad
       const severityColors = {
-        high: '#ef4444',
-        moderate: '#f59e0b',
-        low: '#eab308',
-        info: '#22c55e'
+        high: '#B54747',
+        moderate: '#B7791F',
+        low: '#8A7044',
+        info: '#1F6B43'
       };
-      
-      // Iconos según estado
-      const statusIcons = {
-        reported: '📝',
-        'in-progress': '⏳',
-        resolved: '✅',
-        unresolved: '❌'
+      const statusLabels = {
+        reported: 'Reportado',
+        'in-progress': 'En proceso',
+        resolved: 'Resuelto',
+        unresolved: 'No resuelto'
       };
-      
-      // Iconos según categoría
-      const categoryIcons = {
-        pest: '🐛',
-        nutrition: '🌱',
-        watering: '💧',
-        environment: '🌡️',
-        growth: '📏',
-        other: '❓'
+      const categoryLabels = {
+        pest: 'Plagas',
+        nutrition: 'Nutrición',
+        watering: 'Riego',
+        environment: 'Ambiente',
+        growth: 'Crecimiento',
+        other: 'Otro'
       };
       
       const createdDate = new Date(problem.createdAt).toLocaleDateString();
@@ -5538,14 +5883,14 @@ service cloud.firestore {
         <div style="display: flex; justify-content: between; align-items: flex-start; margin-bottom: 10px;">
           <div style="flex: 1;">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
-              <span style="background: ${severityColors[problem.severity]}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold;">
-                ${problem.severity.toUpperCase()}
+              <span style="background: ${severityColors[problem.severity] || '#647067'}; color: white; padding: 2px 8px; border-radius: 999px; font-size: 0.75em; font-weight: 650;">
+                ${(problem.severity || '').toUpperCase()}
               </span>
-              <span style="background: #f3f4f6; padding: 2px 8px; border-radius: 12px; font-size: 0.8em;">
-                ${statusIcons[problem.status]} ${problem.status.replace('-', ' ').toUpperCase()}
+              <span style="background: #F4F6F4; color: #18231D; padding: 2px 8px; border-radius: 999px; font-size: 0.75em;">
+                ${statusLabels[problem.status] || problem.status}
               </span>
-              <span style="background: #f3f4f6; padding: 2px 8px; border-radius: 12px; font-size: 0.8em;">
-                ${categoryIcons[problem.category]}
+              <span style="background: #F4F6F4; color: #647067; padding: 2px 8px; border-radius: 999px; font-size: 0.75em;">
+                ${categoryLabels[problem.category] || problem.category}
               </span>
             </div>
             <h4 style="margin: 0 0 8px 0; color: #1f2937; font-weight: 600;">${problem.title}</h4>
@@ -5557,12 +5902,8 @@ service cloud.firestore {
             </div>
           </div>
           <div style="display: flex; gap: 5px; margin-left: 10px;">
-            <button onclick="editProblem('${problem.id}')" style="background: #3b82f6; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8em;">
-              ✏️
-            </button>
-            <button onclick="deleteProblem('${problem.id}')" style="background: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8em;">
-              🗑️
-            </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="editProblem('${problem.id}')">Editar</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="deleteProblem('${problem.id}')">Eliminar</button>
           </div>
         </div>
       `;
@@ -5601,11 +5942,11 @@ service cloud.firestore {
       // Buscar el botón de gestionar problemas y actualizar su texto
       const problemButton = document.querySelector('button[onclick="showProblemsManager()"]');
       if (problemButton) {
-        let buttonText = '🚨 Gestionar Problemas';
+        let buttonText = 'Gestionar problemas';
         if (activeProblems > 0) {
           buttonText += ` (${activeProblems})`;
           if (criticalProblems > 0) {
-            buttonText += ` 🔴${criticalProblems}`;
+            buttonText += ` · ${criticalProblems} críticos`;
             problemButton.style.background = '#fef2f2';
             problemButton.style.borderColor = '#ef4444';
           } else {
@@ -5667,7 +6008,7 @@ service cloud.firestore {
       container.innerHTML = '';
       
       if (allProblems.length === 0) {
-        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #6b7280; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">No hay problemas reportados 🎉<br><small>¡Tu cultivo está en perfecto estado!</small></div>';
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #647067; background: #F4F6F4; border-radius: 12px; border: 1px solid #DDE4DE;">No hay problemas reportados<br><small>No hay incidencias abiertas en esta bitácora.</small></div>';
         return;
       }
       
@@ -5736,21 +6077,12 @@ service cloud.firestore {
       // Actualizar el texto del botón de problemas
       const problemButton = document.getElementById('btn-problems');
       if (problemButton) {
-        let buttonText = '🚨 Problemas';
-        let buttonStyle = '';
-        
-        if (activeProblems > 0) {
-          buttonText += ` (${activeProblems})`;
-          if (criticalProblems > 0) {
-            buttonText += ` 🔴`;
-            buttonStyle = 'background: #fef2f2; border-color: #ef4444; color: #dc2626;';
-          } else {
-            buttonStyle = 'background: #fffbeb; border-color: #f59e0b; color: #d97706;';
-          }
-        }
-        
-        problemButton.innerHTML = buttonText;
-        problemButton.style.cssText = buttonStyle;
+        const count = activeProblems > 0 ? ` (${activeProblems})` : '';
+        problemButton.classList.remove('has-alerts', 'has-critical');
+        if (criticalProblems > 0) problemButton.classList.add('has-critical');
+        else if (activeProblems > 0) problemButton.classList.add('has-alerts');
+        problemButton.innerHTML = `<svg class="icon" aria-hidden="true"><use href="#i-triangle-alert"></use></svg><span>Problemas${count}</span>`;
+        problemButton.style.cssText = '';
       }
     }
 
@@ -5846,7 +6178,7 @@ service cloud.firestore {
             cursor: pointer;
             font-size: 12px;
             font-weight: bold;
-          ">↩️ Deshacer</button>
+          ">Deshacer</button>
           <button onclick="showTrashManager()" style="
             background: rgba(255,255,255,0.2);
             color: white;
@@ -5855,7 +6187,7 @@ service cloud.firestore {
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
-          ">🗑️ Ver Papelera</button>
+          ">Ver papelera</button>
           <button onclick="closeUndoMessage()" style="
             background: transparent;
             color: white;
@@ -6005,7 +6337,7 @@ service cloud.firestore {
         ">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
             <h2 style="margin: 0; color: #374151; display: flex; align-items: center; gap: 10px;">
-              🗑️ Papelera de Bitácoras
+              Papelera de bitácoras
             </h2>
             <button onclick="closeTrashManager()" style="
               background: none;
@@ -6018,7 +6350,7 @@ service cloud.firestore {
           
           <div style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
             <div style="color: #92400e; font-weight: bold; margin-bottom: 5px;">
-              ⚠️ Sistema de Protección Activado
+              Sistema de protección activado
             </div>
             <div style="color: #92400e; font-size: 14px;">
               Las bitácoras eliminadas se conservan por 7 días antes de eliminarse permanentemente.
@@ -6029,8 +6361,7 @@ service cloud.firestore {
           <div id="trashContent">
             ${trashedBitacoras.length === 0 ? `
               <div style="text-align: center; padding: 40px; color: #6b7280;">
-                <div style="font-size: 48px; margin-bottom: 15px;">🗑️</div>
-                <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Papelera vacía</div>
+                <div style="font-size: 18px; font-weight: 650; margin-bottom: 10px; color: #18231D;">Papelera vacía</div>
                 <div>No hay bitácoras eliminadas</div>
               </div>
             ` : `
@@ -6282,12 +6613,12 @@ service cloud.firestore {
           .sort((a, b) => new Date(b.date) - new Date(a.date))[0]?.date || 'Sin entradas';
         
         alert(
-          `📋 Vista Previa: ${bitacora.name}\n\n` +
-          `🎨 Color: ${bitacora.color}\n` +
-          `📝 Total de entradas: ${totalEntries}\n` +
-          `📅 Última entrada: ${lastEntryDate}\n` +
-          `🌱 Cepas: ${bitacora.cepas?.length || 0}\n` +
-          `🏠 Tipo: ${bitacora.tipoCultivo || 'No especificado'}\n\n` +
+          `Vista previa: ${bitacora.name}\n\n` +
+          `Color: ${bitacora.color}\n` +
+          `Total de entradas: ${totalEntries}\n` +
+          `Última entrada: ${lastEntryDate}\n` +
+          `Cepas: ${bitacora.cepas?.length || 0}\n` +
+          `Tipo: ${bitacora.tipoCultivo || 'No especificado'}\n\n` +
           `¿Quieres restaurar esta bitácora?`
         ) && restoreBitacoraFromTrash(bitacoraId);
         
